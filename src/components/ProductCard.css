@@ -1,0 +1,24 @@
+/* App.css */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; /* You can change this according to your layout preference */
+    gap: 20px; /* Adjust the gap between cards */
+  }
+  
+  .card {
+    width: 300px; /* Set the width of each card */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+  }
+  
+  /* Media query for responsiveness */
+  @media (max-width: 768px) {
+    .card {
+      width: 100%; /* Change the width to fit the screen on smaller devices */
+    }
+  }
+  
