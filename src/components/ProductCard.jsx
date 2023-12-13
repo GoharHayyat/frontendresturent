@@ -201,7 +201,7 @@ function ProductCard({ product }) {
             fontWeight="lg"
             mb={1}
           >
-            Product Details
+            Product Details:
           </Typography>
           <Typography id="modal-desc" textColor="text.tertiary">
             Make sure to use <code>aria-labelledby</code> on the modal dialog with an
