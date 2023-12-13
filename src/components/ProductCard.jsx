@@ -14,8 +14,11 @@ import { manageFavorite } from "../features/User";
 import axios from "axios";
 // import "./ProductCard.css";
 
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
+import Button from '@mui/joy/Button';
+import Modal from '@mui/joy/Modal';
+import ModalClose from '@mui/joy/ModalClose';
+import Typography from '@mui/joy/Typography';
+import Sheet from '@mui/joy/Sheet';
 
 function ProductCard({ product }) {
   const dispatch = useDispatch();
@@ -26,6 +29,8 @@ function ProductCard({ product }) {
   const [isAdded, setIsAdded] = useState(false);
 
   const [isWindowsSize, setIsWindowsSize] = useState(false);
+
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (favorites.length !== 0) {
@@ -113,23 +118,24 @@ function ProductCard({ product }) {
         whileHover={{ scale: 1.02 }}
         className=" w-full max-w-[11rem] md:max-w-[14rem] bg-white/95 rounded-lg shadow-lg"
       >
-        <Link to={`/product/${product._id}`}>
           <motion.img
+          onClick={() => setOpen(true)}
             whileHover={{ scale: 0.95 }}
             className="p-3 w-full h-30 md:h-52 rounded-t-lg"
             src={product.imageLinks[0]}
             alt={product.name}
           />
-        </Link>
+        
         <div className="px-5 pb-5">
-          <Link to={`/product/${product._id}`}>
+          
             <motion.h5
+            onClick={() => setOpen(true)}
               whileHover={{ scale: 0.95 }}
               className="text-base whitespace-nowrap text-ellipsis overflow-hidden md:text-xl font-semibold tracking-tight text-gray-900"
             >
               {product.name}
             </motion.h5>
-          </Link>
+          
           <Link to={`/category/${product.category}`}>
             <motion.p
               whileHover={{ scale: 0.98 }}
@@ -169,21 +175,63 @@ function ProductCard({ product }) {
             </div>
           </div>
         </div>
+        <React.Fragment>
+      <Modal
+        aria-labelledby="modal-title"
+        aria-describedby="modal-desc"
+        open={open}
+        onClose={() => setOpen(false)}
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Sheet
+          variant="outlined"
+          sx={{
+            maxWidth: 500,
+            borderRadius: 'md',
+            p: 3,
+            boxShadow: 'lg',
+          }}
+        >
+          <ModalClose variant="plain" sx={{ m: 1 }} />
+          <Typography
+            component="h2"
+            id="modal-title"
+            level="h4"
+            textColor="inherit"
+            fontWeight="lg"
+            mb={1}
+          >
+            Product Details
+          </Typography>
+          <Typography id="modal-desc" textColor="text.tertiary">
+            Make sure to use <code>aria-labelledby</code> on the modal dialog with an
+            optional <code>aria-describedby</code> attribute.
+          </Typography>
+        </Sheet>
+      </Modal>
+    </React.Fragment>
       </motion.div>
     );
   } else {
     return (
       <div style={{ display: "flex", width: "100%" }}>
         <div
+        
           style={{
             display: "inline-block",
             width: "65%",
             fontSize: "25px",
             fontWeight: "700",
             marginLeft: "10px",
+            
           }}
         >
-          {product.name}
+          <div
+          onClick={() => setOpen(true)}
+          >
+{product.name}
+          </div>
+          
           <div>
             <Stars rating={product.stars} />
           </div>
@@ -217,6 +265,7 @@ function ProductCard({ product }) {
         <div style={{ display: 'flex' }}>
       <div style={{ display: 'inline-block', marginRight: '10px' }}>
       <img
+      onClick={() => setOpen(true)}
   // whileHover={{ scale: 0.95 }}
   style={{
     width: '130px',
@@ -244,6 +293,41 @@ function ProductCard({ product }) {
         </div>
       </div>
     </div>
+    <React.Fragment>
+      <Modal
+        aria-labelledby="modal-title"
+        aria-describedby="modal-desc"
+        open={open}
+        onClose={() => setOpen(false)}
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Sheet
+          // variant="outlined"
+          sx={{
+            maxWidth: 400,
+            borderRadius: 'md',
+            p: 3,
+            boxShadow: 'lg',
+          }}
+        >
+          <ModalClose variant="plain" sx={{ m: 1 }} />
+          <Typography
+            component="h2"
+            id="modal-title"
+            level="h4"
+            textColor="inherit"
+            fontWeight="lg"
+            mb={1}
+          >
+            Product Details
+          </Typography>
+          <Typography id="modal-desc" textColor="text.tertiary">
+            Make sure to use <code>aria-labelledby</code> on the modal dialog with an
+            optional <code>aria-describedby</code> attribute.
+          </Typography>
+        </Sheet>
+      </Modal>
+    </React.Fragment>
       </div>
 
       // <div>
