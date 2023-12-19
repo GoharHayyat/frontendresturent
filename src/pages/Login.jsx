@@ -116,7 +116,7 @@ function Login() {
 
     return (
         <>
-            <div className="flex items-center justify-center h-[92vh] md:h-[90vh] w-full bg-gradient-to-b from-teal-200 to-teal-700 relative overflow-hidden">
+            <div  className="flex items-center justify-center h-[92vh] md:h-[90vh] w-full bg-gradient-to-b from-sky-300 to-sky-300 relative overflow-hidden">
                 {loginSuccessfull === null ? (<motion.div variants={variant} initial="initial" animate="animate" className="px-4 py-8 w-[90%]  md:w-[35%] bg-slate-100 rounded-xl z-40 flex flex-col items-center">
                     <form onSubmit={handleSubmit} className="text-center px-3 md:px-10 h-full w-full overflow-hidden flex flex-col justify-center items-center">
                         <h1 className="text-xl md:text-2xl font-semibold mb-4">Login</h1>

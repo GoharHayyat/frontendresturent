@@ -58,8 +58,11 @@ function Navbar() {
                         </Link>
                     </motion.div>
                     {/* className=" md:hidden" */}
-                    <motion.div whileTap={{ scale: 0.8 }}   onClick={() => { search && dispatch(setSearchModal(false)); dispatch(setMenuBar(!menu)); }}>
+                    {/* <motion.div whileTap={{ scale: 0.8 }}   onClick={() => { search && dispatch(setSearchModal(false)); dispatch(setMenuBar(!menu)); }}>
                         <Bars3Icon className="h-6 w-6 hover:text-sky-100 duration-200" />
+                    </motion.div> */}
+                    <motion.div whileTap={{ scale: 0.8 }} className=" md:hidden" onClick={() => { search && dispatch(setSearchModal(false)); dispatch(setMenuBar(!menu)); }}>
+                        <Bars3Icon className="h-6 w-6 hover:text-sky-600 duration-200" />
                     </motion.div>
                 </div>
             </motion.nav>
