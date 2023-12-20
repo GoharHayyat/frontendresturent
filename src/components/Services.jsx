@@ -5,8 +5,8 @@ import { motion } from 'framer-motion'
 
 const serviceData =[
     {
-        heading:"Multiple Venders",
-        subHeading: "Lorem ipsum dolor sit.",
+        heading:"Best Taste",
+        // subHeading: "Lorem ipsum dolor sit.",
         bg: "bg-sky-100",
         icon: ()=>{
             return (
@@ -16,7 +16,7 @@ const serviceData =[
     },
     {
         heading:"Secure Payments",
-        subHeading: "Lorem ipsum dolor sit.",
+        // subHeading: "Lorem ipsum dolor sit.",
         bg: "bg-cyan-100",
         icon: ()=>{
             return (
@@ -26,7 +26,7 @@ const serviceData =[
     },
     {
         heading:"Fast Delivery",
-        subHeading: "Lorem ipsum dolor sit.",
+        // subHeading: "Lorem ipsum dolor sit.",
         bg: "bg-green-100",
 
         icon: ()=>{
@@ -36,8 +36,8 @@ const serviceData =[
         }
     },
     {
-        heading:"Affordable Products",
-        subHeading: "Lorem ipsum dolor sit.",
+        heading:"Affordable Prices",
+        // subHeading: "Lorem ipsum dolor sit.",
         bg: "bg-indigo-100",
         icon: ()=>{
             return (

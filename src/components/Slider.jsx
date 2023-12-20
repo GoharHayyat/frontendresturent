@@ -39,7 +39,7 @@ function Slider() {
                 <motion.div initial={{x:-300,opacity:0,scale:0.5}} animate={{x:0,opacity:1,delay:0.5,duration:1,scale:1}} transition={{type:"spring", duration:1,delay:0.2}} id="info" className="flex-1 h-full flex justify-center flex-col pl-4 md:pl-20">
                   <h1 className="text-6xl font-bold md:text-6xl">{item.title}</h1>
                   <p className="my-12 mx-0 text-lg md:text-xl font-medium tracking-[3px]">{item.desc}</p>
-                  <button className=" p-3 text-xl bg-transparent border-2 border-black self-center md:static md:self-start hover:text-sky-600 duration-200">SHOP NOW</button>
+                  <button className=" p-3 text-xl bg-transparent border-2 border-black self-center md:static md:self-start hover:text-sky-600 duration-200">ORDER NOW</button>
                 </motion.div>
 
                 {/* <div id="img"  className="pb-24 md:pb-0 flex-1 h-full flex items-center justify-center relative">
@@ -56,7 +56,7 @@ function Slider() {
     animate={{ y: 0, scale: 1, opacity: 1, delay: 0.5, duration: 1 }}
     transition={{ type: "spring", duration: 1, delay: 0.3 }}
     src={item.img}
-    alt="sofa"
+    alt="food"
     className={`md:h-[55%] z-10 object-fill rotate`} 
   />
   <motion.div

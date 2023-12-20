@@ -26,7 +26,7 @@ function Navbar() {
                     <ul className="flex flex-col gap-12 md:flex-row items-center md:flex md:gap-6 text-lg font-medium">
                         <motion.li whileHover={{ scale: 1.1 }} className="hover:text-sky-600"><a href="/#">About Us</a></motion.li>
                         <motion.li  id="brands"     whileHover={{ scale: 1.1 }} className="hover:text-sky-600 cursor-pointer">
-                            Brands
+                            Reservation
                         </motion.li>
                         <motion.li  id="category"  whileHover={{ scale: 1.1 }} className="hover:text-sky-600 cursor-pointer">
                             Category

@@ -7,6 +7,8 @@ import Login from "./pages/Login";
 import { ToastContainer } from "react-toastify";
 import Home from "./pages/Home";
 import ProductsListPage from "./pages/ProductsListPage";
+import Checkout from "./pages/Checkout";
+import ForgotPassword from "./pages/ForgotPassword";
 function App() {
   return (
     <>
@@ -17,6 +19,8 @@ function App() {
       <Route path="register" element={<Registeration/>}/>
 
       <Route path="menuitems/:category" element={<ProductsListPage/>}/>
+      <Route path="checkout" element={<Checkout/>}/>
+      <Route path="forgotpassword" element={<ForgotPassword/>}/>
       </Route>
       </Routes>
       <CartMenu/>
