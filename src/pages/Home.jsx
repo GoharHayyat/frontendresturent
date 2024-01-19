@@ -81,22 +81,22 @@ function Home() {
 
   // Creating products based on menuItems
 // Inside your Home component
-// useEffect(() => {
-//   if (menuItems.length > 0 && !trending) {
-//     const products = menuItems.map(item => ({
-//       _id: item._id,
-//       name: item.title,
-//       category: 'Food',
-//       price: 9.99,
-//       stars: 4.0,
-//       imageLinks: [`http://localhost:4500/${item.image}`],
-//       isFavorite: false,
-//       isAdded: false,
-//     }));
+useEffect(() => {
+  if (menuItems.length > 0 && !trending) {
+    const products = menuItems.map(item => ({
+      _id: item._id,
+      name: item.title,
+      category: 'Food',
+      price: 9.99,
+      stars: 4.0,
+      imageLinks: [`http://localhost:4500/${item.image}`],
+      isFavorite: false,
+      isAdded: false,
+    }));
 
-//     setTrending(products.slice(0, 5));
-//   }
-// }, [menuItems, trending]);
+    setTrending(products.slice(0, 5));
+  }
+}, [menuItems, trending]);
 
   
   // Log the products to verify
@@ -104,76 +104,76 @@ function Home() {
   
  
 
-  const products = [
-    {
-      _id: 1,
-      name: 'Just Gourmet Beef Burger',
-      category: 'Burgers',
-      price: 730,
-      stars: 4.5,
-      imageLinks: [food11],
-      isFavorite: false,
-      isAdded: false,
-    },
-    {
-      _id: 2,
-      name: 'Chicken Karahi',
-      category: 'Karahi',
-      price: 1280,
-      stars: 3.5,
-      imageLinks: ["https://images.deliveryhero.io/image/fd-pk/Products/31881258.jpg"],
-      isFavorite: true,
-      isAdded: true,
-    },
-    {
-    _id: 3,
-      name: 'Egg Lentiger Burger',
-      category: 'Burgers',
-      price:550,
-      stars: 4,
-      imageLinks: ["https://images.deliveryhero.io/image/fd-pk/Products/40942194.jpg"],
-      isFavorite: false,
-      isAdded: false,
-    },
-    {
-      _id: 4,
-      name: 'Chicken Chapli Pizza',
-      category: 'Pizza',
-      price: 525,
-      stars: 3.5,
-      imageLinks: ["https://images.deliveryhero.io/image/fd-pk/Products/40942261.jpg"],
-      isFavorite: true,
-      isAdded: true,
-    },
-    {
-      _id: 5,
-      name: 'Crispy Bite Sandwich',
-      category: 'Sandwiches',
-      price: 315,
-      stars: 4.5,
-      imageLinks: ["https://images.deliveryhero.io/image/fd-pk/Products/40942210.jpg"],
-      isFavorite: false,
-      isAdded: false,
-    },
-    {
-      _id: 6,
-      name: 'Product 6',
-      category: 'Category 6',
-      price: 29.99,
-      stars: 3.5,
-      imageLinks: [food2],
-      isFavorite: true,
-      isAdded: true,
-    },
-    // Add more dummy data items as needed
-  ];
+  // const products = [
+  //   {
+  //     _id: 1,
+  //     name: 'Just Gourmet Beef Burger',
+  //     category: 'Burgers',
+  //     price: 730,
+  //     stars: 4.5,
+  //     imageLinks: [food11],
+  //     isFavorite: false,
+  //     isAdded: false,
+  //   },
+  //   {
+  //     _id: 2,
+  //     name: 'Chicken Karahi',
+  //     category: 'Karahi',
+  //     price: 1280,
+  //     stars: 3.5,
+  //     imageLinks: ["https://images.deliveryhero.io/image/fd-pk/Products/31881258.jpg"],
+  //     isFavorite: true,
+  //     isAdded: true,
+  //   },
+  //   {
+  //   _id: 3,
+  //     name: 'Egg Lentiger Burger',
+  //     category: 'Burgers',
+  //     price:550,
+  //     stars: 4,
+  //     imageLinks: ["https://images.deliveryhero.io/image/fd-pk/Products/40942194.jpg"],
+  //     isFavorite: false,
+  //     isAdded: false,
+  //   },
+  //   {
+  //     _id: 4,
+  //     name: 'Chicken Chapli Pizza',
+  //     category: 'Pizza',
+  //     price: 525,
+  //     stars: 3.5,
+  //     imageLinks: ["https://images.deliveryhero.io/image/fd-pk/Products/40942261.jpg"],
+  //     isFavorite: true,
+  //     isAdded: true,
+  //   },
+  //   {
+  //     _id: 5,
+  //     name: 'Crispy Bite Sandwich',
+  //     category: 'Sandwiches',
+  //     price: 315,
+  //     stars: 4.5,
+  //     imageLinks: ["https://images.deliveryhero.io/image/fd-pk/Products/40942210.jpg"],
+  //     isFavorite: false,
+  //     isAdded: false,
+  //   },
+  //   {
+  //     _id: 6,
+  //     name: 'Product 6',
+  //     category: 'Category 6',
+  //     price: 29.99,
+  //     stars: 3.5,
+  //     imageLinks: [food2],
+  //     isFavorite: true,
+  //     isAdded: true,
+  //   },
+  //   // Add more dummy data items as needed
+  // ];
 
-  useEffect(()=>{
-    if (products) {
-      setTrending(products.slice(0,5));
-      // setFeatured(products.slice(5));
-    }
-  },[products])
+  // useEffect(()=>{
+  //   if (products) {
+  //     setTrending(products.slice(0,5));
+  //     // setFeatured(products.slice(5));
+  //   }
+  // },[products])
   
 
   return (
