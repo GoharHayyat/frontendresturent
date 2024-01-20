@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { manageFavorite } from "../features/User";
 import axios from "axios";
+import ProductCardDetails from "./ProductCardDetails";
 // import "./ProductCard.css";
 
 import Button from '@mui/joy/Button';
@@ -203,9 +204,11 @@ function ProductCard({ product }) {
           >
             Product Details:
           </Typography>
+          <ProductCardDetails product/>
           <Typography id="modal-desc" textColor="text.tertiary">
-            Make sure to use <code>aria-labelledby</code> on the modal dialog with an
-            optional <code>aria-describedby</code> attribute.
+          <Typography id="modal-desc" textColor="text.tertiary">
+            {product._id}
+          </Typography>
           </Typography>
         </Sheet>
       </Modal>
@@ -321,9 +324,9 @@ function ProductCard({ product }) {
           >
             Product Details
           </Typography>
+          <ProductCardDetails product/>
           <Typography id="modal-desc" textColor="text.tertiary">
-            Make sure to use <code>aria-labelledby</code> on the modal dialog with an
-            optional <code>aria-describedby</code> attribute.
+            {product._id}
           </Typography>
         </Sheet>
       </Modal>
