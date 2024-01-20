@@ -61,10 +61,29 @@ function Home() {
   //       console.error(err);
   //     });
   // }, []);
+  // useEffect(() => {
+  //   const fetchMenuItems = async () => {
+  //     try {
+  //       const response = await fetch("http://localhost:4500/getALLproduct");
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setMenuItems(data);
+  //       } else {
+  //         throw new Error("Failed to fetch data");
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+
+  //   fetchMenuItems();
+  // }, []);
+
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch("http://localhost:4500/getALLproduct");
+        // Updated API endpoint without specifying an ID
+        const response = await fetch("http://localhost:4500/menuitemsTrending");
         if (response.ok) {
           const data = await response.json();
           setMenuItems(data);
@@ -80,29 +99,26 @@ function Home() {
   }, []);
 
   // Creating products based on menuItems
-// Inside your Home component
-useEffect(() => {
-  if (menuItems.length > 0 && !trending) {
-    const products = menuItems.map(item => ({
-      _id: item._id,
-      name: item.title,
-      category: 'Food',
-      price: 9.99,
-      stars: 4.0,
-      imageLinks: [`http://localhost:4500/${item.image}`],
-      isFavorite: false,
-      isAdded: false,
-    }));
+  // Inside your Home component
+  useEffect(() => {
+    if (menuItems.length > 0 && !trending) {
+      const products = menuItems.map((item) => ({
+        _id: item._id,
+        name: item.title,
+        category: item.category,
+        price: item.Price,
+        stars: 4.0,
+        imageLinks: [`http://localhost:4500/${item.image}`],
+        isFavorite: false,
+        isAdded: false,
+      }));
 
-    setTrending(products.slice(0, 5));
-  }
-}, [menuItems, trending]);
+      setTrending(products.slice(0, 5));
+    }
+  }, [menuItems, trending]);
 
-  
   // Log the products to verify
   // console.log(products);
-  
- 
 
   // const products = [
   //   {
@@ -174,12 +190,11 @@ useEffect(() => {
   //     // setFeatured(products.slice(5));
   //   }
   // },[products])
-  
 
   return (
     <div>
       <Slider />
-      
+
       {/* <ProductList name={"Trending Products"} data={products}></ProductList> */}
       {trending && <ProductList name={"Trending Products"} data={trending} />}
       <CategoryTiles />
