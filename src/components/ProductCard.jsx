@@ -119,6 +119,7 @@ function ProductCard({ product }) {
     const handleResize = () => {
       // Check the window width here, adjust the value as needed
       setIsWindowsSize(window.innerWidth > 500); // Change 768 to the desired width threshold
+      
     };
 
     // Initial check on mount
@@ -225,14 +226,16 @@ function ProductCard({ product }) {
                 fontWeight="lg"
                 mb={1}
               >
-                Product Details:
+                Product Detailss:
                 
               </Typography>
-              <ProductCardDetails product/>
-              
+              {/* <ProductCardDetails product/> */}
+              <ProductCardDetails product={product} />
+
               <Typography id="modal-desc" textColor="text.tertiary">
                 
               </Typography>
+              
             </Sheet>
           </Modal>
         </React.Fragment>
@@ -345,7 +348,7 @@ function ProductCard({ product }) {
               >
                 Product Details
               </Typography>
-              <ProductCardDetails product/>
+              <ProductCardDetails product={product} />
               <Typography id="modal-desc" textColor="text.tertiary">
               {/* <ProductCardDetails product/> */}
               

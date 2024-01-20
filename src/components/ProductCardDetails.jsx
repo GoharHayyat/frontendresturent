@@ -1,12 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
-function ProductCardDetails(product) {
+function ProductCardDetails({product}) {
 
-  console.log('ProductCardDetails - Product:',product);
+  useEffect(() => {
+    console.log("Product in ProductCardDetails:", product);
+    // Rest of the useEffect logic
+  }, [product]);
+  
   
     return (
       <div>
-        <h1>this ids:{product.category}</h1>
+       {/* {product._id} */}
+       <br/>
+       {product.name}
       </div>
     );
   
