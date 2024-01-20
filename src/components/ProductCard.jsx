@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { manageFavorite } from "../features/User";
 import axios from "axios";
 // import "./ProductCard.css";
+import ProductCardDetails from "./ProductCardDetails";
 
 import Button from '@mui/joy/Button';
 import Modal from '@mui/joy/Modal';
@@ -225,10 +226,12 @@ function ProductCard({ product }) {
                 mb={1}
               >
                 Product Details:
+                
               </Typography>
+              <ProductCardDetails product/>
+              
               <Typography id="modal-desc" textColor="text.tertiary">
-                menuItems.caloies <code>aria-labelledby</code> on the modal
-                dialog with an optional <code>aria-describedby</code> attribute.
+                
               </Typography>
             </Sheet>
           </Modal>
@@ -342,9 +345,10 @@ function ProductCard({ product }) {
               >
                 Product Details
               </Typography>
+              <ProductCardDetails product/>
               <Typography id="modal-desc" textColor="text.tertiary">
-                Make sure to use <code>aria-labelledby</code> on the modal
-                dialog with an optional <code>aria-describedby</code> attribute.
+              {/* <ProductCardDetails product/> */}
+              
               </Typography>
             </Sheet>
           </Modal>
