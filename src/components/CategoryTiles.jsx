@@ -1,26 +1,10 @@
 import { motion } from 'framer-motion'
 import React from 'react'
 import { Link } from 'react-router-dom';
-// import { categoryData } from '../demidata';
+import { categoryData } from "../demidata";
 import { useState, useEffect } from "react";
 
 function CategoryTiles() {
-  const [categoryData, setcategoryData] = useState([]);
- 
-  useEffect(() => {
-    // Fetch the menu items from the server
-    fetch("http://localhost:4500/getALLproduct")
-      .then((res) => res.json())
-      .then((data) => {
-        setcategoryData(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
-
-    console.log(categoryData.image)
-
   return (
     <>
       <motion.h1
@@ -94,7 +78,7 @@ function CategoryTiles() {
 
           return (
             <motion.div
-              key={item._id}
+              key={item.id}
               initial={{ opacity: 0.5, scaleY: 0.2 }}
               whileInView={{
                 opacity: 1,
@@ -117,8 +101,8 @@ function CategoryTiles() {
               >
                 <motion.img
                   whileHover={{ scale: 1.3, transition: { duration: 0.6 } }}
-                  src={item.image}
-                  alt={item.title}
+                  src={item.img}
+                  alt={item.name}
                   className="w-full h-full absolute z-0 object-cover"
                 />
                 <Link to={linkTo} className="z-10">
@@ -127,7 +111,7 @@ function CategoryTiles() {
                     whileHover={{ scale: 1.1 }}
                     className="text-white text-lg md:text-2xl font-semibold p-1 rounded-lg backdrop-blur-[2px]"
                   >
-                    {item.title}
+                    {item.name}
                   </motion.h1>
                 </Link>
               </motion.div>
