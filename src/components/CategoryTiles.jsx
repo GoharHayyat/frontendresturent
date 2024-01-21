@@ -28,7 +28,41 @@ function CategoryTiles() {
 
                 </motion.div>
             )
+
+
         })} */}
+
+
+{/* id:0,
+        name:"Karahi",
+        img:karahi,
+        gridLoc:"row-span-1 row-start-1"
+    },
+    {
+        id:1,
+        name:"Burgers",
+        img:burgers,
+        gridLoc:"row-span-1 row-start-2"
+    },{
+        id:2,
+        name:"Rice",
+        img:Rice,
+        gridLoc:"row-span-2 col-start-2"
+    },{
+        id:3,
+        name:"Pizza",
+        img:Pizza,
+        gridLoc:"col-span-2 row-start-3 md:row-start-1 md:col-start-3"
+    },{
+        id:4,
+        name:"Desserts",
+        img:Desserts,
+        gridLoc:"col-start-1 row-start-4 md:col-start-3 md:row-start-2"
+    },{
+        id:5,
+        name:"Others",
+        img:salad,
+        gridLoc:"col-start-2 row-start-4 md:col-start-4 md:row-start-2" */}
 
 {categoryData.map((item, i) => {
     let linkTo = `menuitems/${item.name}`; // Default link
