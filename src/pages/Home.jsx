@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import BrandTiles from '../components/BrandTiles';
+// import BrandTiles from '../components/BrandTiles';
 import CategoryTiles from '../components/CategoryTiles';
 import ProductList from '../components/ProductList';
 // import Newsletter from '../components/Newsletter';
 import Services from '../components/Services';
 import Slider from "../components/Slider";
-import axios from 'axios';
-import { toast } from 'react-toastify';
+// import axios from 'axios';
+// import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { closeAll } from '../features/Modals';
 
-import food1 from "../assets/food1.png"
-import food11 from "../assets/food1.jpg"
-import food2 from "../assets/food2.png"
+// import food1 from "../assets/food1.png"
+// import food11 from "../assets/food1.jpg"
+// import food2 from "../assets/food2.png"
 
 
 
@@ -98,8 +98,6 @@ function Home() {
     fetchMenuItems();
   }, []);
 
-  // Creating products based on menuItems
-  // Inside your Home component
   useEffect(() => {
     if (menuItems.length > 0 && !trending) {
       const products = menuItems.map((item) => ({

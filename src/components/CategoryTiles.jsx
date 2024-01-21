@@ -1,10 +1,46 @@
 import { motion } from 'framer-motion'
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { categoryData } from "../demidata";
+// import karahi from "..assets/karahi.jpg"
+import a from "../assets/a.jpeg"
 import { useState, useEffect } from "react";
 
 function CategoryTiles() {
+
+
+const [category, setcategory] = useState([]);
+
+useEffect(() => {
+  fetch("http://localhost:4500/getALLproduct")
+    .then((res) => res.json())
+    .then((data) => {
+      setcategory(data);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}, []);
+
+const gridLocations = [
+    "row-span-1 row-start-1",
+    "row-span-1 row-start-2",
+    "row-span-2 col-start-2",
+    "col-span-2 row-start-3 md:row-start-1 md:col-start-3",
+    "col-start-1 row-start-4 md:col-start-3 md:row-start-2",
+    "col-start-2 row-start-4 md:col-start-4 md:row-start-2",
+  ];
+
+
+const mappedData = category.map((apiItem, index) => ({
+    
+    id: apiItem._id,
+    name: index === 5 ? "Other Items" : apiItem.title,
+    img: index === 5 ? a : [`http://localhost:4500/${apiItem.image}`], 
+    // gridLoc: dummyGridLoc,
+    gridLoc: gridLocations[index % gridLocations.length],
+
+  }));
+
   return (
     <>
       <motion.h1
@@ -67,7 +103,7 @@ function CategoryTiles() {
         img:salad,
         gridLoc:"col-start-2 row-start-4 md:col-start-4 md:row-start-2" */}
 
-        {categoryData.map((item, i) => {
+        {mappedData.map((item, i) => {
           let linkTo = `menuitems/${item.name}`; // Default link
 
           // Check if it's the 6th item (index 5 since index starts at 0)
