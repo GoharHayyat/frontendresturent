@@ -7,6 +7,7 @@ function ProductList({ name, data }) {
   // return (
 
   const [isWindowsSize, setIsWindowsSize] = useState(false);
+  console.log("data", data);
 
   useEffect(() => {
     const handleResize = () => {

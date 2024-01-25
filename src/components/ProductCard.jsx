@@ -22,6 +22,9 @@ import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 
 function ProductCard({ product }) {
+  console.log("ProductCard", product);
+  console.log("ProductCheck", product.check);
+
   const dispatch = useDispatch();
   // const [menuItems, setMenuItems] = useState([]);
   const { isUserLoggedIn, favorites, user } = useSelector(
@@ -33,25 +36,6 @@ function ProductCard({ product }) {
   const [isWindowsSize, setIsWindowsSize] = useState(false);
 
   const [open, setOpen] = useState(false);
-
-  // useEffect(() => {
-  //   const fetchMenuItems = async () => {
-  //     try {
-  //       // Updated API endpoint without specifying an ID
-  //       const response = await fetch("http://localhost:4500/menuitemsTrending");
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         setMenuItems(data);
-  //       } else {
-  //         throw new Error("Failed to fetch data");
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   fetchMenuItems();
-  // }, []);
 
   useEffect(() => {
     if (favorites.length !== 0) {
@@ -119,7 +103,6 @@ function ProductCard({ product }) {
     const handleResize = () => {
       // Check the window width here, adjust the value as needed
       setIsWindowsSize(window.innerWidth > 500); // Change 768 to the desired width threshold
-      
     };
 
     // Initial check on mount
@@ -135,10 +118,115 @@ function ProductCard({ product }) {
   }, []);
 
   if (isWindowsSize) {
+    // return (
+    //   <motion.div
+    //     whileHover={{ scale: 1.02 }}
+    //     className=" w-full max-w-[11rem] md:max-w-[14rem] bg-white/95 rounded-lg shadow-lg"
+    //   >
+    //     <motion.img
+    //       onClick={() => setOpen(true)}
+    //       whileHover={{ scale: 0.95 }}
+    //       className="p-3 w-full h-30 md:h-52 rounded-t-lg"
+    //       src={product.imageLinks[0]}
+    //       alt={product.name}
+    //     />
+
+    //     <div className="px-5 pb-5">
+    //       <motion.h5
+    //         onClick={() => setOpen(true)}
+    //         whileHover={{ scale: 0.95 }}
+    //         className="text-base whitespace-nowrap text-ellipsis overflow-hidden md:text-xl font-semibold tracking-tight text-gray-900"
+    //       >
+    //         {product.name}
+    //       </motion.h5>
+
+    //       <Link to={`/category/${product.category}`}>
+    //         <motion.p
+    //           whileHover={{ scale: 0.98 }}
+    //           className="text-xs hover:text-teal-600"
+    //         >
+    //           {product.category}
+    //         </motion.p>
+    //       </Link>
+    //       <Stars rating={product.stars} />
+    //       <div className="flex flex-col md:flex-row md:items-center justify-between">
+    //         <span className="text-lg md:text-lg font-bold text-gray-900">
+    //           Rs.{product.price}
+    //         </span>
+    //         <div className="flex gap-3 self-end md:self-auto">
+    //           <motion.div
+    //             whileTap={{ scale: 0.8 }}
+    //             whileHover={{ scale: 1.1 }}
+    //             onClick={handleFavorite}
+    //           >
+    //             <HeartIcon
+    //               className={`h-7 w-7 text-red-500 hover:text-red-700 ${
+    //                 isFavorite ? "fill-red-500" : ""
+    //               }`}
+    //             />
+    //           </motion.div>
+    //           <motion.div
+    //             whileTap={{ scale: 0.8 }}
+    //             whileHover={{ scale: 1.1 }}
+    //             onClick={handleAddToCart}
+    //           >
+    //             {isAdded ? (
+    //               <CheckCircleIcon className="h-7 w-7 text-green-700 fill-green-400" />
+    //             ) : (
+    //               <ShoppingCartIcon className="h-7 w-7 text-green-700 hover:fill-green-400" />
+    //             )}
+    //           </motion.div>
+    //         </div>
+    //       </div>
+    //     </div>
+    //     <React.Fragment>
+    //       <Modal
+    //         aria-labelledby="modal-title"
+    //         aria-describedby="modal-desc"
+    //         open={open}
+    //         onClose={() => setOpen(false)}
+    //         sx={{
+    //           display: "flex",
+    //           justifyContent: "center",
+    //           alignItems: "center",
+    //         }}
+    //       >
+    //         <Sheet
+    //           variant="outlined"
+    //           sx={{
+    //             maxWidth: 500,
+    //             borderRadius: "md",
+    //             p: 3,
+    //             boxShadow: "lg",
+    //           }}
+    //         >
+    //           <ModalClose variant="plain" sx={{ m: 1 }} />
+    //           <Typography
+    //             component="h2"
+    //             id="modal-title"
+    //             level="h4"
+    //             textColor="inherit"
+    //             fontWeight="lg"
+    //             mb={1}
+    //           >
+    //             Product Detailss:
+    //           </Typography>
+    //           {/* <ProductCardDetails product/> */}
+    //           <ProductCardDetails product={product} />
+
+    //           <Typography
+    //             id="modal-desc"
+    //             textColor="text.tertiary"
+    //           ></Typography>
+    //         </Sheet>
+    //       </Modal>
+    //     </React.Fragment>
+    //   </motion.div>
+    // );
     return (
       <motion.div
         whileHover={{ scale: 1.02 }}
-        className=" w-full max-w-[11rem] md:max-w-[14rem] bg-white/95 rounded-lg shadow-lg"
+        className="w-full max-w-[11rem] md:max-w-[14rem] bg-white/95 rounded-lg shadow-lg"
       >
         <motion.img
           onClick={() => setOpen(true)}
@@ -165,36 +253,38 @@ function ProductCard({ product }) {
               {product.category}
             </motion.p>
           </Link>
-          <Stars rating={product.stars} />
-          <div className="flex flex-col md:flex-row md:items-center justify-between">
-            <span className="text-lg md:text-lg font-bold text-gray-900">
-              Rs.{product.price}
-            </span>
-            <div className="flex gap-3 self-end md:self-auto">
-              <motion.div
-                whileTap={{ scale: 0.8 }}
-                whileHover={{ scale: 1.1 }}
-                onClick={handleFavorite}
-              >
-                <HeartIcon
-                  className={`h-7 w-7 text-red-500 hover:text-red-700 ${
-                    isFavorite ? "fill-red-500" : ""
-                  }`}
-                />
-              </motion.div>
-              <motion.div
-                whileTap={{ scale: 0.8 }}
-                whileHover={{ scale: 1.1 }}
-                onClick={handleAddToCart}
-              >
-                {isAdded ? (
-                  <CheckCircleIcon className="h-7 w-7 text-green-700 fill-green-400" />
-                ) : (
-                  <ShoppingCartIcon className="h-7 w-7 text-green-700 hover:fill-green-400" />
-                )}
-              </motion.div>
-            </div>
-          </div>
+          {product.check ? (
+            <motion.span
+              className="text-base text-red-500"
+              whileHover={{ scale: 0.98 }}
+            >
+              Out of Stock
+            </motion.span>
+          ) : (
+            <>
+              {/* Remove the Stars component */}
+              <span className="text-base text-gray-600">Out of Stock</span>
+              <div className="flex flex-col md:flex-row md:items-center justify-between">
+                <span className="text-lg md:text-lg font-bold text-gray-900">
+                  Rs.{product.price}
+                </span>
+                <div className="flex gap-3 self-end md:self-auto">
+                  {/* Remove the HeartIcon component */}
+                  <motion.div
+                    whileTap={{ scale: 0.8 }}
+                    whileHover={{ scale: 1.1 }}
+                    onClick={handleAddToCart}
+                  >
+                    {isAdded ? (
+                      <CheckCircleIcon className="h-7 w-7 text-green-700 fill-green-400" />
+                    ) : (
+                      <ShoppingCartIcon className="h-7 w-7 text-green-700 hover:fill-green-400" />
+                    )}
+                  </motion.div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
         <React.Fragment>
           <Modal
@@ -226,16 +316,15 @@ function ProductCard({ product }) {
                 fontWeight="lg"
                 mb={1}
               >
-                Product Detailss:
-                
+                Product Details:
               </Typography>
               {/* <ProductCardDetails product/> */}
               <ProductCardDetails product={product} />
 
-              <Typography id="modal-desc" textColor="text.tertiary">
-                
-              </Typography>
-              
+              <Typography
+                id="modal-desc"
+                textColor="text.tertiary"
+              ></Typography>
             </Sheet>
           </Modal>
         </React.Fragment>
@@ -350,8 +439,7 @@ function ProductCard({ product }) {
               </Typography>
               <ProductCardDetails product={product} />
               <Typography id="modal-desc" textColor="text.tertiary">
-              {/* <ProductCardDetails product/> */}
-              
+                {/* <ProductCardDetails product/> */}
               </Typography>
             </Sheet>
           </Modal>
