@@ -262,8 +262,7 @@ function ProductCard({ product }) {
             </motion.span>
           ) : (
             <>
-              {/* Remove the Stars component */}
-              <span className="text-base text-gray-600">Out of Stock</span>
+              <Stars rating={product.stars} />
               <div className="flex flex-col md:flex-row md:items-center justify-between">
                 <span className="text-lg md:text-lg font-bold text-gray-900">
                   Rs.{product.price}
