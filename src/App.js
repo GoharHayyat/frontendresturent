@@ -24,7 +24,7 @@ function App() {
       </Route>
       </Routes>
       <CartMenu/>
-      {/* <ToastContainer/> */}
+      <ToastContainer/>
     </>
   );
 }
