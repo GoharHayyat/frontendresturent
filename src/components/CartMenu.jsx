@@ -18,6 +18,38 @@ function CartMenu() {
     const cart = useSelector((state)=>state.cart.cart);
     const isCartOpen = useSelector((state)=>state.cart.isCartOpen);
 
+    function generateAndStoreRandomString() {
+        // Function to generate a random string of a given length
+        function generateRandomString(length) {
+          const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+          let randomString = '';
+      
+          for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            randomString += characters.charAt(randomIndex);
+          }
+      
+          return randomString;
+        }
+      
+        // Generate a random string with a length of 10 characters (you can adjust the length as needed)
+        const randomString = generateRandomString(10);
+      
+        // Store the random string in localStorage with a key 'randomString'
+        localStorage.setItem('randomString', randomString);
+      
+        console.log('Random string stored in localStorage:', randomString);
+      }
+      
+      // Call the function to generate and store a random string
+      
+
+
+    const remdon = () => {
+        dispatch(setIsCartOpen({}))
+        generateAndStoreRandomString();
+    }
+
     useEffect(()=>{
         const storedCart = localStorage.getItem('cart');
         if (storedCart!==null && storedCart!== undefined && storedCart !==[]) {
@@ -40,9 +72,8 @@ function CartMenu() {
                 {/* Heading and close button */}
                 <div className="flex justify-between items-center mb-4">
                     <motion.h3 whileHover={{scale:1.1}} className="text-2xl font-semibold text-teal-600">Cart ({cart.length})</motion.h3>
-                    <motion.div whileHover={{scale:1.2}} whileTap={{scale:0.9}} onClick={()=>dispatch(setIsCartOpen({}))}>
+                    <motion.div whileHover={{scale:1.2}} whileTap={{scale:0.9}} onClick={()=> remdon() }>
                         <XMarkIcon className="h-9 w-9 text-red-500 hover:text-red-400"/>
-
                     </motion.div>
                 </div>
 

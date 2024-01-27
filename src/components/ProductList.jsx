@@ -9,6 +9,10 @@ function ProductList({ name, data }) {
   const [isWindowsSize, setIsWindowsSize] = useState(false);
   console.log("data", data);
 
+  const handleCheckboxChange = () => {
+    // setIsOutOfStock(!isOutOfStock);
+  };
+
   useEffect(() => {
     const handleResize = () => {
       // Check the window width here, adjust the value as needed
@@ -59,7 +63,7 @@ function ProductList({ name, data }) {
                   i === 4 ? "col-span-2 md:col-span-1" : ""
                 } flex justify-center items-center`}
               >
-                <ProductCard product={item} />
+                <ProductCard key={item.category} product={item} onCheckboxChange={handleCheckboxChange} />
               </motion.div>
             );
           })}

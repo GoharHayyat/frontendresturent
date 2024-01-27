@@ -55,61 +55,12 @@ const mappedData = category.map((apiItem, index) => ({
       </motion.h1>
 
       <div className="my-10 h-[75vh] grid grid-cols-2 grid-rows-4 md:grid-cols-4 md:grid-rows-2">
-        {/* {categoryData.map((item,i)=>{
-            return (
-                <motion.div initial={{opacity:0.5,scaleY:0.2}}  whileInView={{ opacity: 1,scaleY:1,transition:{type:"spring",opacity:{duration:0.6}, delay:i*0.2,duration:0.2,stiffness:80,bounce:0.3}}} viewport={{ once: true }} key={item.id} className={`${item.gridLoc} p-1 w-full h-full`}>
-                    <motion.div whileTap={{scale:0.9}} className="w-full h-full flex justify-center items-center relative overflow-hidden">
-                        <motion.img whileHover={{scale:1.3,transition:{duration:0.6}}}  src={item.img} alt={item.name} className="w-full h-full absolute z-0 object-cover "/>
-                        <Link to={`menuitems/${item.name}`} className='z-10'>
-
-                            <motion.h1 whileTap={{scale:0.9}} whileHover={{scale:1.1}} className="text-white text-lg md:text-2xl font-semibold p-1 rounded-lg backdrop-blur-[2px]">{item.name}</motion.h1>
-                        </Link>
-                    </motion.div>
-
-                </motion.div>
-            )
-
-
-        })} */}
-
-        {/* id:0,
-        name:"Karahi",
-        img:karahi,
-        gridLoc:"row-span-1 row-start-1"
-    },
-    {
-        id:1,
-        name:"Burgers",
-        img:burgers,
-        gridLoc:"row-span-1 row-start-2"
-    },{
-        id:2,
-        name:"Rice",
-        img:Rice,
-        gridLoc:"row-span-2 col-start-2"
-    },{
-        id:3,
-        name:"Pizza",
-        img:Pizza,
-        gridLoc:"col-span-2 row-start-3 md:row-start-1 md:col-start-3"
-    },{
-        id:4,
-        name:"Desserts",
-        img:Desserts,
-        gridLoc:"col-start-1 row-start-4 md:col-start-3 md:row-start-2"
-    },{
-        id:5,
-        name:"Others",
-        img:salad,
-        gridLoc:"col-start-2 row-start-4 md:col-start-4 md:row-start-2" */}
 
         {mappedData.map((item, i) => {
-          let linkTo = `menuitems/${item.name}`; // Default link
+          let linkTo = `menuitems/${item.name}`; 
 
-          // Check if it's the 6th item (index 5 since index starts at 0)
           if (i === 5) {
-            // Change the link for the 6th item
-            linkTo = "/login"; // Replace this with your desired link
+            linkTo = "/login"; 
           }
 
           return (

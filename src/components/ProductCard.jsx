@@ -23,10 +23,9 @@ import Sheet from "@mui/joy/Sheet";
 // import Chip from '@mui/material/Chip';
 import Chip from "@mui/joy/Chip";
 // import { toast } from "react-toastify";
-function ProductCard({ product }) {
-  console.log("ProductCard", product);
-  console.log("ProductCheck", product.check);
+import { FaTimes } from 'react-icons/fa';
 
+function ProductCard({ product  ,onCheckboxChange }) {
   const dispatch = useDispatch();
   // const [menuItems, setMenuItems] = useState([]);
   const { isUserLoggedIn, favorites, user } = useSelector(
@@ -34,10 +33,12 @@ function ProductCard({ product }) {
   );
   const [isFavorite, setIsfavorite] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+  const [isAddedd, setIsAddedd] = useState(false);
 
   const [isWindowsSize, setIsWindowsSize] = useState(false);
 
   const [open, setOpen] = useState(false);
+  // console.log("sd",isOutOfStock)
 
   useEffect(() => {
     if (favorites.length !== 0) {
@@ -47,59 +48,113 @@ function ProductCard({ product }) {
     }
   }, []);
 
+  let x= false;
+
+  const handleCheckboxChange = () => {
+    onCheckboxChange();
+  };
+
+ 
+  
+  
+  
+  // function checkAndLogStringChanges() {
+  //   // Function to retrieve the stored random string from localStorage
+  //   function getStoredRandomString() {
+  //     return localStorage.getItem('randomString') || ''; // Return an empty string if the key is not present
+  //   }
+  
+  //   // Function to log the current random string
+  //   function logCurrentRandomString() {
+  //     const currentRandomString = getStoredRandomString();
+  //     console.log('Current random string:', currentRandomString);
+  //   }
+  
+  //   // Initial log of the random string
+  //   logCurrentRandomString();
+  
+  //   // Set up a setInterval to periodically check for changes in the stored string
+  //   setInterval(function () {
+  //     const storedRandomString = getStoredRandomString();
+  
+  //     // Check if the stored string has changed
+  //     if (storedRandomString !== checkAndLogStringChanges.lastStoredString) {
+  //       // 
+  //       console.log('String changed! New value:', storedRandomString);
+  //       checkAndLogStringChanges.lastStoredString = storedRandomString; // Update the last stored string
+        
+  //     }
+  //   }, 1000); 
+  // }
+  
+  
+  // // Call the function to start checking and logging string changes
+  // checkAndLogStringChanges();
+  
+  
+  
 
   const handleAddToCart = async () => {
-  if (!isAdded) {
-    if (product && product.describtion) {
-      var productDescription = product.describtion;
-      var productObj = JSON.parse(productDescription);
+    if (!isAdded || !isAddedd) {
+      if (product && product.describtion) {
+        var productDescription = product.describtion;
+        var productObj = JSON.parse(productDescription);
 
-      var ingredientsToUpdate = [];
+        var ingredientsToUpdate = [];
 
-      for (var key in productObj) {
-        if (productObj.hasOwnProperty(key)) {
-          var name = key;
-          var quantity = productObj[key];
+        for (var key in productObj) {
+          if (productObj.hasOwnProperty(key)) {
+            var name = key;
+            var quantity = productObj[key];
 
-          // Store name and quantity in the array
-          ingredientsToUpdate.push({ name, quantity });
+            // Store name and quantity in the array
+            ingredientsToUpdate.push({ name, quantity });
+          }
         }
-      }
 
-      const response = await fetch(
-        "http://localhost:4500/ingredients/updatetempstock",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(ingredientsToUpdate),
+        const response = await fetch(
+          "http://localhost:4500/ingredients/updatetempstock",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(ingredientsToUpdate),
+          }
+        );
+
+        // Handle the API response
+        if (response.ok) {
+          const responseData = await response.json();
+
+          // Additional logic to execute when the response is successful
+          console.log("API call successful:", responseData);
+
+          // Dispatch the addToCart action and update the state
+
+          dispatch(addToCart({ item: { ...product, count: 1 } }));
+          setIsAdded(true);
+          setTimeout(() => {
+            setIsAdded(false);
+          }, 2500);
+          // onCheckboxChange();
+          handleCheckboxChange();
+        } else {
+          // Handle the case when the response status is not OK
+          console.error("API call failed. Status:", response.status);
+          // alert("ds")
+          // onCheckboxChange();
+          setIsAddedd(true);
+          setTimeout(() => {
+            setIsAddedd(false);
+          }, 2500);
+          handleCheckboxChange();
         }
-      );
-
-      // Handle the API response
-      if (response.ok) {
-        const responseData = await response.json();
-
-        // Additional logic to execute when the response is successful
-        console.log("API call successful:", responseData);
-
-        // Dispatch the addToCart action and update the state
-        dispatch(addToCart({ item: { ...product, count: 1 } }));
-        setIsAdded(true);
-        setTimeout(() => {
-          setIsAdded(false);
-        }, 2500);
       } else {
-        // Handle the case when the response status is not OK
-        console.error("API call failed. Status:", response.status);
+        console.error("Product or product description is undefined");
       }
-    } else {
-      console.error("Product or product description is undefined");
     }
-  }
-};
-
+  };
 
   const handleFavorite = async () => {
     // if (!isUserLoggedIn) {
@@ -228,12 +283,15 @@ function ProductCard({ product }) {
                 whileHover={{ scale: 1.1 }}
                 onClick={handleAddToCart}
               >
-                {product.check ? (
+              
+                 {product.check ? (
                   <Chip size="lg" variant="solid" color="danger">
                     Out of stock
                   </Chip>
                 ) : isAdded ? (
                   <CheckCircleIcon className="h-7 w-7 text-green-700 fill-green-400" />
+                ) : isAddedd ? (
+                  <FaTimes className="h-7 w-7 text-red-700 fill-red-400" />
                 ) : (
                   <ShoppingCartIcon className="h-7 w-7 text-green-700 hover:fill-green-400" />
                 )}
@@ -353,17 +411,14 @@ function ProductCard({ product }) {
                 whileHover={{ scale: 1.1 }}
                 onClick={handleAddToCart}
               >
-                {product.check ? null : // </Chip> //   Out of stock // <Chip size="lg" variant="solid" color="danger">
-                isAdded ? (
+                {product.check ? null : isAdded ? ( // </Chip> //   Out of stock // <Chip size="lg" variant="solid" color="danger">
                   <CheckCircleIcon className="h-7 w-7 text-green-700 fill-green-400" />
+                  // <CheckCircleIcon className="h-7 w-7 text-red-700 fill-red-400" />
                 ) : (
                   <ShoppingCartIcon className="h-7 w-7 text-green-700 hover:fill-green-400" />
                 )}
-                {/* {isAdded ? (
-                  <CheckCircleIcon className="h-7 w-7 text-green-700 fill-green-400" />
-                ) : (
-                  <ShoppingCartIcon className="h-7 w-7 text-green-700 hover:fill-green-400" />
-                )} */}
+
+               
               </motion.div>
             </div>
           </div>
