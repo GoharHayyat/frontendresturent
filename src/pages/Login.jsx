@@ -86,13 +86,16 @@ function Login() {
 
             const { data } = await axios.post(`http://192.168.125.141:4500/login`, user, config);
             localStorage.setItem("auth-token", data.token);
-            localStorage.setItem("favorites", JSON.stringify(data.favorites))
+            // localStorage.setItem("favorites", JSON.stringify(data.favorites))
             setSpan("Successfully Logged Up!!");
+            // console.log(data)/// save this in local storage
+            localStorage.setItem("loginData", JSON.stringify(data));
+
             setLoginSuccessFull(true)
             setTimeout(() => {
                 setSpan("");
                 dispatch(login(data.token))
-                dispatch(manageFavorite(data.favorites))
+                // dispatch(manageFavorite(data.favorites))
                 toast("Login Successfull!")
             }, 3000)
 

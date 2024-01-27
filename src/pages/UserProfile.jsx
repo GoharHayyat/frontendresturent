@@ -13,52 +13,46 @@ import { closeAll } from '../features/Modals';
 
 function UserProfile() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const {isUserLoggedIn,user} = useSelector((state)=> state.user);
-  const [currUser,setCurrUser] = useState(null)
-  const [favorites,setFavorites] = useState([])
-  
+const navigate = useNavigate();
+const [currUser, setCurrUser] = useState(null);
+const [favorites, setFavorites] = useState([]);
+const [isUserLoggedIn, setIsUserLoggedIn] = useState([]);
 
-  useEffect(()=>{
-    dispatch(closeAll())
-  },[])
-  useEffect(()=>{
-    if (!isUserLoggedIn) {
-      navigate("/")
+useEffect(() => {
+  dispatch(closeAll());
+}, []);
+
+useEffect(() => {
+  const storedData = localStorage.getItem("loginData");
+
+  if (storedData) {
+    const parsedData = JSON.parse(storedData);
+
+    // Check if parsedData has the expected structure
+    if (parsedData && parsedData.token) {
+      setCurrUser(parsedData);
+      setIsUserLoggedIn(true);
+    } else {
+      console.log("Invalid stored data structure");
     }
-  })
-  useEffect(()=>{
-    if (!isUserLoggedIn) {
-      navigate("/")
-    }else{
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization:`Bearer ${user}`
-        }
-      }
-      console.log(user, "THIS THE USER")
-      axios.get(`${process.env.REACT_APP_API_URL}profile`, config).then((val)=>{
-        console.log("VAL  ",val)
-        if (val.data.success) {
-          setCurrUser(val.data.msg)
-          setFavorites(val.data.favorites)
-        }
-        else{
-          toast("User Auth Failed. Login Again");
-          handleLogout()
-        }
-      }).catch((error=>{
-        console.log(error)
-          toast("User Auth Failed. Login Again");
-          handleLogout()
-      }))
-    }
-  },[])
+  } else {
+    console.log("No stored data found in local storage.");
+    setIsUserLoggedIn(false);
+  }
+}, []);
+
+// Redirect if the user is not logged in
+if (!isUserLoggedIn) {
+  setIsUserLoggedIn(false);
+  navigate("/");
+}
+
   const handleLogout = ()=>{
     localStorage.removeItem("auth-token")
     localStorage.removeItem("favorites")
+    localStorage.removeItem("loginData")
     
+    navigate("/")
     dispatch(logout({}));
     
   }
@@ -81,9 +75,9 @@ function UserProfile() {
         </div>
         <div className="flex-[0.50] text-white flex flex-col items-center md:items-start gap-4 font-medium text=lg mt-5 mb-5 md:mb-0 md:mt-10">
           <h1 className="font-bold text-xl md:text-2xl py-3 md:py-10">{currUser.name}</h1>
-          <h1>Email : {currUser.email}</h1>
-          <h1>Phone # {currUser.phone}</h1>
-          <h1>Address: {currUser.address}</h1>
+          <h1>Email : {currUser.favorites.email}</h1>
+          <h1>Phone # {currUser.favorites.phone}</h1>
+          <h1>Address: {currUser.favorites.address}</h1>
 
         </div>
         <div className="flex-[0.20] flex justify-center items-start pt-4 gap-4">
@@ -111,12 +105,12 @@ function UserProfile() {
           </div>
         )}
       </div>
-      <div className="px-10 bg-slate-100/90 rounded py-3">
+      {/* <div className="px-10 bg-slate-100/90 rounded py-3">
         <h1 className="text-2xl font-semibold">Your Products {">"}</h1>
         <hr />
         <div className="h-24 text-lg font-medium flex justify-center items-center">No Items to sell</div>
         <hr />
-      </div>
+      </div> */}
       <div className="px-10 bg-slate-100/90 rounded py-3">
         <h1 className="text-2xl font-semibold">Orders {">"}</h1>
         <hr />

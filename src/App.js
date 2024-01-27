@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import ProductsListPage from "./pages/ProductsListPage";
 import Checkout from "./pages/Checkout";
 import ForgotPassword from "./pages/ForgotPassword";
+import UserProfile from "./pages/UserProfile"
 function App() {
   return (
     <>
@@ -21,6 +22,7 @@ function App() {
       <Route path="menuitems/:category" element={<ProductsListPage/>}/>
       <Route path="checkout" element={<Checkout/>}/>
       <Route path="forgotpassword" element={<ForgotPassword/>}/>
+      <Route path="profile" element={<UserProfile/>}/>
       </Route>
       </Routes>
       <CartMenu/>

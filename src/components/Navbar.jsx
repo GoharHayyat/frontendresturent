@@ -1,19 +1,45 @@
-
+import { useEffect, useState } from 'react';
 import { MagnifyingGlassIcon, ShoppingCartIcon, UserIcon, Bars3Icon } from '@heroicons/react/24/outline'
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setIsCartOpen } from '../features/Cart';
 import Search from './Search';
+import { useNavigate } from 'react-router-dom';
 import { closeAll,setMenuBar, setSearchModal } from '../features/Modals';
 
 
 function Navbar() {
     const dispatch = useDispatch();
     const {search,menu} = useSelector(state=>state.modals)
-    const isUserLoggedIn = useSelector((state) => state.user.isUserLoggedIn);
+    // const isUserLoggedIn = useSelector((state) => state.user.isUserLoggedIn);
+    const [isUserLoggedIn, setIsUserLoggedIn] = useState([]);
     const cart = useSelector((state) => state.cart.cart);
     const isCartOpen = useSelector((state) => state.cart.isCartOpen);
+    // const navigate = useNavigate();
+
+    const checkitt = ()=>{
+        const storedData = localStorage.getItem("loginData");
+      
+        if (storedData) {
+          const parsedData = JSON.parse(storedData);
+          if (parsedData && parsedData.token) {
+            
+            window.location.href = '/profile';
+          } else {
+            console.log("Invalid stored data structure");
+            window.location.href = '/login';
+          }
+        } else {
+          console.log("No stored data found in local storage.");
+        //   setIsUserLoggedIn(false);
+        window.location.href = '/login';
+        }
+    }
+
+      const checkit = ()=>{
+        checkitt();
+      }
 
     return (
         <>
@@ -52,10 +78,13 @@ function Navbar() {
                         </div>
 
                     </motion.div>
-                    <motion.div whileTap={{ scale: 0.8 }}>
-                        <Link to={isUserLoggedIn ? "/profile" : "/login"}>
+                    <motion.div whileTap={{ scale: 0.8 }} onClick={() => checkit() }>
+                        {/* <Link to={isUserLoggedIn ? "/profile" : "/login"}>
                             <UserIcon className="h-6 w-6 hover:text-sky-600 duration-200" />
-                        </Link>
+                        </Link> */}
+                        
+                            <UserIcon className="h-6 w-6 hover:text-sky-600 duration-200" />
+                       
                     </motion.div>
                     {/* className=" md:hidden" */}
                     {/* <motion.div whileTap={{ scale: 0.8 }}   onClick={() => { search && dispatch(setSearchModal(false)); dispatch(setMenuBar(!menu)); }}>
