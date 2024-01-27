@@ -113,7 +113,7 @@ function ProductCard({ product  ,onCheckboxChange }) {
         }
 
         const response = await fetch(
-          "http://localhost:4500/ingredients/updatetempstock",
+          "http://192.168.125.141:4500/ingredients/updatetempstock",
           {
             method: "PUT",
             headers: {

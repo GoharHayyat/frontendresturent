@@ -17,7 +17,7 @@ function Login() {
     const isUserLoggedIn = useSelector((state) => state.user.isUserLoggedIn);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // const [span,setSpan] = useState("");
+    const [span,setSpan] = useState("");
     const [values, setValues] = useState({
         email: "",
         password: "",
@@ -84,13 +84,13 @@ function Login() {
 
         try {
 
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}auth/login`, user, config);
+            const { data } = await axios.post(`http://192.168.125.141:4500/login`, user, config);
             localStorage.setItem("auth-token", data.token);
             localStorage.setItem("favorites", JSON.stringify(data.favorites))
-            // setSpan("Successfully Logged Up!!");
+            setSpan("Successfully Logged Up!!");
             setLoginSuccessFull(true)
             setTimeout(() => {
-                // setSpan("");
+                setSpan("");
                 dispatch(login(data.token))
                 dispatch(manageFavorite(data.favorites))
                 toast("Login Successfull!")
@@ -98,11 +98,11 @@ function Login() {
 
         } catch (error) {
 
-            // setSpan(error.response.data.error);
+            setSpan(error.response.data.error);
             setLoginSuccessFull(false)
 
             setTimeout(() => {
-                // setSpan("");
+                setSpan("");
                 setLoginSuccessFull(null)
                 toast("Login unsuccessfull!")
 
@@ -120,7 +120,7 @@ function Login() {
                 {loginSuccessfull === null ? (<motion.div variants={variant} initial="initial" animate="animate" className="px-4 py-8 w-[90%]  md:w-[35%] bg-slate-100 rounded-xl z-40 flex flex-col items-center">
                     <form onSubmit={handleSubmit} className="text-center px-3 md:px-10 h-full w-full overflow-hidden flex flex-col justify-center items-center">
                         <h1 className="text-xl md:text-2xl font-semibold mb-4">Login</h1>
-                        {/* {span && <span className={`mb-4 rounded-lg w-full text-white ${span==="Successfully Logged Up!!"?"bg-teal-600":"bg-red-600"}`}>{span}</span>} */}
+                        {span && <span className={`mb-4 rounded-lg w-full text-white ${span==="Successfully Logged Up!!"?"bg-teal-600":"bg-red-600"}`}>{span}</span>}
 
                         {inputs.map((input) => (
                             <FormInput

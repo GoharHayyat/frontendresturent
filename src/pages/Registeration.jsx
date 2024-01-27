@@ -24,7 +24,7 @@ function Registeration() {
     const navigate = useNavigate();
     const dispatch = useDispatch()
     const [signUp, setSignUp] = useState(null)
-
+    const [span,setSpan] = useState("")
     useEffect(() => {
         dispatch(closeAll())
     }, [])
@@ -116,7 +116,7 @@ function Registeration() {
             name: values.fullname,
             email: values.email,
             password: values.password,
-            // isAdmin: false,
+            isAdmin: false,
             // isVendor: false,
             // isSeller: false,
             address: values.address,
@@ -129,28 +129,28 @@ function Registeration() {
             }
         }
         console.log(user)
-        // try {
+        try {
 
-        //     await axios.post(`${process.env.REACT_APP_API_URL}auth/register`, user, config);
-        //     //localStorage.setItem("auth-token",data.token);
-        //     // setSpan("Successfully Signed Up!!");
-        //     setSignUp(true)
-        //     setTimeout(() => {
-        //         // setSpan("");
-        //         navigate("/login")
-        //         toast("Sign Up Successfull!")
-        //     }, 3000)
+            const {data} = await axios.post(`http://192.168.125.141:4500/register`, user, config);
+            localStorage.setItem("auth-token",data.token);
+            setSpan("Successfully Signed Up!!");
+            setSignUp(true)
+            setTimeout(() => {
+                setSpan("");
+                navigate("/login")
+                toast("Sign Up Successfull!")
+            }, 3000)
 
-        // } catch (error) {
-        //     setSignUp(false)
-        //     // setSpan(error.response.data.error);
-        //     setTimeout(() => {
-        //         setSignUp(null)
-        //         // setSpan("");
-        //         toast("Sign Up Unsuccessfull!")
+        } catch (error) {
+            setSignUp(false)
+            setSpan(error.response.data.error);
+            setTimeout(() => {
+                setSignUp(null)
+                setSpan("");
+                toast("Sign Up Unsuccessfull!")
 
-        //     }, 5000)
-        // }
+            }, 5000)
+        }
     };
 
     const onChange = (e) => {
@@ -163,7 +163,7 @@ function Registeration() {
                 {signUp === null ? (<motion.div variants={variant} initial="initial" animate="animate" className="px-4 py-8 w-[90%]  md:w-[35%] bg-slate-100 rounded-xl z-40 flex flex-col items-center">
                     <form onSubmit={handleSubmit} className="text-center px-3 md:px-10 h-full w-full overflow-hidden flex flex-col justify-center items-center">
                         <h1 className="text-xl md:text-2xl font-semibold mb-4">Sign Up</h1>
-                        {/* {span && <span className={`mb-4 rounded-lg w-full text-white ${span==="Successfully Signed Up!!"?"bg-teal-600":"bg-red-600"}`}>{span}</span>} */}
+                        {span && <span className={`mb-4 rounded-lg w-full text-white ${span==="Successfully Signed Up!!"?"bg-teal-600":"bg-red-600"}`}>{span}</span>}
                         {inputs.map((input) => (
                             <FormInput
                                 key={input.id}

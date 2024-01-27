@@ -35,7 +35,7 @@ function Home() {
     const fetchMenuItems = async () => {
       try {
         // Updated API endpoint without specifying an ID
-        const response = await fetch("http://localhost:4500/menuitemsTrending");
+        const response = await fetch("http://192.168.125.141:4500/menuitemsTrending");
         if (response.ok) {
           const data = await response.json();
           setMenuItems(data);
@@ -57,7 +57,7 @@ function Home() {
   //   price: item.Price, // Define the price as needed
   //   check: item.check,
   //   stars: 4.0, // Set the stars or rating based on your system
-  //   imageLinks: [`http://localhost:4500/${item.image}`],
+  //   imageLinks: [`http://192.168.125.141:4500/${item.image}`],
   //   isFavorite: false,
   //   isAdded: false,
   //   describtion: item.describtion
@@ -72,7 +72,7 @@ function Home() {
         price: item.Price,
         check: item.check,
         stars: 4.0,
-        imageLinks: [`http://localhost:4500/${item.image}`],
+        imageLinks: [`http://192.168.125.141:4500/${item.image}`],
         isFavorite: false,
         isAdded: false,
         describtion: item.describtion
