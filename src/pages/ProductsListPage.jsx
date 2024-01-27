@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import ProductCard from '../components/ProductCard'
 import {  useLocation, useParams } from 'react-router-dom'
-import axios from 'axios'
-import { toast } from 'react-toastify'
-import { useDispatch } from 'react-redux'
-import { closeAll } from '../features/Modals'
+// import axios from 'axios'
+// import { ToastContainer, toast } from "react-toastify";
 
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux'
+// import { closeAll } from '../features/Modals'
+
+// import { Link } from 'react-router-dom';
 
 import { motion } from 'framer-motion';
 
 // import Checkbox from '@mui/joy/Checkbox';
 // import Stars from './Stars';
-import { HeartIcon,ShoppingCartIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+// import { HeartIcon,ShoppingCartIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 
 function ProductsListPage() {
   const { category, searchQuery,brand } = useParams()
@@ -101,6 +102,7 @@ function ProductsListPage() {
   if (isWindowsSize) {
     return (
       <div className="py-6 px-3 md:px-0">
+        {/* <ToastContainer/> */}
         <div className="flex w-full gap-5 flex-col md:flex-row">
           <div className="flex-[0.15] flex flex-col items-center">
             <button className="bg-black/70 text-white p-2 rounded-lg w-[80%] hover:bg-black ">
@@ -183,7 +185,7 @@ function ProductsListPage() {
                       boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.1)",
                     }} // Adjust card width
                   >
-                    <ProductCard product={item} />
+                    <ProductCard  product={item} onCheckboxChange={handleCheckboxChange}/>
                   </motion.div>
                 );
               })}

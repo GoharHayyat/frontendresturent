@@ -31,7 +31,7 @@ function ProductCard({ product  ,onCheckboxChange }) {
   const { isUserLoggedIn, favorites, user } = useSelector(
     (state) => state.user
   );
-  const [isFavorite, setIsfavorite] = useState(false);
+  const [isFavorite, setIsfavorite] = useState(product.isFavorite);
   const [isAdded, setIsAdded] = useState(false);
   const [isAddedd, setIsAddedd] = useState(false);
 
@@ -58,39 +58,7 @@ function ProductCard({ product  ,onCheckboxChange }) {
   
   
   
-  // function checkAndLogStringChanges() {
-  //   // Function to retrieve the stored random string from localStorage
-  //   function getStoredRandomString() {
-  //     return localStorage.getItem('randomString') || ''; // Return an empty string if the key is not present
-  //   }
-  
-  //   // Function to log the current random string
-  //   function logCurrentRandomString() {
-  //     const currentRandomString = getStoredRandomString();
-  //     console.log('Current random string:', currentRandomString);
-  //   }
-  
-  //   // Initial log of the random string
-  //   logCurrentRandomString();
-  
-  //   // Set up a setInterval to periodically check for changes in the stored string
-  //   setInterval(function () {
-  //     const storedRandomString = getStoredRandomString();
-  
-  //     // Check if the stored string has changed
-  //     if (storedRandomString !== checkAndLogStringChanges.lastStoredString) {
-  //       // 
-  //       console.log('String changed! New value:', storedRandomString);
-  //       checkAndLogStringChanges.lastStoredString = storedRandomString; // Update the last stored string
-        
-  //     }
-  //   }, 1000); 
-  // }
-  
-  
-  // // Call the function to start checking and logging string changes
-  // checkAndLogStringChanges();
-  
+
   
   
 
@@ -406,19 +374,23 @@ function ProductCard({ product  ,onCheckboxChange }) {
           </div>
           <div style={{ display: "inline-block" }}>
             <div>
-              <motion.div
+            <motion.div
                 whileTap={{ scale: 0.8 }}
                 whileHover={{ scale: 1.1 }}
                 onClick={handleAddToCart}
               >
-                {product.check ? null : isAdded ? ( // </Chip> //   Out of stock // <Chip size="lg" variant="solid" color="danger">
+              
+                 {product.check ? (
+                  <Chip size="lg" variant="solid" color="danger">
+                    Out of stock
+                  </Chip>
+                ) : isAdded ? (
                   <CheckCircleIcon className="h-7 w-7 text-green-700 fill-green-400" />
-                  // <CheckCircleIcon className="h-7 w-7 text-red-700 fill-red-400" />
+                ) : isAddedd ? (
+                  <FaTimes className="h-7 w-7 text-red-700 fill-red-400" />
                 ) : (
                   <ShoppingCartIcon className="h-7 w-7 text-green-700 hover:fill-green-400" />
                 )}
-
-               
               </motion.div>
             </div>
           </div>

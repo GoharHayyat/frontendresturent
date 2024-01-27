@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from 'react'
-// import BrandTiles from '../components/BrandTiles';
 import CategoryTiles from '../components/CategoryTiles';
 import ProductList from '../components/ProductList';
-// import Newsletter from '../components/Newsletter';
 import Services from '../components/Services';
 import Slider from "../components/Slider";
-// import axios from 'axios';
-// import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { closeAll } from '../features/Modals';
-import ProductCard from '../components/ProductCard';
-// import food1 from "../assets/food1.png"
-// import food11 from "../assets/food1.jpg"
-// import food2 from "../assets/food2.png"
+// import 'react-toastify/dist/ReactToastify.css';
 
 
 

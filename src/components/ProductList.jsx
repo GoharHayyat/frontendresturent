@@ -104,7 +104,7 @@ function ProductList({ name, data }) {
                 boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.1)",
               }} // Adjust card width
             >
-              <ProductCard product={item} />
+              <ProductCard key={item.category} product={item} onCheckboxChange={handleCheckboxChange} />
             </motion.div>
           );
         })}

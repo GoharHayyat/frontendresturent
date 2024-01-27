@@ -5,6 +5,7 @@ import CartMenu from "./components/CartMenu";
 import Registeration from "./pages/Registeration";
 import Login from "./pages/Login";
 import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import Home from "./pages/Home";
 import ProductsListPage from "./pages/ProductsListPage";
 import Checkout from "./pages/Checkout";
