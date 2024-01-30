@@ -131,7 +131,7 @@ function Registeration() {
         console.log(user)
         try {
 
-            const {data} = await axios.post(`http://192.168.125.141:4500/register`, user, config);
+            const {data} = await axios.post(`http://localhost:4500/register`, user, config);
             localStorage.setItem("auth-token",data.token);
             setSpan("Successfully Signed Up!!");
             setSignUp(true)

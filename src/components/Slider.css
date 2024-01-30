@@ -11,3 +11,12 @@
       transform: rotate(360deg);
     }
   }
+
+  /* Add this to your existing styles or create a new CSS file */
+@media (max-width: 768px) {
+  /* Adjust the max-width value based on your design */
+  #info {
+    padding-top: 2.5rem; /* Add padding to push the title down in mobile view */
+  }
+
+}

@@ -9,7 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../features/Cart";
 import { Link } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import { manageFavorite } from "../features/User";
 import axios from "axios";
 // import "./ProductCard.css";
@@ -28,7 +28,7 @@ import { FaTimes } from 'react-icons/fa';
 function ProductCard({ product  ,onCheckboxChange }) {
   const dispatch = useDispatch();
   // const [menuItems, setMenuItems] = useState([]);
-  const { isUserLoggedIn, favorites, user } = useSelector(
+  const {  favorites, user } = useSelector(
     (state) => state.user
   );
   const [isFavorite, setIsfavorite] = useState(product.isFavorite);
@@ -38,6 +38,28 @@ function ProductCard({ product  ,onCheckboxChange }) {
   const [isWindowsSize, setIsWindowsSize] = useState(false);
 
   const [open, setOpen] = useState(false);
+
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState([]);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("loginData");
+  
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+  
+      // Check if parsedData has the expected structure
+      if (parsedData && parsedData.token) {
+        // setCurrUser(parsedData);?
+        setIsUserLoggedIn(true);
+      } else {
+        setIsUserLoggedIn(false);
+        console.log("Invalid stored data structure");
+      }
+    } else {
+      console.log("No stored data found in local storage.");
+      setIsUserLoggedIn(false);
+    }
+  }, []);
   // console.log("sd",isOutOfStock)
 
   useEffect(() => {
@@ -81,7 +103,7 @@ function ProductCard({ product  ,onCheckboxChange }) {
         }
 
         const response = await fetch(
-          "http://192.168.125.141:4500/ingredients/updatetempstock",
+          "http://localhost:4500/ingredients/updatetempstock",
           {
             method: "PUT",
             headers: {
@@ -125,9 +147,9 @@ function ProductCard({ product  ,onCheckboxChange }) {
   };
 
   const handleFavorite = async () => {
-    // if (!isUserLoggedIn) {
-    //   alert("Please Login First!!");
-    // } else {
+    if (!isUserLoggedIn) {
+      toast("Please Login First!!");
+    } else {
     let newFavs = [];
     if (isFavorite) {
       newFavs = favorites.filter((fav) => {
@@ -137,6 +159,7 @@ function ProductCard({ product  ,onCheckboxChange }) {
       newFavs = [...favorites];
       newFavs.push(product._id);
     }
+    
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -146,7 +169,7 @@ function ProductCard({ product  ,onCheckboxChange }) {
 
     axios
       .post(
-        `${process.env.REACT_APP_API_URL}manageFavorite`,
+        `http://localhost:4500manageFavorite`,
         { favorites: newFavs },
         config
       )
@@ -166,7 +189,7 @@ function ProductCard({ product  ,onCheckboxChange }) {
         setIsfavorite(!isFavorite);
         // alert("Favorite not Added");
       });
-    // }
+    }
   };
 
   useEffect(() => {

@@ -35,7 +35,7 @@ function CartTile({ item }) {
         }
   
         const response = await fetch(
-          "http://192.168.125.141:4500/ingredients/cartincreasebutton",
+          "http://localhost:4500/ingredients/cartincreasebutton",
           {
             method: "PUT",
             headers: {
@@ -102,7 +102,7 @@ function CartTile({ item }) {
         }
   
         const response = await fetch(
-          "http://192.168.125.141:4500/ingredients/cartincreasebutton",
+          "http://localhost:4500/ingredients/cartincreasebutton",
           {
             method: "PUT",
             headers: {
@@ -160,7 +160,7 @@ function CartTile({ item }) {
         }
   
         const response = await fetch(
-          "http://192.168.125.141:4500/ingredients/updatetempstock",
+          "http://localhost:4500/ingredients/updatetempstock",
           {
             method: "PUT",
             headers: {
