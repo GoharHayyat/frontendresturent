@@ -11,10 +11,11 @@ function CategoryTiles() {
 const [category, setcategory] = useState([]);
 
 useEffect(() => {
-  fetch("http://localhost:4500/getALLproduct")
+  fetch("http://192.168.18.18:4500/getALLproduct")
     .then((res) => res.json())
     .then((data) => {
-      setcategory(data);
+      setcategory(data.slice(0, 6));
+      // setcategory(data);
     })
     .catch((err) => {
       console.error(err);
@@ -35,7 +36,7 @@ const mappedData = category.map((apiItem, index) => ({
     
     id: apiItem._id,
     name: index === 5 ? "Other Items" : apiItem.title,
-    img: index === 5 ? a : [`http://localhost:4500/${apiItem.image}`], 
+    img: index === 5 ? a : [`http://192.168.18.18:4500/${apiItem.image}`], 
     // gridLoc: dummyGridLoc,
     gridLoc: gridLocations[index % gridLocations.length],
 
@@ -60,7 +61,7 @@ const mappedData = category.map((apiItem, index) => ({
           let linkTo = `menuitems/${item.name}`; 
 
           if (i === 5) {
-            linkTo = "/login"; 
+            linkTo = "/allcategory"; 
           }
 
           return (
@@ -82,6 +83,8 @@ const mappedData = category.map((apiItem, index) => ({
               viewport={{ once: true }}
               className={`${item.gridLoc} p-1 w-full h-full`}
             >
+
+<Link to={linkTo} className="z-10">
               <motion.div
                 whileTap={{ scale: 0.9 }}
                 className="w-full h-full flex justify-center items-center relative overflow-hidden"
@@ -92,7 +95,7 @@ const mappedData = category.map((apiItem, index) => ({
                   alt={item.name}
                   className="w-full h-full absolute z-0 object-cover"
                 />
-                <Link to={linkTo} className="z-10">
+                
                   <motion.h1
                     whileTap={{ scale: 0.9 }}
                     whileHover={{ scale: 1.1 }}
@@ -100,9 +103,11 @@ const mappedData = category.map((apiItem, index) => ({
                   >
                     {item.name}
                   </motion.h1>
-                </Link>
+               
               </motion.div>
+              </Link>
             </motion.div>
+           
           );
         })}
       </div>

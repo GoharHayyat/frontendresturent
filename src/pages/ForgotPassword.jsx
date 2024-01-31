@@ -61,7 +61,7 @@ function ForgotPassword() {
         }
         try {
             
-            await axios.post(`http://localhost:4500auth/forgotpassword`,user,config);
+            await axios.post(`http://192.168.18.18:4500auth/forgotpassword`,user,config);
             setSpan("Email Sent!!");
             setTimeout(()=>{
                 setSpan("");

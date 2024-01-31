@@ -11,6 +11,7 @@ import ProductsListPage from "./pages/ProductsListPage";
 import Checkout from "./pages/Checkout";
 import ForgotPassword from "./pages/ForgotPassword";
 import UserProfile from "./pages/UserProfile"
+import AllCategory from "./pages/AllCategory";
 function App() {
   return (
     <>
@@ -24,6 +25,8 @@ function App() {
       <Route path="checkout" element={<Checkout/>}/>
       <Route path="forgotpassword" element={<ForgotPassword/>}/>
       <Route path="profile" element={<UserProfile/>}/>
+      <Route path="allcategory" element={<AllCategory/>}/>
+      <Route path="allcategory/menuitems/:category" element={<ProductsListPage/>}/>
       </Route>
       </Routes>
       <CartMenu/>
