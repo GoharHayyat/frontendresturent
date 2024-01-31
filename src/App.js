@@ -12,6 +12,7 @@ import Checkout from "./pages/Checkout";
 import ForgotPassword from "./pages/ForgotPassword";
 import UserProfile from "./pages/UserProfile"
 import AllCategory from "./pages/AllCategory";
+import ResetPassword from "./pages/ResetPassword";
 function App() {
   return (
     <>
@@ -24,6 +25,7 @@ function App() {
       <Route path="menuitems/:category" element={<ProductsListPage/>}/>
       <Route path="checkout" element={<Checkout/>}/>
       <Route path="forgotpassword" element={<ForgotPassword/>}/>
+      <Route path="resetpassword/:resetToken" element={<ResetPassword/>}/>
       <Route path="profile" element={<UserProfile/>}/>
       <Route path="allcategory" element={<AllCategory/>}/>
       <Route path="allcategory/menuitems/:category" element={<ProductsListPage/>}/>

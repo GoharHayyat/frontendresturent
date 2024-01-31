@@ -53,6 +53,8 @@ function ForgotPassword() {
         const user = {
             email: values.email,
         }
+
+        console.log(user);
     
         const config = {
             header:{
@@ -61,7 +63,7 @@ function ForgotPassword() {
         }
         try {
             
-            await axios.post(`http://localhost:4500auth/forgotpassword`,user,config);
+            await axios.post(`http://localhost:4500/forgotpassword`,user,config);
             setSpan("Email Sent!!");
             setTimeout(()=>{
                 setSpan("");
