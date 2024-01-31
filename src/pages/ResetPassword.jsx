@@ -80,11 +80,14 @@ function ResetPassword({match}) {
             },5000)
             
         } catch (error) {
-            
-            setSpan(error.response.data.error);
-            setTimeout(()=>{
+            if (error.response && error.response.data && error.response.data.error) {
+                setSpan(error.response.data.error);
+            } else {
+                setSpan("An unexpected error occurred");
+            }
+            setTimeout(() => {
                 setSpan("");
-            },5000)
+            }, 5000);
         }
     };
 
