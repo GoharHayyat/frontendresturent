@@ -45,7 +45,7 @@ function ProductsListPage() {
   setInterval(checkForChanges, 1000);
 
   useEffect(() => {
-    fetch(`http://192.168.18.18:4500/menuitems/${category}`)
+    fetch(`http://localhost:4500/menuitems/${category}`)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
@@ -64,7 +64,7 @@ function ProductsListPage() {
     price: item.Price, // Define the price as needed
     check: item.check,
     stars: 4.0, // Set the stars or rating based on your system
-    imageLinks: [`http://192.168.18.18:4500/${item.image}`],
+    imageLinks: [`http://localhost:4500/${item.image}`],
     isFavorite: false,
     isAdded: false,
     describtion: item.describtion

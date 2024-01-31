@@ -68,7 +68,7 @@ function ProductDisplay() {
               }
             }
 
-          axios.post(`http://192.168.18.18:4500manageFavorite`,{favorites:newFavs},config).then(val=>{
+          axios.post(`http://localhost:4500manageFavorite`,{favorites:newFavs},config).then(val=>{
               console.log("VAL  ",val)
               if (val.data.success) {
                   setIsfavorite(!isFavorite)
@@ -93,7 +93,7 @@ function ProductDisplay() {
       }
     }
     if (id !== undefined) {
-      axios.post(`http://192.168.18.18:4500productById`, { prodId: id }, config).then(res => {
+      axios.post(`http://localhost:4500productById`, { prodId: id }, config).then(res => {
         console.log(res,"PRODUCT")
         if (res.data.success && res.data.product!==null) {
           setProduct(res.data.product)

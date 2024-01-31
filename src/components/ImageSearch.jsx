@@ -35,7 +35,7 @@ function ImageSearch() {
         console.log(data.message);
         const prodIDS = data.message.map((prod) => prod.id);
         const res = await axios.post(
-          `http://192.168.18.18:4500getProductsByIds`,
+          `http://localhost:4500getProductsByIds`,
           { products: prodIDS }
         );
         console.log(res.data.products, res.data);

@@ -13,7 +13,7 @@ import food3 from "./assets/food3.png"
 
 // // useEffect(() => {
 // //   // Fetch the menu items from the server
-// //   fetch("http://192.168.18.18:4500/getALLproduct")
+// //   fetch("http://localhost:4500/getALLproduct")
 // //     .then((res) => res.json())
 // //     .then((data) => {
 // //       setcategory(data);

@@ -26,7 +26,7 @@ function AllCategory() {
   }, []);
 
 useEffect(() => {
-  fetch("http://192.168.18.18:4500/getALLproduct")
+  fetch("http://localhost:4500/getALLproduct")
     .then((res) => res.json())
     .then((data) => {
       setcategory(data);
@@ -45,7 +45,7 @@ useEffect(() => {
 const mappedData = category.map((apiItem, index) => ({
     id: apiItem._id,
     name: apiItem.title,
-    img: [`http://192.168.18.18:4500/${apiItem.image}`],
+    img: [`http://localhost:4500/${apiItem.image}`],
   }));
 
   

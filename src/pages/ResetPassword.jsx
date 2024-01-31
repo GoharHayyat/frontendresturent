@@ -72,7 +72,7 @@ function ResetPassword({match}) {
         }
 
         try {
-            await axios.put(`http://192.168.18.18:4500auth/resetpassword/${resetToken}`,user,config);
+            await axios.put(`http://localhost:4500auth/resetpassword/${resetToken}`,user,config);
             setSpan("Password Changed");
             setTimeout(()=>{
                 setSpan("");

@@ -103,7 +103,7 @@ function ProductCard({ product  ,onCheckboxChange }) {
         }
 
         const response = await fetch(
-          "http://192.168.18.18:4500/ingredients/updatetempstock",
+          "http://localhost:4500/ingredients/updatetempstock",
           {
             method: "PUT",
             headers: {
@@ -169,7 +169,7 @@ function ProductCard({ product  ,onCheckboxChange }) {
 
     axios
       .post(
-        `http://192.168.18.18:4500manageFavorite`,
+        `http://localhost:4500manageFavorite`,
         { favorites: newFavs },
         config
       )
