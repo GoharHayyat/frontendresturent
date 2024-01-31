@@ -258,7 +258,7 @@ function ProductCard({ product  ,onCheckboxChange }) {
             </span>
             <div className="flex gap-3 self-end md:self-auto">
               {/* Remove the HeartIcon component */}
-              {/* <motion.div
+              <motion.div
                 whileTap={{ scale: 0.8 }}
                 whileHover={{ scale: 1.1 }}
                 onClick={handleFavorite}
@@ -268,7 +268,7 @@ function ProductCard({ product  ,onCheckboxChange }) {
                     isFavorite ? "fill-red-500" : ""
                   }`}
                 />
-              </motion.div> */}
+              </motion.div>
               <motion.div
                 whileTap={{ scale: 0.8 }}
                 whileHover={{ scale: 1.1 }}
