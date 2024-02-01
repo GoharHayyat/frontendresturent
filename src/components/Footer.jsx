@@ -9,7 +9,7 @@ const Footer = () => {
     <motion.div initial={{scaleY:0.4,opacity:0.5,y:80}} whileInView={{scaleY:1,opacity:1,y:0}} transition={{type:"spring",duration:0.5}} viewport={{once:true}} className='bg-white text-black pt-7 md:pt-12 px-5 md:px-16 pb-2'>
       <div className="flex md:flex-row flex-col gap-5 md:gap-3 pb-8">
         <div className=" flex flex-col gap-3 flex-[2]">
-          <h1 className="text-2xl font-bold hover:text-teal-700">RestaurentsHub.</h1>
+          <h1 className="text-2xl font-bold hover:text-teal-700">RestaurantHub.</h1>
           <p>We Provide Best Taste Possible!</p>
           <div className="flex gap-2">
             <a href="/" className="text-blue-500 hover:text-black dark:hover:text-blue-400">
@@ -71,7 +71,7 @@ const Footer = () => {
             <h1 className="font-semibold text-base mb-2">Contact</h1>
             <div className="flex gap-2 items-center font-light mb-1">
               <EnvelopeIcon className="h-5 w-5"/>
-              <p >restaurentshub@gmail.com</p>
+              <p >info.restaurantshub@gmail.com</p>
             </div>
             <div className="flex gap-2 items-center font-light">
               <PhoneIcon className="h-5 w-5"/>

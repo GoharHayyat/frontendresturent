@@ -45,7 +45,7 @@ function Navbar() {
         <>
 
             <motion.nav initial={{ y: -250 }} animate={{ y: 0 }} transition={{ type: "spring" }} className="shadow-sm px-6 py-4 md:px-8  flex items-center justify-between font-sans relative">
-                <Link to="/"><span className="font-bold text-2xl md:text-2xl hover:text-teal-600"> RestaurentsHub.</span></Link>
+                <Link to="/"><span className="font-bold text-2xl md:text-2xl hover:text-teal-600"> RestaurantHub.</span></Link>
 
 
                 <motion.div className={`pt-7 md:pt-0 pb-7 absolute z-50 bg-white shadow ${(menu && !isCartOpen) ? "" : "translate-y-[-200%]"} min-h-[40%] right-0 top-20 w-full md:translate-y-0 md:shadow-none md:z-0 md:flex md:bg-transparent md:pb-0 md:static md:min-h-fit md:w-auto transition-all duration-300 ease-in`}>
