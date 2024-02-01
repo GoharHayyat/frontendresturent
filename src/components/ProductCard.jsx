@@ -27,11 +27,17 @@ import { FaTimes } from 'react-icons/fa';
 
 function ProductCard({ product  ,onCheckboxChange }) {
   const dispatch = useDispatch();
-  // const [menuItems, setMenuItems] = useState([]);
   const {  favorites, user } = useSelector(
     (state) => state.user
   );
-  const [isFavorite, setIsfavorite] = useState(product.isFavorite);
+
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    // Check if the product is in favorites 
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    setIsFavorite(favorites.includes(product));
+  }, []);
   const [isAdded, setIsAdded] = useState(false);
   const [isAddedd, setIsAddedd] = useState(false);
 
@@ -62,15 +68,8 @@ function ProductCard({ product  ,onCheckboxChange }) {
   }, []);
   // console.log("sd",isOutOfStock)
 
-  useEffect(() => {
-    if (favorites.length !== 0) {
-      if (favorites.indexOf(product._id) !== -1) {
-        setIsfavorite(true);
-      }
-    }
-  }, []);
+  
 
-  let x= false;
 
   const handleCheckboxChange = () => {
     onCheckboxChange();
@@ -145,52 +144,58 @@ function ProductCard({ product  ,onCheckboxChange }) {
       }
     }
   };
-
   const handleFavorite = async () => {
     if (!isUserLoggedIn) {
-      toast("Please Login First!!");
+      toast('Please Login First!!');
     } else {
-    let newFavs = [];
-    if (isFavorite) {
-      newFavs = favorites.filter((fav) => {
-        return fav !== product._id;
-      });
-    } else {
-      newFavs = [...favorites];
-      newFavs.push(product._id);
-    }
     
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user}`,
-      },
-    };
+      const loginDataString = localStorage.getItem('loginData');
+
+const loginData = JSON.parse(loginDataString);
+
+const userId = loginData.favorites._id;
+
+console.log("User ID",userId);
+
+      setIsFavorite(!isFavorite);
+
+      // Update favorites in local storage
+      let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+      if (isFavorite) {
+        favorites = favorites.filter((fav) => fav !== product._id);
+      } else {
+        favorites.push(product._id);
+      }
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+
+      // Send favorites to the backend
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user}`,
+        },
+      };
+
 
     axios
-      .post(
-        `http://localhost:4500manageFavorite`,
-        { favorites: newFavs },
-        config
-      )
+      .post(`http://localhost:4500/manageFavorite`, { userId, favorites }, config)
       .then((val) => {
-        console.log("VAL  ", val);
-        if (val.data.success) {
-          setIsfavorite(!isFavorite);
-
-          localStorage.setItem("favorites", JSON.stringify(newFavs));
-          dispatch(manageFavorite(newFavs));
-        } else {
-          alert("Favorite not Added");
+        if (!val.data.success) {
+          // Revert the favorite status if the backend operation fails
+          setIsFavorite(!isFavorite);
+          alert('Favorite not Added');
         }
       })
-      .catch((error) => {
-        console.log(error);
-        setIsfavorite(!isFavorite);
-        // alert("Favorite not Added");
-      });
+        .catch((error) => {
+          console.log(error);
+          // Revert the favorite status if there's an error
+          setIsFavorite(!isFavorite);
+          alert('Favorite not Added');
+        });
     }
   };
+
+ 
 
   useEffect(() => {
     const handleResize = () => {
@@ -257,18 +262,18 @@ function ProductCard({ product  ,onCheckboxChange }) {
               Rs.{product.price}
             </span>
             <div className="flex gap-3 self-end md:self-auto">
-              {/* Remove the HeartIcon component */}
-              <motion.div
-                whileTap={{ scale: 0.8 }}
-                whileHover={{ scale: 1.1 }}
-                onClick={handleFavorite}
-              >
-                <HeartIcon
-                  className={`h-7 w-7 text-red-500 hover:text-red-700 ${
-                    isFavorite ? "fill-red-500" : ""
-                  }`}
-                />
-              </motion.div>
+             
+               <motion.div
+      whileTap={{ scale: 0.8 }}
+      whileHover={{ scale: 1.1 }}
+      onClick={handleFavorite}
+    >
+      {isFavorite ? (
+        <HeartIcon className="h-7 w-7 text-red-500 hover:text-red-700 fill-red-500" />
+      ) : (
+        <HeartIcon className="h-7 w-7 text-red-500 hover:text-red-700" />
+      )}
+    </motion.div>
               <motion.div
                 whileTap={{ scale: 0.8 }}
                 whileHover={{ scale: 1.1 }}
@@ -366,18 +371,17 @@ function ProductCard({ product  ,onCheckboxChange }) {
             >
               {product.category}
             </motion.p>
-            <motion.div
-              whileTap={{ scale: 0.8 }}
-              whileHover={{ scale: 1.1 }}
-              onClick={handleFavorite}
-              style={{ marginLeft: "6%" }}
-            >
-              <HeartIcon
-                className={`h-7 w-7 text-red-500 hover:text-red-700 ${
-                  isFavorite ? "fill-red-500" : ""
-                }`}
-              />
-            </motion.div>
+           <motion.div
+      whileTap={{ scale: 0.8 }}
+      whileHover={{ scale: 1.1 }}
+      onClick={handleFavorite}
+    >
+      {isFavorite ? (
+        <HeartIcon className="h-7 w-7 text-red-500 hover:text-red-700 fill-red-500" />
+      ) : (
+        <HeartIcon className="h-7 w-7 text-red-500 hover:text-red-700" />
+      )}
+    </motion.div>
           </div>
         </div>
         <div style={{ display: "flex" }}>

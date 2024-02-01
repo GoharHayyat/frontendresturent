@@ -13,6 +13,8 @@ function ProductCardDetails({product}) {
        {/* {product._id} */}
        <br/>
        {product.name}
+       <br/>
+       {product.discription}
       </div>
     );
   

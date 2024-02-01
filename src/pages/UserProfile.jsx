@@ -7,6 +7,7 @@ import { UserIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import ProductCard from '../components/ProductCard';
+import ProductCardDetails from '../components/ProductCardDetails';
 import { motion } from 'framer-motion';
 import { closeAll } from '../features/Modals';
 
@@ -15,7 +16,7 @@ function UserProfile() {
   const dispatch = useDispatch();
 const navigate = useNavigate();
 const [currUser, setCurrUser] = useState(null);
-const [favorites, setFavorites] = useState([]);
+const [favoritess, setFavorites] = useState([]);
 const [isUserLoggedIn, setIsUserLoggedIn] = useState([]);
 
 useEffect(() => {
@@ -30,6 +31,10 @@ useEffect(() => {
 
     // Check if parsedData has the expected structure
     if (parsedData && parsedData.token) {
+      const storedFavorites = JSON.parse(localStorage.getItem('favorites')) ;
+        setFavorites(storedFavorites);
+        console.log("Local stoage Fav",storedFavorites)
+        console.log("Check FAV Listing",favoritess)
       setCurrUser(parsedData);
       setIsUserLoggedIn(true);
     } else {
@@ -88,21 +93,29 @@ if (!isUserLoggedIn) {
       </div>
       <div className="px-0 md:px-10 bg-slate-100/90 rounded py-3">
         <h1 className="text-2xl font-semibold pl-3 md:pl-0">Favorites {">"}</h1>
-        {favorites.length===0?(<div>
-          <hr />
-          <div className="h-24 text-lg font-medium flex justify-center items-center">No items in Favorite</div>
-          <hr />
-
-        </div>):(
-          <div className='grid md:grid-rows-1 grid-rows-3 grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-2 md:px-20'>
-              {favorites.map((item,i)=>{
-                    return <motion.div initial={{opacity:0, x:50,scale:0.5}} transition={{type:"spring", delay:i*0.4,bounce:0.4,stiffness:60,mass:1.5}} whileInView={{ opacity: 1,x:0,scale:1}} viewport={{ once: true }} key={`${item._id}`} className={` flex justify-center items-center p-3`}>
-                    <ProductCard product = {item} />
-                    
-                    </motion.div>
-                })}
-
+        {favoritess.length === 0 ? (
+          <div>
+            <hr />
+            <div className="h-24 text-lg font-medium flex justify-center items-center">No items in Favorite</div>
+            <hr />
           </div>
+        ) : (
+          <h1>Testing</h1>
+        //  <div className='grid md:grid-rows-1 grid-rows-3 grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-2 md:px-20'>
+        //     { favoritess.map((item, i) => (
+
+        //       <motion.div
+        //         key={`${item._id}`}
+        //         initial={{ opacity: 0, x: 50, scale: 0.5 }}
+        //         transition={{ type: "spring", delay: i * 0.4, bounce: 0.4, stiffness: 60, mass: 1.5 }}
+        //         whileInView={{ opacity: 1, x: 0, scale: 1 }}
+        //         viewport={{ once: true }}
+        //         className={`flex justify-center items-center p-3`}
+        //       >
+        //         <ProductCardDetails product={item} />
+        //       </motion.div>
+        //     ))}
+        //   </div>
         )}
       </div>
       {/* <div className="px-10 bg-slate-100/90 rounded py-3">

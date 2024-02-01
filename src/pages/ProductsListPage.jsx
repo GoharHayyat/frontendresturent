@@ -55,7 +55,7 @@ function ProductsListPage() {
       });
   }, [isOutOfStock]);
 
-  // console.log("ProductListPage", products);
+  console.log("ProductListPage", products);
 
   const productss = products.map((item) => ({
     _id: item._id, // Assuming a unique ID for each item
@@ -67,8 +67,15 @@ function ProductsListPage() {
     imageLinks: [`http://localhost:4500/${item.image}`],
     isFavorite: false,
     isAdded: false,
-    describtion: item.describtion
+    describtion: item.describtion,
+    calories:item.calories,
+    carbohydrates:item.carbohydrates,
+    fats:item.fats,
+    protein:item.protein
+
   }));
+
+  console.log("Product details that send from Productlistpage to card",productss)
 
 
 
