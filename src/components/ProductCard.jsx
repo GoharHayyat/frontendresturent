@@ -31,6 +31,8 @@ function ProductCard({ product, onCheckboxChange }) {
 
   const [isFavorite, setIsFavorite] = useState(false);
 
+  const truncatedName = product.name.length > 7 ? `${product.name.slice(0, 7)}...` : product.name;
+
 
   useEffect(() => {
     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -220,6 +222,41 @@ function ProductCard({ product, onCheckboxChange }) {
         whileHover={{ scale: 1.02 }}
         className="w-full max-w-[11rem] md:max-w-[14rem] bg-white/95 rounded-lg shadow-lg"
       >
+        {/* <motion.img
+          onClick={() => setOpen(true)}
+          whileHover={{ scale: 0.95 }}
+          className="p-3 w-full h-30 md:h-52 rounded-t-lg"
+          src={product.imageLinks[0]}
+          alt={product.name}
+        /> */}
+        <div>
+      {product.check ? (
+        <div style={{ position: 'relative' }}>
+          <motion.img
+            onClick={() => setOpen(true)}
+            whileHover={{ scale: 0.95 }}
+            className="p-3 w-full h-30 md:h-52 rounded-t-lg"
+            src={product.imageLinks[0]}
+            alt={product.name}
+            style={{ filter: 'blur(5px)' }} // Apply blur style when out of stock
+          />
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              // backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              padding: '10px',
+              borderRadius: '5px',
+            }}
+          >
+             <Chip size="lg" variant="solid" color="danger">
+                    Out of stock
+                  </Chip>
+          </div>
+        </div>
+      ) : (
         <motion.img
           onClick={() => setOpen(true)}
           whileHover={{ scale: 0.95 }}
@@ -227,6 +264,8 @@ function ProductCard({ product, onCheckboxChange }) {
           src={product.imageLinks[0]}
           alt={product.name}
         />
+      )}
+    </div>
 
         <div className="px-5 pb-5">
           <motion.h5
@@ -268,11 +307,19 @@ function ProductCard({ product, onCheckboxChange }) {
                 whileHover={{ scale: 1.1 }}
                 onClick={handleAddToCart}
               >
-                {product.check ? (
+                {/* {product.check ? (
                   <Chip size="lg" variant="solid" color="danger">
                     Out of stock
                   </Chip>
                 ) : isAdded ? (
+                  <CheckCircleIcon className="h-7 w-7 text-green-700 fill-green-400" />
+                ) : isAddedd ? (
+                  <FaTimes className="h-7 w-7 text-red-700 fill-red-400" />
+                ) : (
+                  <ShoppingCartIcon className="h-7 w-7 text-green-700 hover:fill-green-400" />
+                )} */}
+
+                {isAdded ? (
                   <CheckCircleIcon className="h-7 w-7 text-green-700 fill-green-400" />
                 ) : isAddedd ? (
                   <FaTimes className="h-7 w-7 text-red-700 fill-red-400" />
@@ -341,7 +388,7 @@ function ProductCard({ product, onCheckboxChange }) {
             marginLeft: "10px",
           }}
         >
-          <div onClick={() => setOpen(true)}>{product.name}</div>
+          <div onClick={() => setOpen(true)}>{truncatedName}</div>
 
           <div>
             <Stars rating={product.stars} />
@@ -370,34 +417,14 @@ function ProductCard({ product, onCheckboxChange }) {
                 <HeartIcon className="h-7 w-7 text-red-500 hover:text-red-700" />
               )}
             </motion.div>
-          </div>
-        </div>
-        <div style={{ display: "flex" }}>
-          <div style={{ display: "inline-block", marginRight: "10px" }}>
-            <img
-              onClick={() => setOpen(true)}
-              style={{
-                width: "130px",
-                height: "130px",
-                borderRadius: "30px",
-              }}
-              className="p-3" 
-              src={product.imageLinks[0]}
-              alt={product.name}
-            />
-          </div>
-          <div style={{ display: "inline-block" }}>
+            <div style={{marginLeft:"20%", display: "inline-block" }}>
             <div>
               <motion.div
                 whileTap={{ scale: 0.8 }}
                 whileHover={{ scale: 1.1 }}
                 onClick={handleAddToCart}
               >
-                {product.check ? (
-                  <Chip size="lg" variant="solid" color="danger">
-                    Out of stock
-                  </Chip>
-                ) : isAdded ? (
+                {isAdded ? (
                   <CheckCircleIcon className="h-7 w-7 text-green-700 fill-green-400" />
                 ) : isAddedd ? (
                   <FaTimes className="h-7 w-7 text-red-700 fill-red-400" />
@@ -407,6 +434,93 @@ function ProductCard({ product, onCheckboxChange }) {
               </motion.div>
             </div>
           </div>
+          </div>
+          
+        </div>
+        <div style={{ display: "flex" }}>
+          <div style={{ display: "inline-block", marginRight: "10px" }}>
+          <div>
+      {product.check ? (
+        <div style={{ position: 'relative' }}>
+          <img
+              onClick={() => setOpen(true)}
+              style={{
+                width: "130px",
+                height: "130px",
+                borderRadius: "30px",
+                filter: 'blur(5px)',
+              }}
+              className="p-3" 
+              src={product.imageLinks[0]}
+              alt={product.name}
+            />
+          {/* <motion.img
+            onClick={() => setOpen(true)}
+            whileHover={{ scale: 0.95 }}
+            className="p-3 w-full h-30 md:h-52 rounded-t-lg"
+            src={product.imageLinks[0]}
+            alt={product.name}
+            style={{ filter: 'blur(5px)' }} // Apply blur style when out of stock
+          /> */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              // backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              padding: '10px',
+              borderRadius: '5px',
+            }}
+          >
+             <Chip size="lg" variant="solid" color="danger">
+                    Out of stock
+                  </Chip>
+          </div>
+        </div>
+      ) : (
+        <img
+        onClick={() => setOpen(true)}
+        style={{
+          width: "130px",
+          height: "130px",
+          borderRadius: "30px",
+        }}
+        className="p-3" 
+        src={product.imageLinks[0]}
+        alt={product.name}
+      />
+      )}
+    </div>
+            {/* <img
+              onClick={() => setOpen(true)}
+              style={{
+                width: "130px",
+                height: "130px",
+                borderRadius: "30px",
+              }}
+              className="p-3" 
+              src={product.imageLinks[0]}
+              alt={product.name}
+            /> */}
+          </div>
+          {/* <div style={{ display: "inline-block" }}>
+            <div>
+              <motion.div
+                whileTap={{ scale: 0.8 }}
+                whileHover={{ scale: 1.1 }}
+                onClick={handleAddToCart}
+              >
+                {isAdded ? (
+                  <CheckCircleIcon className="h-7 w-7 text-green-700 fill-green-400" />
+                ) : isAddedd ? (
+                  <FaTimes className="h-7 w-7 text-red-700 fill-red-400" />
+                ) : (
+                  <ShoppingCartIcon className="h-7 w-7 text-green-700 hover:fill-green-400" />
+                )}
+              </motion.div>
+            </div>
+          </div> */}
         </div>
         <React.Fragment>
           <Modal

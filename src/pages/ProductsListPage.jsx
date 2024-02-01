@@ -115,7 +115,7 @@ function ProductsListPage() {
           <div className="flex-[0.8] flex flex-col gap-5 items-center md:items-start">
             <div className="w-[95%] md:w-full h-48 md:h-56 relative">
               <img
-                src="https://images.unsplash.com/photo-1438012940875-4bf705025a8a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                src="https://www.minazon.net/thumb/1366x560/1/upload/hinhanh/592239959784969.jpg"
                 alt="chairs"
                 className="w-full h-full object-cover rounded-md"
               />
@@ -145,8 +145,8 @@ function ProductsListPage() {
           <div className="flex-[0.8] flex flex-col gap-5 items-center md:items-start">
             <div className="w-[95%] md:w-full h-48 md:h-56 relative">
               <img
-                src="https://images.unsplash.com/photo-1438012940875-4bf705025a8a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                alt="chairs"
+                src="https://www.minazon.net/thumb/1366x560/1/upload/hinhanh/592239959784969.jpg"
+                alt=""
                 className="w-full h-full object-cover rounded-md"
               />
               <p className="text-3xl md:text-5xl bg-black/30 rounded p-2 text-white font-semibold absolute top-5 left-5">
