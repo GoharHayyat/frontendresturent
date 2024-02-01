@@ -12,9 +12,11 @@ function ProductCardDetails({product}) {
       <div>
        {/* {product._id} */}
        <br/>
-       {product.name}
+       {product.category}
        <br/>
-       {product.discription}
+       {product.describtion}
+       <br/>
+       {product.carbohydrates}
       </div>
     );
   

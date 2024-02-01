@@ -59,17 +59,35 @@ function Home() {
 
   useEffect(() => {
     if (menuItems.length > 0 && !trending) {
+      // const products = menuItems.map((item) => ({
+      //   _id: item._id,
+      //   name: item.title,
+      //   category: item.category,
+      //   price: item.Price,
+      //   check: item.check,
+      //   stars: 4.0,
+      //   imageLinks: [`http://localhost:4500/${item.image}`],
+      //   isFavorite: false,
+      //   isAdded: false,
+      //   describtion: item.describtion
+      // }));
+
       const products = menuItems.map((item) => ({
-        _id: item._id,
+        _id: item._id, // Assuming a unique ID for each item
         name: item.title,
-        category: item.category,
-        price: item.Price,
+        category: item.category, // You can set the category as per your application logic
+        price: item.Price, // Define the price as needed
         check: item.check,
-        stars: 4.0,
+        stars: 4.0, // Set the stars or rating based on your system
         imageLinks: [`http://localhost:4500/${item.image}`],
         isFavorite: false,
         isAdded: false,
-        describtion: item.describtion
+        describtion: item.describtion,
+        calories:item.calories,
+        carbohydrates:item.carbohydrates,
+        fats:item.fats,
+        protein:item.protein
+    
       }));
 
       setTrending(products.slice(0, 5));

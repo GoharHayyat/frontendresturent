@@ -9,7 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../features/Cart";
 import { Link } from "react-router-dom";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { manageFavorite } from "../features/User";
 import axios from "axios";
 // import "./ProductCard.css";
@@ -23,19 +23,17 @@ import Sheet from "@mui/joy/Sheet";
 // import Chip from '@mui/material/Chip';
 import Chip from "@mui/joy/Chip";
 // import { toast } from "react-toastify";
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes } from "react-icons/fa";
 
-function ProductCard({ product  ,onCheckboxChange }) {
+function ProductCard({ product, onCheckboxChange }) {
   const dispatch = useDispatch();
-  const {  favorites, user } = useSelector(
-    (state) => state.user
-  );
+  const { favorites, user } = useSelector((state) => state.user);
 
   const [isFavorite, setIsFavorite] = useState(false);
 
+
   useEffect(() => {
-    // Check if the product is in favorites 
-    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setIsFavorite(favorites.includes(product));
   }, []);
   const [isAdded, setIsAdded] = useState(false);
@@ -47,15 +45,14 @@ function ProductCard({ product  ,onCheckboxChange }) {
 
   const [isUserLoggedIn, setIsUserLoggedIn] = useState([]);
 
+
   useEffect(() => {
     const storedData = localStorage.getItem("loginData");
-  
+
     if (storedData) {
       const parsedData = JSON.parse(storedData);
-  
-      // Check if parsedData has the expected structure
+
       if (parsedData && parsedData.token) {
-        // setCurrUser(parsedData);?
         setIsUserLoggedIn(true);
       } else {
         setIsUserLoggedIn(false);
@@ -66,22 +63,42 @@ function ProductCard({ product  ,onCheckboxChange }) {
       setIsUserLoggedIn(false);
     }
   }, []);
-  // console.log("sd",isOutOfStock)
 
-  
+  useEffect(() => {
+    const loginDataStringg = localStorage.getItem("loginData");
+    const loginDataa = JSON.parse(loginDataStringg);
+    if (!loginDataa || !loginDataa.favorites || !loginDataa.favorites._id) {
+      console.error(
+        "No data available in localStorage or missing required fields."
+      );
+    } else {
+      const apiUrl = `http://localhost:4500/checkisliked/${loginDataa.favorites._id}/${product._id}`;
 
+      fetch(apiUrl)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          if (data.available === true) {
+            setIsFavorite(!isFavorite);
+            console.log("available");
+          } else {
+            console.log("not available");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }, []);
 
   const handleCheckboxChange = () => {
     onCheckboxChange();
   };
-
- 
-  
-  
-  
-
-  
-  
 
   const handleAddToCart = async () => {
     if (!isAdded || !isAddedd) {
@@ -112,27 +129,17 @@ function ProductCard({ product  ,onCheckboxChange }) {
           }
         );
 
-        // Handle the API response
         if (response.ok) {
           const responseData = await response.json();
-
-          // Additional logic to execute when the response is successful
           console.log("API call successful:", responseData);
-
-          // Dispatch the addToCart action and update the state
-
           dispatch(addToCart({ item: { ...product, count: 1 } }));
           setIsAdded(true);
           setTimeout(() => {
             setIsAdded(false);
           }, 2500);
-          // onCheckboxChange();
           handleCheckboxChange();
         } else {
-          // Handle the case when the response status is not OK
           console.error("API call failed. Status:", response.status);
-          // alert("ds")
-          // onCheckboxChange();
           setIsAddedd(true);
           setTimeout(() => {
             setIsAddedd(false);
@@ -146,70 +153,62 @@ function ProductCard({ product  ,onCheckboxChange }) {
   };
   const handleFavorite = async () => {
     if (!isUserLoggedIn) {
-      toast('Please Login First!!');
+      toast("Please Login First!!");
     } else {
-    
-      const loginDataString = localStorage.getItem('loginData');
+      const loginDataString = localStorage.getItem("loginData");
 
-const loginData = JSON.parse(loginDataString);
+      const loginData = JSON.parse(loginDataString);
 
-const userId = loginData.favorites._id;
+      const userId = loginData.favorites._id;
 
-console.log("User ID",userId);
+      console.log("User ID", userId);
 
       setIsFavorite(!isFavorite);
 
-      // Update favorites in local storage
-      let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+      let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
       if (isFavorite) {
         favorites = favorites.filter((fav) => fav !== product._id);
       } else {
         favorites.push(product._id);
       }
-      localStorage.setItem('favorites', JSON.stringify(favorites));
+      localStorage.setItem("favorites", JSON.stringify(favorites));
 
-      // Send favorites to the backend
       const config = {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${user}`,
         },
       };
 
-
-    axios
-      .post(`http://localhost:4500/manageFavorite`, { userId, favorites }, config)
-      .then((val) => {
-        if (!val.data.success) {
-          // Revert the favorite status if the backend operation fails
-          setIsFavorite(!isFavorite);
-          alert('Favorite not Added');
-        }
-      })
+      axios
+        .post(
+          `http://localhost:4500/manageFavorite`,
+          { userId, favorites },
+          config
+        )
+        .then((val) => {
+          if (!val.data.success) {
+            setIsFavorite(!isFavorite);
+            alert("Favorite not Added");
+          }
+        })
         .catch((error) => {
           console.log(error);
-          // Revert the favorite status if there's an error
           setIsFavorite(!isFavorite);
-          alert('Favorite not Added');
+          alert("Favorite not Added");
         });
     }
   };
 
- 
-
   useEffect(() => {
     const handleResize = () => {
-      // Check the window width here, adjust the value as needed
-      setIsWindowsSize(window.innerWidth > 500); // Change 768 to the desired width threshold
+      setIsWindowsSize(window.innerWidth > 500); 
     };
 
-    // Initial check on mount
     handleResize();
 
-    // Add event listener to track window size changes
     window.addEventListener("resize", handleResize);
 
-    // Remove the event listener when the component unmounts
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -221,7 +220,6 @@ console.log("User ID",userId);
         whileHover={{ scale: 1.02 }}
         className="w-full max-w-[11rem] md:max-w-[14rem] bg-white/95 rounded-lg shadow-lg"
       >
-        {/* <ToastContainer/> */}
         <motion.img
           onClick={() => setOpen(true)}
           whileHover={{ scale: 0.95 }}
@@ -247,40 +245,30 @@ console.log("User ID",userId);
               {product.category}
             </motion.p>
           </Link>
-          {/* {product.check ? (
-            <motion.span
-              className="text-base text-red-500"
-              whileHover={{ scale: 0.98 }}
-            >
-              Out of Stock
-            </motion.span>
-          ) : (
-            <> */}
+          
           <Stars rating={product.stars} />
           <div className="flex flex-col md:flex-row md:items-center justify-between">
             <span className="text-lg md:text-lg font-bold text-gray-900">
               Rs.{product.price}
             </span>
             <div className="flex gap-3 self-end md:self-auto">
-             
-               <motion.div
-      whileTap={{ scale: 0.8 }}
-      whileHover={{ scale: 1.1 }}
-      onClick={handleFavorite}
-    >
-      {isFavorite ? (
-        <HeartIcon className="h-7 w-7 text-red-500 hover:text-red-700 fill-red-500" />
-      ) : (
-        <HeartIcon className="h-7 w-7 text-red-500 hover:text-red-700" />
-      )}
-    </motion.div>
+              <motion.div
+                whileTap={{ scale: 0.8 }}
+                whileHover={{ scale: 1.1 }}
+                onClick={handleFavorite}
+              >
+                {isFavorite ? (
+                  <HeartIcon className="h-7 w-7 text-red-500 hover:text-red-700 fill-red-500" />
+                ) : (
+                  <HeartIcon className="h-7 w-7 text-red-500 hover:text-red-700" />
+                )}
+              </motion.div>
               <motion.div
                 whileTap={{ scale: 0.8 }}
                 whileHover={{ scale: 1.1 }}
                 onClick={handleAddToCart}
               >
-              
-                 {product.check ? (
+                {product.check ? (
                   <Chip size="lg" variant="solid" color="danger">
                     Out of stock
                   </Chip>
@@ -371,43 +359,41 @@ console.log("User ID",userId);
             >
               {product.category}
             </motion.p>
-           <motion.div
-      whileTap={{ scale: 0.8 }}
-      whileHover={{ scale: 1.1 }}
-      onClick={handleFavorite}
-    >
-      {isFavorite ? (
-        <HeartIcon className="h-7 w-7 text-red-500 hover:text-red-700 fill-red-500" />
-      ) : (
-        <HeartIcon className="h-7 w-7 text-red-500 hover:text-red-700" />
-      )}
-    </motion.div>
+            <motion.div
+              whileTap={{ scale: 0.8 }}
+              whileHover={{ scale: 1.1 }}
+              onClick={handleFavorite}
+            >
+              {isFavorite ? (
+                <HeartIcon className="h-7 w-7 text-red-500 hover:text-red-700 fill-red-500" />
+              ) : (
+                <HeartIcon className="h-7 w-7 text-red-500 hover:text-red-700" />
+              )}
+            </motion.div>
           </div>
         </div>
         <div style={{ display: "flex" }}>
           <div style={{ display: "inline-block", marginRight: "10px" }}>
             <img
               onClick={() => setOpen(true)}
-              // whileHover={{ scale: 0.95 }}
               style={{
                 width: "130px",
                 height: "130px",
-                borderRadius: "30px", // Adjust the border radius to achieve the desired roundness
+                borderRadius: "30px",
               }}
-              className="p-3" // Remove the rounded-t-lg class if not needed
+              className="p-3" 
               src={product.imageLinks[0]}
               alt={product.name}
             />
           </div>
           <div style={{ display: "inline-block" }}>
             <div>
-            <motion.div
+              <motion.div
                 whileTap={{ scale: 0.8 }}
                 whileHover={{ scale: 1.1 }}
                 onClick={handleAddToCart}
               >
-              
-                 {product.check ? (
+                {product.check ? (
                   <Chip size="lg" variant="solid" color="danger">
                     Out of stock
                   </Chip>
@@ -462,64 +448,10 @@ console.log("User ID",userId);
           </Modal>
         </React.Fragment>
       </div>
-
-      // <div>
-      //   <div>hi</div>
-      //   <div>
-      //     <img
-      //       // whileHover={{ scale: 0.95 }}
-      //       style={{ width: "125px", height: "125px" }} // Adjust width and height here
-      //       className="p-3 rounded-t-lg"
-      //       src={product.imageLinks[0]}
-      //       alt={product.name}
-      //     />
-      //   </div>
-      // </div>
     );
   }
 
-  // return (
-
-  //     <motion.div whileHover={{scale:1.02}} className=" w-full max-w-[11rem] md:max-w-[14rem] bg-white/95 rounded-lg shadow-lg">
-
-  //         <Link to={`/product/${product._id}`}>
-  //             <motion.img whileHover={{scale:0.95}}  className="p-3 w-full h-30 md:h-52 rounded-t-lg" src={product.imageLinks[0]} alt={product.name} />
-  //         </Link>
-  //         <div className="px-5 pb-5">
-  //             <Link to={`/product/${product._id}`}>
-  //                 <motion.h5 whileHover={{scale:0.95}} className="text-base whitespace-nowrap text-ellipsis overflow-hidden md:text-xl font-semibold tracking-tight text-gray-900">{product.name}</motion.h5>
-  //             </Link>
-  //             <Link to={`/category/${product.category}`}>
-  //                 <motion.p whileHover={{scale:0.98}} className="text-xs hover:text-teal-600">{product.category}</motion.p>
-  //             </Link>
-  //             <Stars rating={product.stars}/>
-  //             <div className="flex flex-col md:flex-row md:items-center justify-between">
-  //                 <span className="text-lg md:text-lg font-bold text-gray-900">Rs.{product.price}</span>
-  //                 <div className="flex gap-3 self-end md:self-auto">
-  //                     <motion.div whileTap={{scale:0.8}} whileHover={{scale:1.1}} onClick={handleFavorite}>
-  //                         <HeartIcon className={`h-7 w-7 text-red-500 hover:text-red-700 ${isFavorite?"fill-red-500":""}`}/>
-  //                     </motion.div>
-  //                     <motion.div whileTap={{scale:0.8}} whileHover={{scale:1.1}} onClick={handleAddToCart}>
-  //                         {isAdded?<CheckCircleIcon className="h-7 w-7 text-green-700 fill-green-400"/> :<ShoppingCartIcon className="h-7 w-7 text-green-700 hover:fill-green-400" />}
-
-  //                     </motion.div>
-  //                 </div>
-
-  //             </div>
-  //       </div>
-  //     </motion.div>
-
-  // );
 }
 
 export default ProductCard;
 
-{
-  /* <motion.img
-  whileHover={{ scale: 0.95 }}
-  style={{ width: '125px', height: '125px' }} // Adjust width and height here
-  className="p-3 rounded-t-lg"
-  src={product.imageLinks[0]}
-  alt={product.name}
-/> */
-}

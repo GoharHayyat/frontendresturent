@@ -57,6 +57,8 @@ function ProductsListPage() {
 
   console.log("ProductListPage", products);
 
+  
+
   const productss = products.map((item) => ({
     _id: item._id, // Assuming a unique ID for each item
     name: item.title,
@@ -80,17 +82,7 @@ function ProductsListPage() {
 
 
   const [isWindowsSize, setIsWindowsSize] = useState(false);
- 
 
-  // console.log("vdfffd",isOutOfStock)
-
-  // const handleCheckboxChange = () => {
-  //   // Toggle the state when the checkbox is changed
-  //   setIsOutOfStock(!isOutOfStock);
-  //   console.log(category)
-
-
-  // };
 
   useEffect(() => {
     const handleResize = () => {
