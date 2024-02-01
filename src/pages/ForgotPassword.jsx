@@ -5,12 +5,16 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { closeAll } from '../features/Modals';
-//import { Link } from 'react-router-dom';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 
 
 function ForgotPassword() {
+
+    const [open, setOpen] = React.useState(false);
+
     const [values, setValues] = useState({
         email: "",
     });
@@ -49,6 +53,7 @@ function ForgotPassword() {
     }
 
     const handleSubmit = async (e) => {
+        setOpen(true);
         e.preventDefault();
         const user = {
             email: values.email,
@@ -65,6 +70,7 @@ function ForgotPassword() {
             
             await axios.post(`http://localhost:4500/forgotpassword`,user,config);
             setSpan("Email Sent!!");
+            setOpen(false)
             setTimeout(()=>{
                 setSpan("");
             },5000)
@@ -72,8 +78,10 @@ function ForgotPassword() {
         } catch (error) {
             if (error.response && error.response.data && error.response.data.error) {
                 setSpan(error.response.data.error);
+                setOpen(false)
             } else {
                 setSpan("An unexpected error occurred");
+                setOpen(false)
             }
             setTimeout(() => {
                 setSpan("");
@@ -87,6 +95,14 @@ function ForgotPassword() {
 
     return (
         <>
+         <div>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </div>
             <div className="flex items-center justify-center h-[92vh] md:h-[90vh] w-full bg-gradient-to-b from-teal-200 to-teal-700 relative overflow-hidden">
                 <motion.div variants={variant} initial="initial" animate="animate" className="p-4 w-[90%]  md:w-[35%] h-[40%] md:h-[40%] bg-slate-100 rounded-xl z-40 flex flex-col items-center">
                     <form onSubmit={handleSubmit} className="text-center px-3 md:px-10 h-full w-full overflow-hidden flex flex-col justify-center items-center">

@@ -4,12 +4,14 @@ import WaveMotion from '../components/WaveMotion'
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-//import { Link } from 'react-router-dom';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 
 
 function ResetPassword({match}) {
+    const [open, setOpen] = React.useState(false);
     const [values, setValues] = useState({
         password: "",
         confirmPassword: "",
@@ -60,6 +62,7 @@ function ResetPassword({match}) {
     }
 
     const handleSubmit = async(e) => {
+        setOpen(true);
         e.preventDefault();
         const user = {
             password: values.password,
@@ -74,20 +77,23 @@ function ResetPassword({match}) {
         try {
             await axios.put(`http://localhost:4500/resetpassword/${resetToken}`,user,config);
             setSpan("Password Changed");
+            setOpen(false);
             setTimeout(()=>{
                 setSpan("");
                 navigate("/")
-            },5000)
+            },2000)
             
         } catch (error) {
             if (error.response && error.response.data && error.response.data.error) {
                 setSpan(error.response.data.error);
+                setOpen(false);
             } else {
                 setSpan("An unexpected error occurred");
+                setOpen(false);
             }
             setTimeout(() => {
                 setSpan("");
-            }, 5000);
+            }, 3000);
         }
     };
 
@@ -97,6 +103,14 @@ function ResetPassword({match}) {
 
     return (
         <>
+        <div>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </div>
             <div className="flex items-center justify-center h-[92vh] md:h-[90vh] w-full bg-gradient-to-b from-teal-200 to-teal-700 relative overflow-hidden">
                 <motion.div variants={variant} initial="initial" animate="animate" className="p-4 w-[90%]  md:w-[35%] h-[45%] md:h-[50%] bg-slate-100 rounded-xl z-40 flex flex-col items-center">
                     <form onSubmit={handleSubmit} className="text-center px-3 md:px-10 h-full w-full overflow-hidden flex flex-col justify-center items-center">
