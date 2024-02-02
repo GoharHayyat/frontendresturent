@@ -33,17 +33,17 @@ function ProductList({ name, data }) {
 
   if (isWindowsSize) {
     return (
-      // Windows-specific JSX
       <div className="flex flex-col gap-5">
         <motion.h1
-          whileHover={{ scale: 1.05 }}
-          initial={{ y: -50, opacity: 0, scale: 0.6 }}
-          animate={{ y: 0, opacity: 1, scale: 1 }}
-          transition={{ type: "spring", duration: 1.5 }}
-          className="text-center text-xl md:text-2xl font-bold"
-        >
-          {name}
-        </motion.h1>
+        whileHover={{ scale: 1.05 }}
+        initial={{ y: -50, opacity: 0, scale: 0.6 }}
+        animate={{ y: 0, opacity: 1, scale: 1 }}
+        transition={{ type: "spring", duration: 1.5 }}
+        style={{ marginTop: "4%", marginBottom: "-4px" }}
+        className="text-center text-black text-xl md:text-4xl font-bold"
+      >
+        {name}
+      </motion.h1>
         <div className="grid md:grid-rows-1 grid-rows-3 grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-5 md:px-20">
           {data.map((item, i) => {
             return (
@@ -74,6 +74,16 @@ function ProductList({ name, data }) {
     return (
       // Mobile-specific JSX
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7 p-4 md:py-5 md:px-14 flex-wrap">
+          <motion.h1
+        whileHover={{ scale: 1.05 }}
+        initial={{ y: -50, opacity: 0, scale: 0.6 }}
+        animate={{ y: 0, opacity: 1, scale: 1 }}
+        transition={{ type: "spring", duration: 1.5 }}
+        style={{ marginTop: "4%", marginBottom: "-4px" }}
+        className="text-center text-black text-xl md:text-4xl font-bold"
+      >
+        {name}
+      </motion.h1>
         {data.map((item, i) => {
           return (
             <motion.div

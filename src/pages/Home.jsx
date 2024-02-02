@@ -1,38 +1,41 @@
-import React, { useEffect, useState } from 'react'
-import CategoryTiles from '../components/CategoryTiles';
-import ProductList from '../components/ProductList';
-import Services from '../components/Services';
+import React, { useEffect, useState } from "react";
+import CategoryTiles from "../components/CategoryTiles";
+import ProductList from "../components/ProductList";
+import Services from "../components/Services";
 import Slider from "../components/Slider";
-import { useDispatch } from 'react-redux';
-import { closeAll } from '../features/Modals';
-import axios from 'axios';
+import { useDispatch } from "react-redux";
+import { closeAll } from "../features/Modals";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 // import 'react-toastify/dist/ReactToastify.css';
-
-
 
 function Home() {
   // const [products,setProducts] = useState(null);
   const [trending, setTrending] = useState(null);
-  const [featured, setFeatured] = useState(null);
+  // const [featured, setFeatured] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
 
-  const [trendingSet, setTrendingSet] = useState(false);
+  // const [trendingSet, setTrendingSet] = useState(false);
+  const [productsLoaded, setProductsLoaded] = useState(false);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(closeAll());
   }, []);
 
-  console.log("fvd",process.env.REACT_APP_API_URL)
+  console.log("fvd", process.env.REACT_APP_API_URL);
 
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
         // Updated API endpoint without specifying an ID
-        const response = await fetch("http://localhost:4500/menuitemsTrending");
+        const response = await fetch(
+          "https://cv81j9kz-4500.inc1.devtunnels.ms/menuitemsTrending"
+        );
         if (response.ok) {
           const data = await response.json();
           setMenuItems(data);
+          setProductsLoaded(true);
         } else {
           throw new Error("Failed to fetch data");
         }
@@ -51,7 +54,7 @@ function Home() {
   //   price: item.Price, // Define the price as needed
   //   check: item.check,
   //   stars: 4.0, // Set the stars or rating based on your system
-  //   imageLinks: [`http://localhost:4500/${item.image}`],
+  //   imageLinks: [`https://cv81j9kz-4500.inc1.devtunnels.ms/${item.image}`],
   //   isFavorite: false,
   //   isAdded: false,
   //   describtion: item.describtion
@@ -66,7 +69,7 @@ function Home() {
       //   price: item.Price,
       //   check: item.check,
       //   stars: 4.0,
-      //   imageLinks: [`http://localhost:4500/${item.image}`],
+      //   imageLinks: [`https://cv81j9kz-4500.inc1.devtunnels.ms/${item.image}`],
       //   isFavorite: false,
       //   isAdded: false,
       //   describtion: item.describtion
@@ -79,15 +82,14 @@ function Home() {
         price: item.Price, // Define the price as needed
         check: item.check,
         stars: 4.0, // Set the stars or rating based on your system
-        imageLinks: [`http://localhost:4500/${item.image}`],
+        imageLinks: [`https://cv81j9kz-4500.inc1.devtunnels.ms/${item.image}`],
         isFavorite: false,
         isAdded: false,
         describtion: item.describtion,
-        calories:item.calories,
-        carbohydrates:item.carbohydrates,
-        fats:item.fats,
-        protein:item.protein
-    
+        calories: item.calories,
+        carbohydrates: item.carbohydrates,
+        fats: item.fats,
+        protein: item.protein,
       }));
 
       setTrending(products.slice(0, 5));
@@ -99,10 +101,32 @@ function Home() {
       <Slider />
 
       {/* <ProductList name={"Trending Products"} data={products}></ProductList> */}
-      {trending && <ProductList name={"Trending Products"} data={trending} />}
-      
+      {productsLoaded ? (
+        <>
+          {trending && (
+            <ProductList name={"Trending Products"} data={trending} />
+            
+          )}
+           <CategoryTiles />
+        </>
+      ) : (
+        <>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: "80px",
+              marginBottom:"80px"
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        </>
+      )}
+
       {/* {trending && <ProductCard  data={trending} />} */}
-      <CategoryTiles />
+     
       <Services />
       {/* {featured && <ProductList name={"Featured Products"} data={featured}/>} */}
       {/* <BrandTiles/> */}
@@ -111,4 +135,4 @@ function Home() {
   );
 }
 
-export default Home
+export default Home;

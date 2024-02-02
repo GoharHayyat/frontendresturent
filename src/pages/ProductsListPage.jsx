@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux'
 // import { Link } from 'react-router-dom';
 
 import { motion } from 'framer-motion';
+import LoadingScreen from './LoadingScreen';
 
 // import Checkbox from '@mui/joy/Checkbox';
 // import Stars from './Stars';
@@ -19,6 +20,7 @@ function ProductsListPage() {
   const { category, searchQuery,brand } = useParams()
   const [products, setProducts] = useState([])
   const [isOutOfStock, setIsOutOfStock] = useState(false);
+  const [productsLoaded, setProductsLoaded] = useState(false);
 
   const handleCheckboxChange = () => {
     setIsOutOfStock(!isOutOfStock);
@@ -45,10 +47,11 @@ function ProductsListPage() {
   setInterval(checkForChanges, 1000);
 
   useEffect(() => {
-    fetch(`http://localhost:4500/menuitems/${category}`)
+    fetch(`https://cv81j9kz-4500.inc1.devtunnels.ms/menuitems/${category}`)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
+        setProductsLoaded(true);
       })
       .catch((err) => {
         console.error(err);
@@ -66,7 +69,7 @@ function ProductsListPage() {
     price: item.Price, // Define the price as needed
     check: item.check,
     stars: 4.0, // Set the stars or rating based on your system
-    imageLinks: [`http://localhost:4500/${item.image}`],
+    imageLinks: [`https://cv81j9kz-4500.inc1.devtunnels.ms/${item.image}`],
     isFavorite: false,
     isAdded: false,
     describtion: item.describtion,
@@ -98,6 +101,13 @@ function ProductsListPage() {
     };
   }, []);
 
+  // if (!productsLoaded) {
+  //   return <LoadingScreen />;
+  // }
+
+  
+  
+
   if (isWindowsSize) {
     return (
       <div className="py-6 px-3 md:px-0">
@@ -123,11 +133,35 @@ function ProductsListPage() {
                 {category ? category : searchQuery ? searchQuery : brand}
               </p>
             </div>
-            <div className="grid md:grid-rows-1 grid-rows-3 grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-3 md:px-0">
-              {productss.map((prod) => (
-                <ProductCard  product={prod} onCheckboxChange={handleCheckboxChange}/>
-              ))}
-            </div>
+            {productsLoaded ? (
+  <div className="grid md:grid-rows-1 grid-rows-3 grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-3 md:px-0">
+    {productss.map((prod) => (
+      <ProductCard key={prod.id} product={prod} onCheckboxChange={handleCheckboxChange}/>
+    ))}
+  </div>
+) : (
+  <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-3 md:px-0">
+    {Array.from({ length: 5 }, (_, index) => (
+      <LoadingScreen key={index} />
+    ))}
+  </div>
+)}
+
+            {/* {productsLoaded ? (
+        <div className="grid md:grid-rows-1 grid-rows-3 grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-3 md:px-0">
+        {productss.map((prod) => (
+          <ProductCard  product={prod} onCheckboxChange={handleCheckboxChange}/>
+        ))}
+      </div>
+        ) : (
+          <LoadingScreen />
+          <LoadingScreen />
+          <LoadingScreen />
+          <LoadingScreen />
+          <LoadingScreen />
+        )} */}
+           
+           
           </div>
         </div>
       </div>
@@ -153,42 +187,48 @@ function ProductsListPage() {
                 {category ? category : searchQuery ? searchQuery : brand}
               </p>
             </div>
-            <section className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7 p-4 md:py-5 md:px-14 flex-wrap">
-              {productss.map((item, i) => {
-                return (
-                  <motion.div
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.9 }}
-                    initial={{ opacity: 0, x: 50, scaleZ: 0 }}
-                    whileInView={{
-                      opacity: 1,
-                      x: 0,
-                      scaleZ: 1,
-                      transition: {
-                        delay: i * 0.1,
-                        opacity: { duration: 1 },
-                        type: "spring",
-                        bounce: 0.4,
-                        stiffness: 60,
-                      },
-                    }}
-                    viewport={{ once: true }}
-                    key={item.heading}
-                    className={`p-3 md:p-6 w-full h-full flex gap-x-2 md:gap-x-4 items-center cursor-pointer ${item.bg} rounded-lg select-none`}
-                    style={{
-                      minWidth: "280px",
-                      maxWidth: "100%",
-                      backgroundColor: "#fcfcfc",
-                      border: "1px solid #ccc", // Added 1px solid border
-                      borderRadius: "8px",
-                      boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.1)",
-                    }} // Adjust card width
-                  >
-                    <ProductCard  product={item} onCheckboxChange={handleCheckboxChange}/>
-                  </motion.div>
-                );
-              })}
-            </section>
+            {productsLoaded ? (
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7 p-4 md:py-5 md:px-14 flex-wrap">
+        {productss.map((item, i) => {
+          return (
+            <motion.div
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.9 }}
+              initial={{ opacity: 0, x: 50, scaleZ: 0 }}
+              whileInView={{
+                opacity: 1,
+                x: 0,
+                scaleZ: 1,
+                transition: {
+                  delay: i * 0.1,
+                  opacity: { duration: 1 },
+                  type: "spring",
+                  bounce: 0.4,
+                  stiffness: 60,
+                },
+              }}
+              viewport={{ once: true }}
+              key={item.heading}
+              className={`p-3 md:p-6 w-full h-full flex gap-x-2 md:gap-x-4 items-center cursor-pointer ${item.bg} rounded-lg select-none`}
+              style={{
+                minWidth: "280px",
+                maxWidth: "100%",
+                backgroundColor: "#fcfcfc",
+                border: "1px solid #ccc", // Added 1px solid border
+                borderRadius: "8px",
+                boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.1)",
+              }} // Adjust card width
+            >
+              <ProductCard  product={item} onCheckboxChange={handleCheckboxChange}/>
+            </motion.div>
+          );
+        })}
+      </section>
+        ) : (
+          <LoadingScreen />
+        )}
+            
+            
           </div>
         </div>
       </div>
