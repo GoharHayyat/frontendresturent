@@ -1,49 +1,50 @@
-import React, { useEffect, useState } from 'react'
-import ProductCard from '../components/ProductCard'
-import {  useLocation, useParams } from 'react-router-dom'
-// import axios from 'axios'
-// import { ToastContainer, toast } from "react-toastify";
+import React, { useEffect, useState } from "react";
+import ProductCard from "../components/ProductCard";
+import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import LoadingScreen from "./LoadingScreen";
 
-import { useDispatch } from 'react-redux'
-// import { closeAll } from '../features/Modals'
-
-// import { Link } from 'react-router-dom';
-
-import { motion } from 'framer-motion';
-import LoadingScreen from './LoadingScreen';
-
-// import Checkbox from '@mui/joy/Checkbox';
-// import Stars from './Stars';
-// import { HeartIcon,ShoppingCartIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import Checkbox from "@mui/joy/Checkbox";
 
 function ProductsListPage() {
-  const { category, searchQuery,brand } = useParams()
-  const [products, setProducts] = useState([])
+  const { category, searchQuery, brand } = useParams();
+  const [products, setProducts] = useState([]);
   const [isOutOfStock, setIsOutOfStock] = useState(false);
   const [productsLoaded, setProductsLoaded] = useState(false);
+  const [isLowToHigh, setIsLowToHigh] = useState(false);
+  const [isWindowsSize, setIsWindowsSize] = useState(false);
+  const [isHighToLow, setIsHighToLow] = useState(false);
+
+  const [showfilters, setShowFilters] = useState(false);
 
   const handleCheckboxChange = () => {
     setIsOutOfStock(!isOutOfStock);
   };
 
-  const [menuItems, setMenuItems] = useState([]);
-  const dispatch = useDispatch()
-  const location = useLocation()
+  const handleshowfilters = () => {
+    setShowFilters(!showfilters);
+  };
+
+  const handleLowToHighChange = () => {
+    setIsHighToLow(false);
+    setIsLowToHigh(!isLowToHigh);
+  };
+
+  const handleHighToLowChange = () => {
+    setIsLowToHigh(false);
+    setIsHighToLow(!isHighToLow);
+  };
 
   function checkForChanges() {
-    const storedString = localStorage.getItem('randomString');
+    const storedString = localStorage.getItem("randomString");
     if (storedString !== currentRandomString) {
-      // handleCheckboxChange()
-      // console.log('Random string changed:', storedString);
       setIsOutOfStock(!isOutOfStock);
       currentRandomString = storedString;
     }
   }
-  
-  // Initialize currentRandomString with the initially generated random string
-  let currentRandomString = localStorage.getItem('randomString');
-  
-  // Set up a polling mechanism to check for changes every 100 milliseconds
+
+  let currentRandomString = localStorage.getItem("randomString");
+
   setInterval(checkForChanges, 1000);
 
   useEffect(() => {
@@ -58,55 +59,44 @@ function ProductsListPage() {
       });
   }, [isOutOfStock]);
 
-  console.log("ProductListPage", products);
-
-  
-
   const productss = products.map((item) => ({
-    _id: item._id, // Assuming a unique ID for each item
+    _id: item._id,
     name: item.title,
-    category: item.category, // You can set the category as per your application logic
-    price: item.Price, // Define the price as needed
+    category: item.category,
+    price: item.Price,
     check: item.check,
-    stars: 4.0, // Set the stars or rating based on your system
+    stars: 4.0,
     imageLinks: [`https://cv81j9kz-4500.inc1.devtunnels.ms/${item.image}`],
     isFavorite: false,
     isAdded: false,
     describtion: item.describtion,
-    calories:item.calories,
-    carbohydrates:item.carbohydrates,
-    fats:item.fats,
-    protein:item.protein
-
+    calories: item.calories,
+    carbohydrates: item.carbohydrates,
+    fats: item.fats,
+    protein: item.protein,
   }));
 
-  console.log("Product details that send from Productlistpage to card",productss)
+  let filteredData = productss.filter(
+    (item) => !isOutOfStock || (isOutOfStock && item.stock > 0)
+  );
 
-
-
-  const [isWindowsSize, setIsWindowsSize] = useState(false);
-
+  if (isLowToHigh) {
+    filteredData = filteredData.sort((a, b) => a.price - b.price);
+  } else if (isHighToLow) {
+    filteredData = filteredData.sort((a, b) => b.price - a.price);
+  }
 
   useEffect(() => {
     const handleResize = () => {
-      setIsWindowsSize(window.innerWidth > 500); 
+      setIsWindowsSize(window.innerWidth > 500);
     };
     handleResize();
 
     window.addEventListener("resize", handleResize);
-
-    // Remove the event listener when the component unmounts
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  // if (!productsLoaded) {
-  //   return <LoadingScreen />;
-  // }
-
-  
-  
 
   if (isWindowsSize) {
     return (
@@ -114,14 +104,44 @@ function ProductsListPage() {
         {/* <ToastContainer/> */}
         <div className="flex w-full gap-5 flex-col md:flex-row">
           <div className="flex-[0.15] flex flex-col items-center">
-            <button className="bg-black/70 text-white p-2 rounded-lg w-[80%] hover:bg-black ">
+            <button
+              className={`bg-black text-white p-2 rounded-lg w-[80%] hover:bg-black/70 `}
+              onClick={handleshowfilters}
+            >
               Apply Filters {">"}
             </button>
             <br />
-       
-            {/* <Checkbox label="Out of Stock" color="danger" checked={isOutOfStock}
-          onChange={handleCheckboxChange} /> */}
+            {showfilters ? (
+              <>
+                <motion.h1
+                  whileHover={{ scale: 1.05 }}
+                  initial={{ y: -50, opacity: 0, scale: 0.6 }}
+                  animate={{ y: 0, opacity: 1, scale: 1 }}
+                  transition={{ type: "spring", duration: 1.5 }}
+                  style={{ marginBottom: "5px", color: "rgb(20 184 166)" }}
+                  className="text-center text-black text-1xl md:text-4x1 font-bold"
+                >
+                  By Price
+                </motion.h1>
+                <Checkbox
+                  label="Low to High"
+                  color="danger"
+                  checked={isLowToHigh}
+                  onClick={handleLowToHighChange}
+                />
+                <br />
+                <Checkbox
+                  label="High to Low"
+                  color="danger"
+                  checked={isHighToLow}
+                  onClick={handleHighToLowChange}
+                />
+              </>
+            ) : (
+              <></>
+            )}
           </div>
+
           <div className="flex-[0.8] flex flex-col gap-5 items-center md:items-start">
             <div className="w-[95%] md:w-full h-48 md:h-56 relative">
               <img
@@ -134,48 +154,59 @@ function ProductsListPage() {
               </p>
             </div>
             {productsLoaded ? (
-  <div className="grid md:grid-rows-1 grid-rows-3 grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-3 md:px-0">
-    {productss.map((prod) => (
-      <ProductCard key={prod.id} product={prod} onCheckboxChange={handleCheckboxChange}/>
-    ))}
-  </div>
-) : (
-  <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-3 md:px-0">
-    {Array.from({ length: 5 }, (_, index) => (
-      <LoadingScreen key={index} />
-    ))}
-  </div>
-)}
-
-            {/* {productsLoaded ? (
-        <div className="grid md:grid-rows-1 grid-rows-3 grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-3 md:px-0">
-        {productss.map((prod) => (
-          <ProductCard  product={prod} onCheckboxChange={handleCheckboxChange}/>
-        ))}
-      </div>
-        ) : (
-          <LoadingScreen />
-          <LoadingScreen />
-          <LoadingScreen />
-          <LoadingScreen />
-          <LoadingScreen />
-        )} */}
-           
-           
+              <div className="grid md:grid-rows-1 grid-rows-3 grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-3 md:px-0">
+                {productss.map((prod) => (
+                  <ProductCard
+                    key={prod.id}
+                    product={prod}
+                    onCheckboxChange={handleCheckboxChange}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-3 md:px-0">
+                {Array.from({ length: 5 }, (_, index) => (
+                  <LoadingScreen key={index} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
     );
   } else {
     return (
-      // Mobile-specific JSX
       <div className="py-6 px-3 md:px-0">
         <div className="flex w-full gap-5 flex-col md:flex-row">
           <div className="flex-[0.15] flex flex-col items-center">
-            <button className="bg-black/70 text-white p-2 rounded-lg w-[80%] hover:bg-black ">
+            <button
+              className={`bg-black text-white p-2 rounded-lg w-[80%] hover:bg-black/70 `}
+              onClick={handleshowfilters}
+            >
               Apply Filters {">"}
             </button>
+            <br />
+            {showfilters ? (
+              <>
+                <Checkbox
+                  label="Low to High"
+                  color="danger"
+                  checked={isLowToHigh}
+                  onClick={handleLowToHighChange}
+                />
+                <br />
+                <Checkbox
+                  label="High to Low"
+                  color="danger"
+                  checked={isHighToLow}
+                  onClick={handleHighToLowChange}
+                />
+              </>
+            ) : (
+              <></>
+            )}
           </div>
+
           <div className="flex-[0.8] flex flex-col gap-5 items-center md:items-start">
             <div className="w-[95%] md:w-full h-48 md:h-56 relative">
               <img
@@ -188,47 +219,48 @@ function ProductsListPage() {
               </p>
             </div>
             {productsLoaded ? (
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7 p-4 md:py-5 md:px-14 flex-wrap">
-        {productss.map((item, i) => {
-          return (
-            <motion.div
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.9 }}
-              initial={{ opacity: 0, x: 50, scaleZ: 0 }}
-              whileInView={{
-                opacity: 1,
-                x: 0,
-                scaleZ: 1,
-                transition: {
-                  delay: i * 0.1,
-                  opacity: { duration: 1 },
-                  type: "spring",
-                  bounce: 0.4,
-                  stiffness: 60,
-                },
-              }}
-              viewport={{ once: true }}
-              key={item.heading}
-              className={`p-3 md:p-6 w-full h-full flex gap-x-2 md:gap-x-4 items-center cursor-pointer ${item.bg} rounded-lg select-none`}
-              style={{
-                minWidth: "280px",
-                maxWidth: "100%",
-                backgroundColor: "#fcfcfc",
-                border: "1px solid #ccc", // Added 1px solid border
-                borderRadius: "8px",
-                boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.1)",
-              }} // Adjust card width
-            >
-              <ProductCard  product={item} onCheckboxChange={handleCheckboxChange}/>
-            </motion.div>
-          );
-        })}
-      </section>
-        ) : (
-          <LoadingScreen />
-        )}
-            
-            
+              <section className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7 p-4 md:py-5 md:px-14 flex-wrap">
+                {productss.map((item, i) => {
+                  return (
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.9 }}
+                      initial={{ opacity: 0, x: 50, scaleZ: 0 }}
+                      whileInView={{
+                        opacity: 1,
+                        x: 0,
+                        scaleZ: 1,
+                        transition: {
+                          delay: i * 0.1,
+                          opacity: { duration: 1 },
+                          type: "spring",
+                          bounce: 0.4,
+                          stiffness: 60,
+                        },
+                      }}
+                      viewport={{ once: true }}
+                      key={item.heading}
+                      className={`p-3 md:p-6 w-full h-full flex gap-x-2 md:gap-x-4 items-center cursor-pointer ${item.bg} rounded-lg select-none`}
+                      style={{
+                        minWidth: "280px",
+                        maxWidth: "100%",
+                        backgroundColor: "#fcfcfc",
+                        border: "1px solid #ccc",
+                        borderRadius: "8px",
+                        boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.1)",
+                      }}
+                    >
+                      <ProductCard
+                        product={item}
+                        onCheckboxChange={handleCheckboxChange}
+                      />
+                    </motion.div>
+                  );
+                })}
+              </section>
+            ) : (
+              <LoadingScreen />
+            )}
           </div>
         </div>
       </div>
@@ -236,4 +268,4 @@ function ProductsListPage() {
   }
 }
 
-export default ProductsListPage
+export default ProductsListPage;
