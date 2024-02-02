@@ -74,7 +74,7 @@ function ProductCard({ product, onCheckboxChange }) {
         "No data available in localStorage or missing required fields."
       );
     } else {
-      const apiUrl = `https://cv81j9kz-4500.inc1.devtunnels.ms/checkisliked/${loginDataa.favorites._id}/${product._id}`;
+      const apiUrl = `http://localhost:4500/checkisliked/${loginDataa.favorites._id}/${product._id}`;
 
       fetch(apiUrl)
         .then((response) => {
@@ -121,7 +121,7 @@ function ProductCard({ product, onCheckboxChange }) {
         }
 
         const response = await fetch(
-          "https://cv81j9kz-4500.inc1.devtunnels.ms/ingredients/updatetempstock",
+          "http://localhost:4500/ingredients/updatetempstock",
           {
             method: "PUT",
             headers: {
@@ -184,7 +184,7 @@ function ProductCard({ product, onCheckboxChange }) {
 
       axios
         .post(
-          `https://cv81j9kz-4500.inc1.devtunnels.ms/manageFavorite`,
+          `http://localhost:4500/manageFavorite`,
           { userId, favorites },
           config
         )
