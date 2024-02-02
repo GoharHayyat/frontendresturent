@@ -7,7 +7,7 @@ function ProductList({ name, data }) {
   // return (
 
   const [isWindowsSize, setIsWindowsSize] = useState(false);
-  console.log("data", data);
+  console.log("ProductList Data", data);
 
   const handleCheckboxChange = () => {
     // setIsOutOfStock(!isOutOfStock);

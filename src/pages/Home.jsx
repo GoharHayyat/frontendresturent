@@ -30,7 +30,7 @@ function Home() {
       try {
         // Updated API endpoint without specifying an ID
         const response = await fetch(
-          "https://cv81j9kz-4500.inc1.devtunnels.ms/menuitemsTrending"
+          "http://localhost:4500/menuitemsTrending"
         );
         if (response.ok) {
           const data = await response.json();
@@ -46,19 +46,11 @@ function Home() {
 
     fetchMenuItems();
   }, []);
+ 
+  console.log("check trend Menuitem",menuItems)
 
-  // const productss = products.map((item) => ({
-  //   _id: item._id, // Assuming a unique ID for each item
-  //   name: item.title,
-  //   category: item.category, // You can set the category as per your application logic
-  //   price: item.Price, // Define the price as needed
-  //   check: item.check,
-  //   stars: 4.0, // Set the stars or rating based on your system
-  //   imageLinks: [`https://cv81j9kz-4500.inc1.devtunnels.ms/${item.image}`],
-  //   isFavorite: false,
-  //   isAdded: false,
-  //   describtion: item.describtion
-  // }));
+
+
 
   useEffect(() => {
     if (menuItems.length > 0 && !trending) {
@@ -69,7 +61,7 @@ function Home() {
       //   price: item.Price,
       //   check: item.check,
       //   stars: 4.0,
-      //   imageLinks: [`https://cv81j9kz-4500.inc1.devtunnels.ms/${item.image}`],
+      //   imageLinks: [`http://localhost:4500/${item.image}`],
       //   isFavorite: false,
       //   isAdded: false,
       //   describtion: item.describtion
@@ -82,7 +74,7 @@ function Home() {
         price: item.Price, // Define the price as needed
         check: item.check,
         stars: 4.0, // Set the stars or rating based on your system
-        imageLinks: [`https://cv81j9kz-4500.inc1.devtunnels.ms/${item.image}`],
+        imageLinks: [`http://localhost:4500/${item.image}`],
         isFavorite: false,
         isAdded: false,
         describtion: item.describtion,
@@ -96,6 +88,8 @@ function Home() {
     }
   }, [menuItems, trending]);
 
+  console.log("trending",trending)
+
   return (
     <div>
       <Slider />
@@ -107,6 +101,7 @@ function Home() {
             <ProductList name={"Trending Products"} data={trending} />
             
           )}
+          {/* //Categories */}
            <CategoryTiles />
         </>
       ) : (
@@ -128,9 +123,7 @@ function Home() {
       {/* {trending && <ProductCard  data={trending} />} */}
      
       <Services />
-      {/* {featured && <ProductList name={"Featured Products"} data={featured}/>} */}
-      {/* <BrandTiles/> */}
-      {/* <Newsletter/> */}
+     
     </div>
   );
 }

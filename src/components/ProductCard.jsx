@@ -38,6 +38,7 @@ function ProductCard({ product, onCheckboxChange }) {
     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setIsFavorite(favorites.includes(product));
   }, []);
+  
   const [isAdded, setIsAdded] = useState(false);
   const [isAddedd, setIsAddedd] = useState(false);
 
@@ -74,7 +75,7 @@ function ProductCard({ product, onCheckboxChange }) {
         "No data available in localStorage or missing required fields."
       );
     } else {
-      const apiUrl = `https://cv81j9kz-4500.inc1.devtunnels.ms/checkisliked/${loginDataa.favorites._id}/${product._id}`;
+      const apiUrl = `http://localhost:4500/checkisliked/${loginDataa.favorites._id}/${product._id}`;
 
       fetch(apiUrl)
         .then((response) => {
@@ -121,7 +122,7 @@ function ProductCard({ product, onCheckboxChange }) {
         }
 
         const response = await fetch(
-          "https://cv81j9kz-4500.inc1.devtunnels.ms/ingredients/updatetempstock",
+          "http://localhost:4500/ingredients/updatetempstock",
           {
             method: "PUT",
             headers: {
@@ -184,7 +185,7 @@ function ProductCard({ product, onCheckboxChange }) {
 
       axios
         .post(
-          `https://cv81j9kz-4500.inc1.devtunnels.ms/manageFavorite`,
+          `http://localhost:4500/manageFavorite`,
           { userId, favorites },
           config
         )
@@ -276,14 +277,14 @@ function ProductCard({ product, onCheckboxChange }) {
             {product.name}
           </motion.h5>
 
-          <Link to={`/category/${product.category}`}>
+          
             <motion.p
               whileHover={{ scale: 0.98 }}
               className="text-xs hover:text-teal-600"
             >
               {product.category}
             </motion.p>
-          </Link>
+          
           
           <Stars rating={product.stars} />
           <div className="flex flex-col md:flex-row md:items-center justify-between">
@@ -302,22 +303,11 @@ function ProductCard({ product, onCheckboxChange }) {
                   <HeartIcon className="h-7 w-7 text-red-500 hover:text-red-700" />
                 )}
               </motion.div>
-              <motion.div
+              {/* <motion.div
                 whileTap={{ scale: 0.8 }}
                 whileHover={{ scale: 1.1 }}
                 onClick={handleAddToCart}
               >
-                {/* {product.check ? (
-                  <Chip size="lg" variant="solid" color="danger">
-                    Out of stock
-                  </Chip>
-                ) : isAdded ? (
-                  <CheckCircleIcon className="h-7 w-7 text-green-700 fill-green-400" />
-                ) : isAddedd ? (
-                  <FaTimes className="h-7 w-7 text-red-700 fill-red-400" />
-                ) : (
-                  <ShoppingCartIcon className="h-7 w-7 text-green-700 hover:fill-green-400" />
-                )} */}
 
                 {isAdded ? (
                   <CheckCircleIcon className="h-7 w-7 text-green-700 fill-green-400" />
@@ -326,7 +316,20 @@ function ProductCard({ product, onCheckboxChange }) {
                 ) : (
                   <ShoppingCartIcon className="h-7 w-7 text-green-700 hover:fill-green-400" />
                 )}
-              </motion.div>
+              </motion.div> */}
+              {product.check === false && (
+      <motion.div
+        whileTap={{ scale: 0.8 }}
+        whileHover={{ scale: 1.1 }}
+        onClick={handleAddToCart}
+      >
+        {isAdded ? (
+          <CheckCircleIcon className="h-7 w-7 text-green-700 fill-green-400" />
+        ) : (
+          <ShoppingCartIcon className="h-7 w-7 text-green-700 hover:fill-green-400" />
+        )}
+      </motion.div>
+    )}
             </div>
           </div>
           {/* </>
@@ -419,7 +422,7 @@ function ProductCard({ product, onCheckboxChange }) {
             </motion.div>
             <div style={{marginLeft:"20%", display: "inline-block" }}>
             <div>
-              <motion.div
+              {/* <motion.div
                 whileTap={{ scale: 0.8 }}
                 whileHover={{ scale: 1.1 }}
                 onClick={handleAddToCart}
@@ -431,7 +434,20 @@ function ProductCard({ product, onCheckboxChange }) {
                 ) : (
                   <ShoppingCartIcon className="h-7 w-7 text-green-700 hover:fill-green-400" />
                 )}
-              </motion.div>
+              </motion.div> */}
+              {product.check === false && (
+      <motion.div
+        whileTap={{ scale: 0.8 }}
+        whileHover={{ scale: 1.1 }}
+        onClick={handleAddToCart}
+      >
+        {isAdded ? (
+          <CheckCircleIcon className="h-7 w-7 text-green-700 fill-green-400" />
+        ) : (
+          <ShoppingCartIcon className="h-7 w-7 text-green-700 hover:fill-green-400" />
+        )}
+      </motion.div>
+    )}
             </div>
           </div>
           </div>

@@ -17,10 +17,12 @@ function UserProfile() {
   const dispatch = useDispatch();
 const navigate = useNavigate();
 const [currUser, setCurrUser] = useState(null);
+
 const [favoritess, setFavorites] = useState([]);
 const [favoritesData, setFavoritesData] = useState([]);
 const [isUserLoggedIn, setIsUserLoggedIn] = useState([]);
 const [isWindowsSize, setIsWindowsSize] = useState(false);
+
 
 useEffect(() => {
   const handleResize = () => {
@@ -43,9 +45,11 @@ const handleCheckboxChange = () => {
   
 // }, [isOutOfStock]);
 
-useEffect(() => {
-  dispatch(closeAll());
-}, []);
+
+
+
+
+
 
 useEffect(() => {
   const storedData = localStorage.getItem("loginData");
@@ -59,7 +63,7 @@ useEffect(() => {
       if (parsedData.favorites && parsedData.favorites._id) {
         console.log("Fetching user favorites...");
 
-        fetch(`https://cv81j9kz-4500.inc1.devtunnels.ms/userfavorites/${parsedData.favorites._id}`)
+        fetch(`http://localhost:4500/userfavorites/${parsedData.favorites._id}`)
           .then((res) => res.json())
           .then((data) => {
             console.log("Favorites data received:", data);
@@ -70,7 +74,7 @@ useEffect(() => {
 
             // Use Promise.all to wait for all API calls to complete
             const fetchPromises = favoriteIds.map((id) => {
-              return fetch(`https://cv81j9kz-4500.inc1.devtunnels.ms/menuitemsgetproductdetails/${id}`)
+              return fetch(`http://localhost:4500/menuitemsgetproductdetails/${id}`)
                 .then((res) => res.json())
                 .catch((err) => {
                   console.error("Error fetching item details:", err);
@@ -102,6 +106,28 @@ useEffect(() => {
     setIsUserLoggedIn(false);
   }
 }, []); 
+// console.log("CurrUser",currUser.favorites._id)
+
+
+
+// useEffect(() => {
+//     if (userId) {
+//       const fetchOrders = async () => {
+//         try {
+//           setLoading(true);
+//           const response = await axios.get(`/orders/${userId}`);
+//           setOrders(response.data.orders);
+//           setLoading(false);
+//         } catch (error) {
+//           console.error('Error fetching orders:', error);
+//           setError('Failed to fetch orders');
+//           setLoading(false);
+//         }
+//       };
+
+//       fetchOrders();
+//     }
+//   }, [userId]);
 
 const productss = favoritesData.map((item) => ({
   _id: item._id, // Assuming a unique ID for each item
@@ -110,7 +136,7 @@ const productss = favoritesData.map((item) => ({
   price: item.Price, // Define the price as needed
   check: item.check,
   stars: 4.0, // Set the stars or rating based on your system
-  imageLinks: [`https://cv81j9kz-4500.inc1.devtunnels.ms/${item.image}`],
+  imageLinks: [`http://localhost:4500/${item.image}`],
   isFavorite: false,
   isAdded: false,
   describtion: item.describtion,

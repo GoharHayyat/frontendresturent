@@ -20,6 +20,13 @@ function Checkout() {
     dispatch(closeAll())
   },[])
 
+  console.log("cart details",cart)
+
+  const subtotal = totalPrice;
+const gspTaxRate = 0; // 7.5% tax rate
+const gspTax = subtotal * gspTaxRate;
+const totalPriceWithTax = subtotal + gspTax;
+
   return (
     <div className="md:h-[100vh]">
       <div className='px-4 pt-10 md:px-10 md:w-[55%]'>
@@ -64,14 +71,14 @@ function Checkout() {
               <h1>Rs.{totalPrice}</h1>
             </div>
             <div className="flex justify-between items-center">
-              <h1>Shipping:</h1>
-              <h1>Rs.1000</h1>
+              <h1>Incluing Tax</h1>
+               <h1>Rs.{gspTax.toFixed(2)}</h1>
             </div>
           </div>
           <hr />
           <div className="flex justify-between text-lg items-center p-4 md:text-xl font-bold ">
-            <h1>Total:</h1>
-            <h1>Rs.{totalPrice + 1000}</h1>
+            <h1>Total Price (Incl. Tax):</h1>
+            <h1>Rs.{totalPriceWithTax.toFixed(2)}</h1>
           </div>
         </div>
       </div>

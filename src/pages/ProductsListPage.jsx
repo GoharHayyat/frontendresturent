@@ -50,7 +50,7 @@ function ProductsListPage() {
   setInterval(checkForChanges, 1000);
 
   useEffect(() => {
-    fetch(`https://cv81j9kz-4500.inc1.devtunnels.ms/menuitems/${category}`)
+    fetch(`http://localhost:4500/menuitems/${category}`)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
@@ -61,6 +61,8 @@ function ProductsListPage() {
       });
   }, [isOutOfStock]);
 
+  console.log("productCAT",products)
+
   const productss = products.map((item) => ({
     _id: item._id,
     name: item.title,
@@ -68,7 +70,7 @@ function ProductsListPage() {
     price: item.Price,
     check: item.check,
     stars: 4.0,
-    imageLinks: [`https://cv81j9kz-4500.inc1.devtunnels.ms/${item.image}`],
+    imageLinks: [`http://localhost:4500/${item.image}`],
     isFavorite: false,
     isAdded: false,
     describtion: item.describtion,
