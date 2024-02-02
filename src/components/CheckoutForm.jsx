@@ -25,41 +25,22 @@ function CheckoutForm() {
     
     const inputClass = "peer outline-black-600 p-2 rounded-md border-2 border-gray-400 placeholder-transparent"
     const labelClass = "absolute left-2 -top-2.5 bg-white text-black-700 peer-focus:left-2 peer-focus:text-sm peer-focus:-top-2.5 peer-focus:text-black peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-placeholder-shown:left-2.5 pointer-events-none transition-all"
-    const onChange = (e) => {
-        console.log( [e.target.name], e.target.value)
-        setValues({ ...values, [e.target.name]: e.target.value });
-    };
+    
+   useEffect(() => {
+    const loginDataString = localStorage.getItem('loginData');
 
-    useEffect(() => {
-        if (isUserLoggedIn) {
+    if (loginDataString) {
+        const loginData = JSON.parse(loginDataString);
+        setUser(loginData);
+        console.log("user", user);
+    }
+}, []); // Empty dependency array ensures this effect runs only once on mount
 
-            const getUser = async () => {
-                if (token !== {} && token !== undefined && token !== null) {
-
-                    const config = {
-                        headers: {
-                            "Content-Type": "application/json",
-                            'Authorization': `Bearer ${token}`
-                        }
-                    }
-                    try {
-                        const { data } = await axios.get(`https://cv81j9kz-4500.inc1.devtunnels.msprofile`, config)
-                        return data.msg
-
-                    } catch (error) {
-                        //console.log(error)
-                        toast("Server Error Try Again later!")
-                    }
-                }
-            }
-            getUser().then((data) => setUser(data)).catch((err) => console.log(err));
-        }
-
-    }, [token, isUserLoggedIn])
-    const handleLogout = () => {
-        localStorage.removeItem("auth-token")
-        dispatch(logout({}));
-        setValues({ ...values, existingaddress: "false" })
+   
+    // const handleLogout = () => {
+    //     localStorage.removeItem("auth-token")
+    //     dispatch(logout({}));
+    //     // setValues({ ...values, existingaddress: "false" })
 
     // }
 
@@ -112,22 +93,31 @@ function CheckoutForm() {
 
    const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        const config = {
-            header:{
-                "Content-Type":"application/json",
-            }
-        }
-        const products = [];
-        console.log(values,(isUserLoggedIn && (values["existingaddress"] !== "false")))
-        cart.map((item,i)=> products.push({item:[i,{name:item.name,price:item.price}],quantity:item.count}));
-        const deliveryAddress = `${(isUserLoggedIn && (values["existingaddress"] !== "false"))?user.address:values["address"]}, ${values["house"]}, ${values["city"]}, ${values["province"]}, ${values["zip"]}`;
-        console.log(deliveryAddress)
-        try {
-            const {data} = await axios.post(`https://cv81j9kz-4500.inc1.devtunnels.msorder`,{products,deliveryAddress,user},config);
-            console.log(data)
-            window.location.href = data.url
 
+        const products = cart.map(item => ({ name: item.name, price: item.price, quantity: item.count }));
+        const totalPrice = cart.reduce((total, item) => total + item.price * item.count, 0); // Calculate total price
+
+        try {
+            const response = await axios.post('http://localhost:4500/orders', {
+                userId: user.favorites._id, // Assuming user object has an id property
+                products,
+                totalPrice,
+                // Add delivery address here if needed
+            });
+
+            console.log(response.data); // Log the response for debugging
+            // dispatch(clearCart());
+            // dispatch({ type: 'cart/reset' });
+            cart.forEach(item => dispatch(removeFromCart({ _id: item._id })));
+
+            // Show success toast
+            toast.success('Order submitted successfully');
+
+            // Navigate to home page
+            // history.push('/'); // Redirect to home page
+            navigate('/')
+
+            // Handle successful order submission (e.g., redirect to thank you page)
         } catch (error) {
             console.error('Error submitting order:', error);
             toast.error('Failed to submit order. Please try again later.');
