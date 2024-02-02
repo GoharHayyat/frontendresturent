@@ -65,9 +65,9 @@ function Navbar() {
                 </motion.div>
 
                 <div className="flex gap-4">
-                    <motion.div whileTap={{ scale: 0.8 }} onClick={() => { menu && dispatch(setMenuBar(false)); dispatch(setSearchModal(!search)); }}>
+                    {/* <motion.div whileTap={{ scale: 0.8 }} onClick={() => { menu && dispatch(setMenuBar(false)); dispatch(setSearchModal(!search)); }}>
                         <MagnifyingGlassIcon className="h-6 w-6 hover:text-sky-600 duration-200" />
-                    </motion.div>
+                    </motion.div> */}
                     {/* <motion.div whileTap={{ scale: 0.8 }} onClick={() => {  dispatch(setImageSearch(true)); }}>
                         <CameraIcon className="h-6 w-6 hover:text-sky-600 duration-200" />
                     </motion.div> */}

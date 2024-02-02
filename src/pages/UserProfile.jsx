@@ -17,10 +17,12 @@ function UserProfile() {
   const dispatch = useDispatch();
 const navigate = useNavigate();
 const [currUser, setCurrUser] = useState(null);
+
 const [favoritess, setFavorites] = useState([]);
 const [favoritesData, setFavoritesData] = useState([]);
 const [isUserLoggedIn, setIsUserLoggedIn] = useState([]);
 const [isWindowsSize, setIsWindowsSize] = useState(false);
+
 
 useEffect(() => {
   const handleResize = () => {
@@ -43,9 +45,11 @@ const handleCheckboxChange = () => {
   
 // }, [isOutOfStock]);
 
-useEffect(() => {
-  dispatch(closeAll());
-}, []);
+
+
+
+
+
 
 useEffect(() => {
   const storedData = localStorage.getItem("loginData");
@@ -102,6 +106,28 @@ useEffect(() => {
     setIsUserLoggedIn(false);
   }
 }, []); 
+// console.log("CurrUser",currUser.favorites._id)
+
+
+
+// useEffect(() => {
+//     if (userId) {
+//       const fetchOrders = async () => {
+//         try {
+//           setLoading(true);
+//           const response = await axios.get(`/orders/${userId}`);
+//           setOrders(response.data.orders);
+//           setLoading(false);
+//         } catch (error) {
+//           console.error('Error fetching orders:', error);
+//           setError('Failed to fetch orders');
+//           setLoading(false);
+//         }
+//       };
+
+//       fetchOrders();
+//     }
+//   }, [userId]);
 
 const productss = favoritesData.map((item) => ({
   _id: item._id, // Assuming a unique ID for each item

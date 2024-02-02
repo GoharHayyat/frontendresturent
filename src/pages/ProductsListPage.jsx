@@ -6,6 +6,8 @@ import LoadingScreen from "./LoadingScreen";
 
 import Checkbox from "@mui/joy/Checkbox";
 
+//Main Page for sending product data
+
 function ProductsListPage() {
   const { category, searchQuery, brand } = useParams();
   const [products, setProducts] = useState([]);
@@ -58,6 +60,8 @@ function ProductsListPage() {
         console.error(err);
       });
   }, [isOutOfStock]);
+
+  console.log("productCAT",products)
 
   const productss = products.map((item) => ({
     _id: item._id,

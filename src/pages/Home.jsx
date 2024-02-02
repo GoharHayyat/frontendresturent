@@ -54,7 +54,7 @@ function Home() {
   //   price: item.Price, // Define the price as needed
   //   check: item.check,
   //   stars: 4.0, // Set the stars or rating based on your system
-  //   imageLinks: [`http://localhost:4500/${item.image}`],
+  //   imageLinks: [`https://cv81j9kz-4500.inc1.devtunnels.ms/${item.image}`],
   //   isFavorite: false,
   //   isAdded: false,
   //   describtion: item.describtion
@@ -96,6 +96,8 @@ function Home() {
     }
   }, [menuItems, trending]);
 
+  console.log("trending",trending)
+
   return (
     <div>
       <Slider />
@@ -107,6 +109,7 @@ function Home() {
             <ProductList name={"Trending Products"} data={trending} />
             
           )}
+          {/* //Categories */}
            <CategoryTiles />
         </>
       ) : (
@@ -128,9 +131,7 @@ function Home() {
       {/* {trending && <ProductCard  data={trending} />} */}
      
       <Services />
-      {/* {featured && <ProductList name={"Featured Products"} data={featured}/>} */}
-      {/* <BrandTiles/> */}
-      {/* <Newsletter/> */}
+     
     </div>
   );
 }
