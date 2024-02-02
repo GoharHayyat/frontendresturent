@@ -17,6 +17,7 @@ function ProductCardDetails({product}) {
        {product.describtion}
        <br/>
        {product.carbohydrates}
+       {product.protein}
       </div>
     );
   
