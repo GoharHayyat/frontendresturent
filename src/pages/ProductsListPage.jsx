@@ -3,7 +3,8 @@ import ProductCard from "../components/ProductCard";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import LoadingScreen from "./LoadingScreen";
-
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 import Checkbox from "@mui/joy/Checkbox";
 
 //Main Page for sending product data
@@ -16,11 +17,13 @@ function ProductsListPage() {
   const [isLowToHigh, setIsLowToHigh] = useState(false);
   const [isWindowsSize, setIsWindowsSize] = useState(false);
   const [isHighToLow, setIsHighToLow] = useState(false);
-
+  const [mydatahandle, setMydatahandle] = useState(null);
+  const [open, setOpen] = React.useState(false);
   const [showfilters, setShowFilters] = useState(false);
 
   const handleCheckboxChange = () => {
     setIsOutOfStock(!isOutOfStock);
+    handlemydata(products);
   };
 
   const handleshowfilters = () => {
@@ -28,13 +31,18 @@ function ProductsListPage() {
   };
 
   const handleLowToHighChange = () => {
+    setOpen(true);
     setIsHighToLow(false);
     setIsLowToHigh(!isLowToHigh);
+    setIsOutOfStock(!isOutOfStock);
   };
 
   const handleHighToLowChange = () => {
+    setOpen(true);
+    setIsOutOfStock(!isOutOfStock);
     setIsLowToHigh(false);
     setIsHighToLow(!isHighToLow);
+    
   };
 
   function checkForChanges() {
@@ -53,42 +61,60 @@ function ProductsListPage() {
     fetch(`http://localhost:4500/menuitems/${category}`)
       .then((res) => res.json())
       .then((data) => {
-        setProducts(data);
+        
+        const productss = data.map((item) => ({
+          _id: item._id,
+          name: item.title,
+          category: item.category,
+          price: item.Price,
+          check: item.check,
+          stars: 4.0,
+          imageLinks: [`http://localhost:4500/${item.image}`],
+          isFavorite: false,
+          isAdded: false,
+          describtion: item.describtion,
+          calories: item.calories,
+          carbohydrates: item.carbohydrates,
+          fats: item.fats,
+          protein: item.protein,
+        }));
+        handlemydata(productss);
+        setProducts(productss);
         setProductsLoaded(true);
+       
       })
       .catch((err) => {
         console.error(err);
       });
   }, [isOutOfStock]);
 
-  console.log("productCAT",products)
+  // console.log("bhfbvj", products)  
 
-  const productss = products.map((item) => ({
-    _id: item._id,
-    name: item.title,
-    category: item.category,
-    price: item.Price,
-    check: item.check,
-    stars: 4.0,
-    imageLinks: [`http://localhost:4500/${item.image}`],
-    isFavorite: false,
-    isAdded: false,
-    describtion: item.describtion,
-    calories: item.calories,
-    carbohydrates: item.carbohydrates,
-    fats: item.fats,
-    protein: item.protein,
-  }));
+  const handlemydata  =  (productss, isOutOfStock) => {
+    // console.log("gohar",productss)
+    
 
-  let filteredData = productss.filter(
-    (item) => !isOutOfStock || (isOutOfStock && item.stock > 0)
-  );
+    setMydatahandle(productss);
+    
+    let filteredData = productss.filter(
+      (item) => !isOutOfStock || (isOutOfStock && item.stock > 0)
+    );
+    // // let filteredData = productss;
+  
+    if (isLowToHigh) {
+      filteredData = filteredData.sort((a, b) => a.price - b.price);
+      console.log("11");
+      setMydatahandle(filteredData);
+    } else if (isHighToLow) {
+      filteredData = filteredData.sort((a, b) => b.price - a.price);
+      console.log("22");
+      setMydatahandle(filteredData);
+    }
+    setOpen(false);
+  };
 
-  if (isLowToHigh) {
-    filteredData = filteredData.sort((a, b) => a.price - b.price);
-  } else if (isHighToLow) {
-    filteredData = filteredData.sort((a, b) => b.price - a.price);
-  }
+  
+  // console.log(mydatahandle)
 
   useEffect(() => {
     const handleResize = () => {
@@ -105,6 +131,14 @@ function ProductsListPage() {
   if (isWindowsSize) {
     return (
       <div className="py-6 px-3 md:px-0">
+         <div>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </div>
         {/* <ToastContainer/> */}
         <div className="flex w-full gap-5 flex-col md:flex-row">
           <div className="flex-[0.15] flex flex-col items-center">
@@ -159,7 +193,7 @@ function ProductsListPage() {
             </div>
             {productsLoaded ? (
               <div className="grid md:grid-rows-1 grid-rows-3 grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-3 md:px-0">
-                {productss.map((prod) => (
+                {mydatahandle.map((prod) => (
                   <ProductCard
                     key={prod.id}
                     product={prod}
@@ -181,6 +215,14 @@ function ProductsListPage() {
   } else {
     return (
       <div className="py-6 px-3 md:px-0">
+           <div>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </div>
         <div className="flex w-full gap-5 flex-col md:flex-row">
           <div className="flex-[0.15] flex flex-col items-center">
             <button
@@ -224,7 +266,7 @@ function ProductsListPage() {
             </div>
             {productsLoaded ? (
               <section className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7 p-4 md:py-5 md:px-14 flex-wrap">
-                {productss.map((item, i) => {
+                {mydatahandle.map((item, i) => {
                   return (
                     <motion.div
                       whileHover={{ scale: 1.03 }}
