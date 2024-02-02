@@ -35,6 +35,7 @@ function CheckoutForm() {
         console.log("user", user);
     }
 }, []); // Empty dependency array ensures this effect runs only once on mount
+//ghghg
 
    
     // const handleLogout = () => {
@@ -43,7 +44,7 @@ function CheckoutForm() {
     //     // setValues({ ...values, existingaddress: "false" })
 
     // }
-
+    //new
 
     const userContactInfo = () => {
         if (user) {
