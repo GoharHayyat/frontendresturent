@@ -3,15 +3,19 @@ import { motion } from "framer-motion";
 import ProductCard from "../components/ProductCard";
 import { useState, useEffect } from "react";
 
-function ProductList({ name, data }) {
+function ProductList({ name, data, onCheckboxChange }) {
   // return (
 
   const [isWindowsSize, setIsWindowsSize] = useState(false);
   console.log("ProductList Data", data);
 
   const handleCheckboxChange = () => {
+    onCheckboxChange();
     // setIsOutOfStock(!isOutOfStock);
   };
+  // const handleCheckboxChange = () => {
+  //   onCheckboxChange();
+  // };
 
   useEffect(() => {
     const handleResize = () => {

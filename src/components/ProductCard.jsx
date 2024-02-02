@@ -191,9 +191,11 @@ function ProductCard({ product, onCheckboxChange }) {
         )
         .then((val) => {
           if (!val.data.success) {
+            
             setIsFavorite(!isFavorite);
             alert("Favorite not Added");
           }
+          handleCheckboxChange();
         })
         .catch((error) => {
           console.log(error);

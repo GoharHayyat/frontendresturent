@@ -17,13 +17,29 @@ function Home() {
 
   // const [trendingSet, setTrendingSet] = useState(false);
   const [productsLoaded, setProductsLoaded] = useState(false);
+  const [isOutOfStock, setIsOutOfStock] = useState(false);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(closeAll());
   }, []);
 
-  console.log("fvd", process.env.REACT_APP_API_URL);
+  // console.log("fvd", process.env.REACT_APP_API_URL);
+  function checkForChanges() {
+    const storedString = localStorage.getItem("randomString");
+    if (storedString !== currentRandomString) {
+      setIsOutOfStock(!isOutOfStock);
+      currentRandomString = storedString;
+    }
+  }
+
+  let currentRandomString = localStorage.getItem("randomString");
+
+  setInterval(checkForChanges, 1000);
+
+  const handleCheckboxChange = () => {
+    setIsOutOfStock(!isOutOfStock);
+  };
 
   useEffect(() => {
     const fetchMenuItems = async () => {
@@ -35,6 +51,7 @@ function Home() {
         if (response.ok) {
           const data = await response.json();
           setMenuItems(data);
+          handleCheckboxChangee(data);
           setProductsLoaded(true);
         } else {
           throw new Error("Failed to fetch data");
@@ -45,37 +62,12 @@ function Home() {
     };
 
     fetchMenuItems();
-  }, []);
+  }, [isOutOfStock]);
+  console.log("setMenuItems", menuItems)
 
-  // const productss = products.map((item) => ({
-  //   _id: item._id, // Assuming a unique ID for each item
-  //   name: item.title,
-  //   category: item.category, // You can set the category as per your application logic
-  //   price: item.Price, // Define the price as needed
-  //   check: item.check,
-  //   stars: 4.0, // Set the stars or rating based on your system
-  //   imageLinks: [`https://cv81j9kz-4500.inc1.devtunnels.ms/${item.image}`],
-  //   isFavorite: false,
-  //   isAdded: false,
-  //   describtion: item.describtion
-  // }));
-
-  useEffect(() => {
-    if (menuItems.length > 0 && !trending) {
-      // const products = menuItems.map((item) => ({
-      //   _id: item._id,
-      //   name: item.title,
-      //   category: item.category,
-      //   price: item.Price,
-      //   check: item.check,
-      //   stars: 4.0,
-      //   imageLinks: [`http://localhost:4500/${item.image}`],
-      //   isFavorite: false,
-      //   isAdded: false,
-      //   describtion: item.describtion
-      // }));
-
-      const products = menuItems.map((item) => ({
+  const handleCheckboxChangee = (data) => {
+    // if (data.length > 0 && !trending) {
+      const products = data.map((item) => ({
         _id: item._id, // Assuming a unique ID for each item
         name: item.title,
         category: item.category, // You can set the category as per your application logic
@@ -93,8 +85,32 @@ function Home() {
       }));
 
       setTrending(products.slice(0, 5));
-    }
-  }, [menuItems, trending]);
+    // }
+  };
+  // console.log("trending", trending)
+
+  // useEffect(() => {
+  //   if (menuItems.length > 0 && !trending) {
+  //     const products = menuItems.map((item) => ({
+  //       _id: item._id, // Assuming a unique ID for each item
+  //       name: item.title,
+  //       category: item.category, // You can set the category as per your application logic
+  //       price: item.Price, // Define the price as needed
+  //       check: item.check,
+  //       stars: 4.0, // Set the stars or rating based on your system
+  //       imageLinks: [`http://localhost:4500/${item.image}`],
+  //       isFavorite: false,
+  //       isAdded: false,
+  //       describtion: item.describtion,
+  //       calories: item.calories,
+  //       carbohydrates: item.carbohydrates,
+  //       fats: item.fats,
+  //       protein: item.protein,
+  //     }));
+
+  //     setTrending(products.slice(0, 5));
+  //   }
+  // }, [menuItems, trending]);
 
   console.log("trending",trending)
 
@@ -106,7 +122,7 @@ function Home() {
       {productsLoaded ? (
         <>
           {trending && (
-            <ProductList name={"Trending Products"} data={trending} />
+            <ProductList name={"Trending Products"} data={trending} onCheckboxChange={handleCheckboxChange} />
             
           )}
           {/* //Categories */}

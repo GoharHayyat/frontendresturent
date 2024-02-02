@@ -90,6 +90,8 @@ function Login() {
             setSpan("Successfully Logged Up!!");
             // console.log(data)/// save this in local storage
             localStorage.setItem("loginData", JSON.stringify(data));
+            localStorage.setItem("favorites", JSON.stringify(data.favorites.favorites));
+            // console.log("checking",data.favorites.favorites)
 
             setLoginSuccessFull(true)
             setTimeout(() => {
