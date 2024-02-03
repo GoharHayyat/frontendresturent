@@ -7,7 +7,7 @@ import { UserIcon } from "@heroicons/react/24/outline";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import axios from "axios";
-import { toast } from "react-toastify";
+
 // import ProductCard from '../components/ProductCard';
 import ProductCard from "../components/ProductCard";
 import ProductCardDetails from "../components/ProductCardDetails";
@@ -169,6 +169,8 @@ function UserProfile() {
     localStorage.removeItem("auth-token");
     localStorage.removeItem("favorites");
     localStorage.removeItem("loginData");
+    localStorage.removeItem("user_table");
+    localStorage.removeItem("HTML5_QRCODE_DATA");
 
     navigate("/");
     dispatch(logout({}));

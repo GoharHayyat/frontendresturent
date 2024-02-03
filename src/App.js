@@ -13,6 +13,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import UserProfile from "./pages/UserProfile"
 import AllCategory from "./pages/AllCategory";
 import ResetPassword from "./pages/ResetPassword";
+import SuccessPage from "./pages/SuccessPage";
+import Barcode from "./components/Barcode";
 function App() {
   return (
     <>
@@ -22,13 +24,17 @@ function App() {
       <Route path="login" element={<Login/>}/>
       <Route path="register" element={<Registeration/>}/>
 
+
       <Route path="menuitems/:category" element={<ProductsListPage/>}/>
       <Route path="checkout" element={<Checkout/>}/>
       <Route path="forgotpassword" element={<ForgotPassword/>}/>
       <Route path="resetpassword/:resetToken" element={<ResetPassword/>}/>
       <Route path="profile" element={<UserProfile/>}/>
       <Route path="allcategory" element={<AllCategory/>}/>
+      <Route path="success" element={<SuccessPage/>}/>
       <Route path="allcategory/menuitems/:category" element={<ProductsListPage/>}/>
+      <Route path="barcode" element={<Barcode/>}/>
+      
       </Route>
       </Routes>
       <CartMenu/>

@@ -10,8 +10,8 @@ import { setCart } from '../features/Cart';
 
 function SuccessPage() {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const [span, setSpan] = useState("");
+    // const navigate = useNavigate();
+    // const [span, setSpan] = useState("");
 
     useEffect(()=>{
         dispatch(setCart([]))
