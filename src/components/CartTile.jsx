@@ -35,7 +35,7 @@ function CartTile({ item }) {
         }
   
         const response = await fetch(
-          "http://localhost:4500/ingredients/cartincreasebutton",
+          "https://cv81j9kz-4500.inc1.devtunnels.ms/ingredients/cartincreasebutton",
           {
             method: "PUT",
             headers: {
@@ -102,7 +102,7 @@ function CartTile({ item }) {
         }
   
         const response = await fetch(
-          "http://localhost:4500/ingredients/cartincreasebutton",
+          "https://cv81j9kz-4500.inc1.devtunnels.ms/ingredients/cartincreasebutton",
           {
             method: "PUT",
             headers: {
@@ -160,7 +160,7 @@ function CartTile({ item }) {
         }
   
         const response = await fetch(
-          "http://localhost:4500/ingredients/updatetempstock",
+          "https://cv81j9kz-4500.inc1.devtunnels.ms/ingredients/updatetempstock",
           {
             method: "PUT",
             headers: {

@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Home from "./pages/Home";
+import HomeToken from "./pages/HomeToken";
 import ProductsListPage from "./pages/ProductsListPage";
 import Checkout from "./pages/Checkout";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -21,6 +22,7 @@ function App() {
       <Routes>
       <Route path="/" element={<LayoutWrapper/>} >
       <Route path="/" element={<Home/>} />
+      <Route path="/:tableToken" element={<HomeToken/>}/>
       <Route path="login" element={<Login/>}/>
       <Route path="register" element={<Registeration/>}/>
 

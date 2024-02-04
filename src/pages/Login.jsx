@@ -84,7 +84,7 @@ function Login() {
 
         try {
 
-            const { data } = await axios.post(`http://localhost:4500/login`, user, config);
+            const { data } = await axios.post(`https://cv81j9kz-4500.inc1.devtunnels.ms/login`, user, config);
             localStorage.setItem("auth-token", data.token);
             // localStorage.setItem("favorites", JSON.stringify(data.favorites))
             setSpan("Successfully Logged Up!!");

@@ -22,13 +22,10 @@ const generateKey = () => {
 
 function CheckoutForm() {
   const keyForChild = generateKey();
-  // const isUserLoggedIn = useSelector((state) => state.user.isUserLoggedIn);
   const cart = useSelector((state) => state.cart.cart);
   console.log("checkoutfinal", cart);
-  // const token = useSelector((state) => state.user.user);
   const [user, setUser] = useState();
   const dispatch = useDispatch();
-  //  const history = useHistory();
   const navigate = useNavigate();
 
   const [usertable, setUserTable] = useState({});
@@ -37,23 +34,19 @@ function CheckoutForm() {
   const handleDelete = () => {
     localStorage.removeItem("user_table");
     localStorage.removeItem("HTML5_QRCODE_DATA");
+    localStorage.removeItem("generatedString");
+    localStorage.removeItem("timeRemaining");
     setUserTablecheck(false);
     toast("Table Deleted");
 };
 
   useEffect(() => {
-    // Function to retrieve data from localStorage
     localStorage.removeItem("HTML5_QRCODE_DATA");
     const getDataFromLocalStorage = () => {
       const storedData = localStorage.getItem("user_table");
-
-      // Check if data exists in localStorage
       if (storedData) {
-        // Parse the data if needed (depends on the format in which you stored it)
         const parsedData = JSON.parse(storedData);
         setUserTablecheck(true);
-
-        // Set the data in the component state
         setUserTable(parsedData);
       }
     };
@@ -218,7 +211,7 @@ function CheckoutForm() {
     ); // Calculate total price
 
     try {
-      const response = await axios.post("http://localhost:4500/orders", {
+      const response = await axios.post("https://cv81j9kz-4500.inc1.devtunnels.ms/orders", {
         userId: user.favorites._id, // Assuming user object has an id property
         products,
         totalPrice,
