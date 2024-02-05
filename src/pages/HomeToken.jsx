@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
 import Barcode from "../components/Barcode";
+import { AnimatePresence, motion } from "framer-motion";
 const generateKey = () => {
   return Math.random().toString(36).substr(2, 9);
 };
@@ -53,13 +54,18 @@ function HomeToken() {
         console.error(error);
       } finally {
         localStorage.removeItem("HTML5_QRCODE_DATA");
-        localStorage.removeItem("page_redirct");
         setIsLoading(false);
       }
     }, 3000);
 
     return () => clearTimeout(delayTimeout);
   }, [tableToken]);
+
+  const handleOnClick = () => {
+    localStorage.removeItem("HTML5_QRCODE_DATA");
+    localStorage.removeItem("page_redirct");
+    window.location.href = "/";
+  };
 
   if (isLoading) {
     return (
@@ -75,23 +81,32 @@ function HomeToken() {
       <div style={{ textAlign: "center", marginTop: "20px" }}>
         {istokenavailable ? (
           <>
-          <div style={{height:"100%"}}>
-
-          </div>
-
+            <div style={{ height: "100%" }}></div>
           </>
         ) : (
-          // Render content when token is not available
-          <p style={{ color: "red", fontSize: "18px" }}>
-            Sorry, you don't have access to the valid Token. Kindly reattempt
-            the scan using a valid barcode.
-          </p>
+          <>
+            <div className="flex md:flex-row flex-col md:justify-between gap-2 items-center">
+              <motion.span
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={handleOnClick}
+                style={{ marginLeft: "15px", cursor: "pointer" }} // Add this to indicate the element is clickable
+              >
+                {"<"} Return to Home Page
+              </motion.span>
+            </div>
+            <p style={{ color: "red", fontSize: "18px" }}>
+              Sorry, you don't have access to the valid Token. Kindly reattempt
+              the scan using a valid barcode.
+            </p>
+            <div
+              style={{ width: "80%", marginBottom: "10px", marginLeft: "10%" }}
+            >
+              <Barcode key={keyForChild} redirect={false} />
+            </div>
+          </>
         )}
       </div>
-      <div style={{ width:"80%" ,marginBottom:"10px", marginLeft:"10%"}}>
-            <Barcode key={keyForChild} redirect={false}   />
-            </div>
-
     </>
   );
 }
