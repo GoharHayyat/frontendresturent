@@ -121,7 +121,7 @@ export default Barcode;
 //     console.log('QR Code Information:', info);
   
 //     // Example: You can use fetch or any other method to send data to your server
-//     fetch('https://cv81j9kz-4500.inc1.devtunnels.ms/qrstore', {
+//     fetch('http://localhost:4500/qrstore', {
 //       method: 'POST',
 //       headers: {
 //         'Content-Type': 'application/json',

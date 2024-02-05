@@ -46,7 +46,7 @@ function Home() {
       try {
         // Updated API endpoint without specifying an ID
         const response = await fetch(
-          "https://cv81j9kz-4500.inc1.devtunnels.ms/menuitemsTrending"
+          "http://localhost:4500/menuitemsTrending"
         );
         if (response.ok) {
           const data = await response.json();
@@ -74,7 +74,7 @@ function Home() {
         price: item.Price, // Define the price as needed
         check: item.check,
         stars: 4.0, // Set the stars or rating based on your system
-        imageLinks: [`https://cv81j9kz-4500.inc1.devtunnels.ms/${item.image}`],
+        imageLinks: [`http://localhost:4500/${item.image}`],
         isFavorite: false,
         isAdded: false,
         describtion: item.describtion,
@@ -98,7 +98,7 @@ function Home() {
   //       price: item.Price, // Define the price as needed
   //       check: item.check,
   //       stars: 4.0, // Set the stars or rating based on your system
-  //       imageLinks: [`https://cv81j9kz-4500.inc1.devtunnels.ms/${item.image}`],
+  //       imageLinks: [`http://localhost:4500/${item.image}`],
   //       isFavorite: false,
   //       isAdded: false,
   //       describtion: item.describtion,
