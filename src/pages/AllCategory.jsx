@@ -26,7 +26,7 @@ function AllCategory() {
   }, []);
 
 useEffect(() => {
-  fetch("https://cv81j9kz-4500.inc1.devtunnels.ms/getALLproduct")
+  fetch("http://localhost:4500/getALLproduct")
     .then((res) => res.json())
     .then((data) => {
       setcategory(data);
@@ -45,7 +45,7 @@ useEffect(() => {
 const mappedData = category.map((apiItem, index) => ({
     id: apiItem._id,
     name: apiItem.title,
-    img: [`https://cv81j9kz-4500.inc1.devtunnels.ms/${apiItem.image}`],
+    img: [`http://localhost:4500/${apiItem.image}`],
   }));
 
   

@@ -194,10 +194,10 @@ function CheckoutForm() {
         return;
     }
     
-    if (usertablecheck===false) {
-        toast.error("Please select a table before submitting.");
-        return;
-    }
+    // if (usertablecheck===false) {
+    //     toast.error("Please select a table before submitting.");
+    //     return;
+    // }
 
     const products = cart.map((item) => ({
       name: item.name,
@@ -211,7 +211,7 @@ function CheckoutForm() {
     ); // Calculate total price
 
     try {
-      const response = await axios.post("https://cv81j9kz-4500.inc1.devtunnels.ms/orders", {
+      const response = await axios.post("http://localhost:4500/orders", {
         userId: user.favorites._id, // Assuming user object has an id property
         products,
         totalPrice,

@@ -68,7 +68,7 @@ function ForgotPassword() {
         }
         try {
             
-            await axios.post(`https://cv81j9kz-4500.inc1.devtunnels.ms/forgotpassword`,user,config);
+            await axios.post(`http://localhost:4500/forgotpassword`,user,config);
             setSpan("Email Sent!!");
             setOpen(false)
             setTimeout(()=>{

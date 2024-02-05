@@ -39,6 +39,7 @@ function Barcode(props) {
       if (window.location.href !== result) {
         // Redirect to the scanned link
         // localStorage.setItem("user_table", result);
+        localStorage.setItem('page_redirct', "true");
         localStorage.removeItem("HTML5_QRCODE_DATA");
         window.location.assign(result);
         
@@ -121,7 +122,7 @@ export default Barcode;
 //     console.log('QR Code Information:', info);
   
 //     // Example: You can use fetch or any other method to send data to your server
-//     fetch('https://cv81j9kz-4500.inc1.devtunnels.ms/qrstore', {
+//     fetch('http://localhost:4500/qrstore', {
 //       method: 'POST',
 //       headers: {
 //         'Content-Type': 'application/json',

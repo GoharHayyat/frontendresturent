@@ -12,7 +12,7 @@ function HomeToken() {
     // Simulate a 5-second delay before fetching data
     const delayTimeout = setTimeout(async () => {
       try {
-        const response = await fetch("https://cv81j9kz-4500.inc1.devtunnels.ms/qrcodestokens");
+        const response = await fetch("http://localhost:4500/qrcodestokens");
         if (response.ok) {
           const data = await response.json();
           const matchingToken = data.find(item => item.tableId === tableToken);
@@ -52,7 +52,7 @@ function HomeToken() {
 //     // Simulate a 5-second delay before fetching data
 //     const delayTimeout = setTimeout(async () => {
 //       try {
-//         const response = await fetch("https://cv81j9kz-4500.inc1.devtunnels.ms/qrcodestokens");
+//         const response = await fetch("http://localhost:4500/qrcodestokens");
 //         if (response.ok) {
 //           const data = await response.json();
 //           const matchingToken = data.find(item => item.tableId === tableToken);

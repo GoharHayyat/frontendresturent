@@ -72,7 +72,7 @@ function UserProfile() {
           console.log("Fetching user favorites...");
 
           fetch(
-            `https://cv81j9kz-4500.inc1.devtunnels.ms/userfavorites/${parsedData.favorites._id}`
+            `http://localhost:4500/userfavorites/${parsedData.favorites._id}`
           )
             .then((res) => res.json())
             .then((data) => {
@@ -85,7 +85,7 @@ function UserProfile() {
               // Use Promise.all to wait for all API calls to complete
               const fetchPromises = favoriteIds.map((id) => {
                 return fetch(
-                  `https://cv81j9kz-4500.inc1.devtunnels.ms/menuitemsgetproductdetails/${id}`
+                  `http://localhost:4500/menuitemsgetproductdetails/${id}`
                 )
                   .then((res) => res.json())
                   .catch((err) => {
@@ -147,7 +147,7 @@ function UserProfile() {
     price: item.Price, // Define the price as needed
     check: item.check,
     stars: 4.0, // Set the stars or rating based on your system
-    imageLinks: [`https://cv81j9kz-4500.inc1.devtunnels.ms/${item.image}`],
+    imageLinks: [`http://localhost:4500/${item.image}`],
     isFavorite: false,
     isAdded: false,
     describtion: item.describtion,

@@ -11,7 +11,7 @@ function CategoryTiles() {
 const [category, setcategory] = useState([]);
 
 useEffect(() => {
-  fetch("https://cv81j9kz-4500.inc1.devtunnels.ms/getALLproduct")
+  fetch("http://localhost:4500/getALLproduct")
     .then((res) => res.json())
     .then((data) => {
       setcategory(data.slice(0, 6));
@@ -36,7 +36,7 @@ const mappedData = category.map((apiItem, index) => ({
     
     id: apiItem._id,
     name: index === 5 ? "Other Items" : apiItem.title,
-    img: index === 5 ? a : [`https://cv81j9kz-4500.inc1.devtunnels.ms/${apiItem.image}`], 
+    img: index === 5 ? a : [`http://localhost:4500/${apiItem.image}`], 
     // gridLoc: dummyGridLoc,
     gridLoc: gridLocations[index % gridLocations.length],
 
