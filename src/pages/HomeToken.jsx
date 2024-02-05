@@ -38,7 +38,12 @@ function HomeToken() {
               localStorage.removeItem("HTML5_QRCODE_DATA");
               localStorage.removeItem("page_redirct");
               window.location.href = "/checkout";
-            } else {
+            } else if(pageRedirectValue !== null && pageRedirectValue === "redirecthome"){
+              localStorage.removeItem("HTML5_QRCODE_DATA");
+              localStorage.removeItem("page_redirct");
+              window.location.href = "/allcategory";
+            }
+            else {
               localStorage.removeItem("HTML5_QRCODE_DATA");
               localStorage.removeItem("page_redirct");
               window.location.href = "/";

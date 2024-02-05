@@ -3,12 +3,28 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
 import { sliderItems } from '../demidata';
 import './Slider.css';
+import Stack from '@mui/joy/Stack';
+import Modal from '@mui/joy/Modal';
+import ModalClose from '@mui/joy/ModalClose';
+import ModalDialog from '@mui/joy/ModalDialog';
+import DialogTitle from '@mui/joy/DialogTitle';
+import DialogContent from '@mui/joy/DialogContent';
+import Barcode from './Barcode';
+
 
 const arrowClasses =
   'z-[2] w-12 h-12 bg-gray-400/20 flex items-center justify-center rounded-3xl absolute top-0 bottom-0 m-auto cursor-pointer opacity-50';
 
+  const generateKey = () => {
+    return Math.random().toString(36).substr(2, 9);
+  };
+  
+    
+
 function Slider() {
+  const keyForChild = generateKey();
   const [slideIndex, setSlideIndex] = useState(0);
+  const [variant, setVariant] = React.useState(undefined);
 
   function handleClick(direction) {
     if (direction === 'left') {
@@ -19,12 +35,21 @@ function Slider() {
   }
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      handleClick('right');
-    }, 10000); // Change slide every 10 seconds
-
-    return () => clearInterval(intervalId); // Cleanup the interval on component unmount
-  }, [slideIndex]);
+    let intervalId;
+  
+    if (!!variant) {
+      // Handle logic when variant is truthy
+    } else {
+      localStorage.removeItem("HTML5_QRCODE_DATA");
+      localStorage.removeItem("page_redirct");
+      intervalId = setInterval(() => {
+        handleClick('right');
+      }, 10000);
+    }
+  
+    return () => clearInterval(intervalId);
+  }, [slideIndex, variant]);
+  
 
   return (
     <div id="slider" className="w-full h-screen relative flex overflow-hidden">
@@ -55,7 +80,9 @@ function Slider() {
             >
               <h1 className="text-6xl font-bold md:text-6xl">{item.title}</h1>
               <p className="my-12 mx-0 text-lg md:text-xl font-medium tracking-[3px]">{item.desc}</p>
-              <button className="p-3 text-xl bg-transparent border-2 border-black self-center md:static md:self-start hover:text-sky-600 duration-200">
+              <button  onClick={() => {
+            setVariant('solid');
+          }} className="p-3 text-xl bg-transparent border-2 border-black self-center md:static md:self-start hover:text-sky-600 duration-200">
                 ORDER NOW
               </button>
             </motion.div>
@@ -82,6 +109,27 @@ function Slider() {
       >
         <ArrowRightIcon className="h-6 w-6 hover:text-sky-600 duration-200" />
       </motion.div>
+      <React.Fragment>
+      <Stack direction="row" alignItems="center" spacing={1}>
+        {/* <Button
+          variant="solid"
+          color="neutral"
+          onClick={() => {
+            setVariant('solid');
+          }}
+        >
+          Solid
+        </Button> */}
+      </Stack>
+      <Modal open={!!variant} onClose={() => setVariant(undefined)}>
+        <ModalDialog variant={variant}>
+          <ModalClose />
+          <DialogTitle>Scan Now</DialogTitle>
+          <Barcode key={keyForChild} redirect={false} redirecthome={true}/>
+          {/* <DialogContent>This is a `{variant}` modal dialog.</DialogContent> */}
+        </ModalDialog>
+      </Modal>
+    </React.Fragment>
     </div>
   );
 }

@@ -38,6 +38,11 @@ function Barcode(props) {
       if (window.location.href !== result) {
         // Redirect to the scanned link
         // localStorage.setItem("user_table", result);
+        if(props.redirecthome==true)
+        {
+          localStorage.setItem('page_redirct', "redirecthome");
+        }
+        
         
         if(props.redirect==true)
         {
