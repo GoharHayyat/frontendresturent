@@ -119,7 +119,7 @@ function CheckoutForm() {
             </>
           ) : (
             <div style={{ width:"80%" ,marginBottom:"10px", marginLeft:"10%"}}>
-            <Barcode key={keyForChild} />
+            <Barcode key={keyForChild} redirect={true}   />
             </div>
           )}
           
@@ -171,7 +171,7 @@ function CheckoutForm() {
             </>
           ) : (
             <div style={{ width:"80%" ,marginBottom:"10px", marginLeft:"10%"}}>
-            <Barcode key={keyForChild} />
+            <Barcode key={keyForChild} redirect={true}/>
             </div>
           )}
         </>
