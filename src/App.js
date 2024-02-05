@@ -16,6 +16,7 @@ import AllCategory from "./pages/AllCategory";
 import ResetPassword from "./pages/ResetPassword";
 import SuccessPage from "./pages/SuccessPage";
 import Barcode from "./components/Barcode";
+import GetRecommendations from "./components/getrec";
 function App() {
   return (
     <>
@@ -36,6 +37,8 @@ function App() {
       <Route path="success" element={<SuccessPage/>}/>
       <Route path="allcategory/menuitems/:category" element={<ProductsListPage/>}/>
       <Route path="barcode" element={<Barcode/>}/>
+      <Route path="getrec" element={<GetRecommendations/>}/>
+      
       
       </Route>
       </Routes>
