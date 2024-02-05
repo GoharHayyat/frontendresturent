@@ -194,10 +194,10 @@ function CheckoutForm() {
         return;
     }
     
-    if (usertablecheck===false) {
-        toast.error("Please select a table before submitting.");
-        return;
-    }
+    // if (usertablecheck===false) {
+    //     toast.error("Please select a table before submitting.");
+    //     return;
+    // }
 
     const products = cart.map((item) => ({
       name: item.name,

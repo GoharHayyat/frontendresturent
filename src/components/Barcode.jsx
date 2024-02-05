@@ -39,6 +39,7 @@ function Barcode(props) {
       if (window.location.href !== result) {
         // Redirect to the scanned link
         // localStorage.setItem("user_table", result);
+        localStorage.setItem('page_redirct', "true");
         localStorage.removeItem("HTML5_QRCODE_DATA");
         window.location.assign(result);
         
