@@ -26,6 +26,20 @@ function Slider() {
   const [slideIndex, setSlideIndex] = useState(0);
   const [variant, setVariant] = React.useState(undefined);
 
+  const handleordernow = () => {
+    var pageRedirectValue = localStorage.getItem("user_table");
+
+    if (pageRedirectValue !== null){
+      window.location.href = "/allcategory";
+    }
+    else{
+      setVariant('solid');
+    }
+
+
+    
+  };
+
   function handleClick(direction) {
     if (direction === 'left') {
       setSlideIndex((slideIndex > 0 ? slideIndex - 1 : 2));
@@ -78,11 +92,12 @@ function Slider() {
               id="info"
               className="flex-1 h-full flex justify-center flex-col pl-4 md:pl-20"
             >
+              {/* onClick={() => {
+            setVariant('solid');
+          }} */}
               <h1 className="text-6xl font-bold md:text-6xl">{item.title}</h1>
               <p className="my-12 mx-0 text-lg md:text-xl font-medium tracking-[3px]">{item.desc}</p>
-              <button  onClick={() => {
-            setVariant('solid');
-          }} className="p-3 text-xl bg-transparent border-2 border-black self-center md:static md:self-start hover:text-sky-600 duration-200">
+              <button onClick={handleordernow}   className="p-3 text-xl bg-transparent border-2 border-black self-center md:static md:self-start hover:text-sky-600 duration-200">
                 ORDER NOW
               </button>
             </motion.div>
