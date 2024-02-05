@@ -171,6 +171,7 @@ function UserProfile() {
     localStorage.removeItem("loginData");
     localStorage.removeItem("user_table");
     localStorage.removeItem("HTML5_QRCODE_DATA");
+    localStorage.removeItem("page_redirct");
 
     navigate("/");
     dispatch(logout({}));

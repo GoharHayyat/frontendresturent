@@ -5,7 +5,6 @@ import QRCode from 'qrcode.react';
 
 function Barcode(props) {
   const [scanResult, setScanResult] = useState(null);
-  const [generatedLink, setGeneratedLink] = useState('https://example.com'); // Replace with your link
 
   useEffect(() => {
     let scanner;
@@ -39,7 +38,16 @@ function Barcode(props) {
       if (window.location.href !== result) {
         // Redirect to the scanned link
         // localStorage.setItem("user_table", result);
-        localStorage.setItem('page_redirct', "true");
+        if(props.redirecthome==true)
+        {
+          localStorage.setItem('page_redirct', "redirecthome");
+        }
+        
+        
+        if(props.redirect==true)
+        {
+          localStorage.setItem('page_redirct', "true");
+        }
         localStorage.removeItem("HTML5_QRCODE_DATA");
         window.location.assign(result);
         
