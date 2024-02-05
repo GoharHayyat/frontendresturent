@@ -17,7 +17,7 @@ function HomeToken() {
   useEffect(() => {
     const delayTimeout = setTimeout(async () => {
       try {
-        const response = await fetch("http://localhost:4500/qrcodestokens");
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/qrcodestokens`);
         if (response.ok) {
           const data = await response.json();
           const matchingToken = data.find(

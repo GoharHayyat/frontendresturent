@@ -75,7 +75,7 @@ function ResetPassword({match}) {
         }
 
         try {
-            await axios.put(`http://localhost:4500/resetpassword/${resetToken}`,user,config);
+            await axios.put(`${process.env.REACT_APP_API_URL}/resetpassword/${resetToken}`,user,config);
             setSpan("Password Changed");
             setOpen(false);
             setTimeout(()=>{

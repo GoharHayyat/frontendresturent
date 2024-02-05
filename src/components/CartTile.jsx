@@ -35,7 +35,7 @@ function CartTile({ item }) {
         }
   
         const response = await fetch(
-          "http://localhost:4500/ingredients/cartincreasebutton",
+          `${process.env.REACT_APP_API_URL}/ingredients/cartincreasebutton`,
           {
             method: "PUT",
             headers: {
@@ -102,7 +102,7 @@ function CartTile({ item }) {
         }
   
         const response = await fetch(
-          "http://localhost:4500/ingredients/cartincreasebutton",
+          `${process.env.REACT_APP_API_URL}/ingredients/cartincreasebutton`,
           {
             method: "PUT",
             headers: {
@@ -160,7 +160,7 @@ function CartTile({ item }) {
         }
   
         const response = await fetch(
-          "http://localhost:4500/ingredients/updatetempstock",
+          `${process.env.REACT_APP_API_URL}/ingredients/updatetempstock`,
           {
             method: "PUT",
             headers: {

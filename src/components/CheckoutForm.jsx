@@ -8,7 +8,12 @@ import { toast } from "react-toastify";
 import Barcode from "./Barcode";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
-
+import { KeyboardArrowRight } from "@mui/icons-material";
+import Button from "@mui/joy/Button";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Buttonn from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 import { removeFromCart } from "../features/Cart";
 
 const variants = {
@@ -18,7 +23,6 @@ const variants = {
 const generateKey = () => {
   return Math.random().toString(36).substr(2, 9);
 };
-
 
 function CheckoutForm() {
   const keyForChild = generateKey();
@@ -30,6 +34,71 @@ function CheckoutForm() {
 
   const [usertable, setUserTable] = useState({});
   const [usertablecheck, setUserTablecheck] = useState(false);
+  const [manually, setmanually] = useState(true);
+  // const [manuallyData, setmanuallyData] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [errormessage, setErrormessage] = useState(false);
+  const [inputData, setInputData] = useState("");
+
+  const handleInputChange = (event) => {
+      setInputData(event.target.value);
+    
+  };
+  
+
+  const handleSubmittt = async () => {
+
+    if (inputData.length >= 5) {
+      setIsLoading(true);
+    setErrormessage(false);
+    try {
+     console.log(process.env.REACT_APP_API_URL) ;
+    //  `${process.env.REACT_APP_API_URL}getProductsByIds
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/qrcodestokens`);
+
+      if (response.ok) {
+        const data = await response.json();
+
+        // Assuming you have the input data in a state variable named inputData
+        const lastFiveDigitsInput = inputData.slice(-5);
+
+        const matchingToken = data.find((item) =>
+          item.tableId.endsWith(lastFiveDigitsInput)
+        );
+
+        if (matchingToken) {
+          // Print all details of the matching token
+          // console.log('Matching Token Details:', matchingToken.table);
+          const result = { table: matchingToken.table };
+          localStorage.setItem("user_table", JSON.stringify(result));
+          setUserTable(result);
+          setmanually(true);
+          setUserTablecheck(true);
+          setInputData("");
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 3000);
+        } else {
+          setErrormessage(true);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 3000);
+        }
+      } else {
+        alert("Failed to fetch API data.");
+        setIsLoading(false);
+      }
+    } catch (error) {
+      alert("Error fetching API data:", error);
+      setIsLoading(false);
+    }
+    } else {
+      
+      toast('Input 5 characters Validation Code');
+    }
+
+    
+  };
 
   const handleDelete = () => {
     localStorage.removeItem("user_table");
@@ -38,7 +107,16 @@ function CheckoutForm() {
     localStorage.removeItem("timeRemaining");
     setUserTablecheck(false);
     toast("Table Deleted");
-};
+  };
+
+  const handlecontinuemanually = () => {
+    setmanually(false);
+    setUserTablecheck(true);
+  };
+  const handlecancel = () => {
+    setmanually(true);
+    setUserTablecheck(false);
+  };
 
   useEffect(() => {
     localStorage.removeItem("HTML5_QRCODE_DATA");
@@ -73,63 +151,121 @@ function CheckoutForm() {
       //setValues({...values,existingaddress:user.address})
       return (
         <>
-          
           <div className="flex flex-col my-2 gap-1 justify-center text-base">
             <p>
               You are Currently Logged In as{" "}
               <Link to="/profile" className="font-[500] hover:text-teal-600">
                 {user.favorites.name}
-              </Link> 
+              </Link>
             </p>
             <p>
               With <span className="font-[500]">"{user.favorites.email}"</span>
             </p>
             {/* <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.9}} onClick={handleLogout} className="bg-black/70 text-white text-sm w-16 p-1 rounded hover:bg-black">Logout</motion.button> */}
           </div>
-          <div style={{marginTop:"20px", marginBottom:"8px"}}>
-            {usertablecheck ? (
-            <>
-              <Stack direction="row" spacing={1}>
-               
-                <h1
-                  style={{
-                    fontStyle: "bold",
-                    fontSize: "20px",
-                    color: "green",
+          <div style={{ marginTop: "20px", marginBottom: "8px" }}>
+            {errormessage ? (
+              <div style={{ color: "red", fontSize: "16px", marginBottom:"5px" }}>
+                Invalid Code!
+              </div>
+            ) : (
+              <></>
+            )}
+
+            {!manually ? (
+              <>
+                <Box
+                  sx={{
+                    width: 400,
+                    maxWidth: "80%",
                   }}
                 >
-                  User is on table no: {usertable.table}
-                </h1>
-                <Chip
-                  label="Delete"
-                  variant="filled"
-                  color="error"
-                  // onClick={handleClick}
-                  onDelete={handleDelete}
-                />
-              </Stack>
-            </>
-          ) : (
-            <></>
-          )}
-            </div>
+                  <TextField
+                    fullWidth
+                    label="Enter Code"
+                    id="fullWidth"
+                    value={inputData}
+                    onChange={handleInputChange}
+                  />
+                </Box>
+                <br />
+                <Stack direction="row" spacing={2}>
+                  <Buttonn
+                    variant="contained"
+                    color="success"
+                    onClick={handleSubmittt}
+                  >
+                    Submit
+                  </Buttonn>
+                  <Buttonn
+                    onClick={handlecancel}
+                    variant="outlined"
+                    color="error"
+                  >
+                    Cancel
+                  </Buttonn>
+                </Stack>
+              </>
+            ) : (
+              <></>
+            )}
+            {usertablecheck && manually ? (
+              <>
+                <Stack direction="row" spacing={1}>
+                  <h1
+                    style={{
+                      fontStyle: "bold",
+                      fontSize: "20px",
+                      color: "green",
+                    }}
+                  >
+                    User is on table no: {usertable.table}
+                  </h1>
+                  <Chip
+                    label="Delete"
+                    variant="filled"
+                    color="error"
+                    // onClick={handleClick}
+                    onDelete={handleDelete}
+                  />
+                </Stack>
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
           {usertablecheck ? (
-            <>
-              {/* <h1>user is on table no: {usertable.table}</h1> */}
-            </>
+            <>{/* <h1>user is on table no: {usertable.table}</h1> */}</>
           ) : (
-            <div style={{ width:"80%" ,marginBottom:"10px", marginLeft:"10%"}}>
-            <Barcode key={keyForChild} redirect={true}   />
-            </div>
+            <>
+              <div
+                style={{
+                  width: "80%",
+                  marginBottom: "10px",
+                  marginLeft: "10%",
+                }}
+              >
+                <Barcode key={keyForChild} redirect={true} />
+              </div>
+              <p style={{ fontSize: "12px" }}>Having trouble Scaning?</p>
+              <div
+                style={{ width: "80%", marginBottom: "5px", marginTop: "10px" }}
+              >
+                <Button
+                  onClick={handlecontinuemanually}
+                  endDecorator={<KeyboardArrowRight />}
+                  color="success"
+                >
+                  Enter Code Manually
+                </Button>
+              </div>
+            </>
           )}
-          
-          
         </>
       );
     } else {
       return (
         <>
-        
           <div className="my-2 text-base">
             <p>
               You are Currently not Logged in. Click to{" "}
@@ -138,41 +274,102 @@ function CheckoutForm() {
               </Link>
             </p>
           </div>
-            <div style={{marginTop:"20px", marginBottom:"8px"}}>
-            {usertablecheck ? (
-            <>
-              <Stack direction="row" spacing={1}>
-               
-                <h1
-                  style={{
-                    fontStyle: "bold",
-                    fontSize: "20px",
-                    color: "green",
+          <div style={{ marginTop: "20px", marginBottom: "8px" }}>
+          {errormessage ? (
+              <div style={{ color: "red", fontSize: "16px", marginBottom:"5px" }}>
+                Invalid Code!
+              </div>
+            ) : (
+              <></>
+            )}
+            {!manually ? (
+              <>
+                <Box
+                  sx={{
+                    width: 400,
+                    maxWidth: "80%",
                   }}
                 >
-                  User is on table no: {usertable.table}
-                </h1>
-                <Chip
-                  label="Delete"
-                  variant="filled"
-                  color="error"
-                  // onClick={handleClick}
-                  onDelete={handleDelete}
-                />
-              </Stack>
-            </>
-          ) : (
-            <></>
-          )}
-            </div>
+                  <TextField
+                    fullWidth
+                    label="Enter Code"
+                    id="fullWidth"
+                    value={inputData}
+                    onChange={handleInputChange}
+                  />
+                </Box>
+                <br />
+                <Stack direction="row" spacing={2}>
+                  <Buttonn
+                    variant="contained"
+                    color="success"
+                    onClick={handleSubmittt}
+                  >
+                    Submit
+                  </Buttonn>
+                  <Buttonn
+                    onClick={handlecancel}
+                    variant="outlined"
+                    color="error"
+                  >
+                    Cancel
+                  </Buttonn>
+                </Stack>
+              </>
+            ) : (
+              <></>
+            )}
+            {usertablecheck && manually ? (
+              <>
+                <Stack direction="row" spacing={1}>
+                  <h1
+                    style={{
+                      fontStyle: "bold",
+                      fontSize: "20px",
+                      color: "green",
+                    }}
+                  >
+                    User is on table no: {usertable.table}
+                  </h1>
+                  <Chip
+                    label="Delete"
+                    variant="filled"
+                    color="error"
+                    // onClick={handleClick}
+                    onDelete={handleDelete}
+                  />
+                </Stack>
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
           {usertablecheck ? (
-            <>
-              {/* <h1>user is on table no: {usertable.table}</h1> */}
-            </>
+            <>{/* <h1>user is on table no: {usertable.table}</h1> */}</>
           ) : (
-            <div style={{ width:"80%" ,marginBottom:"10px", marginLeft:"10%"}}>
-            <Barcode key={keyForChild} redirect={true}/>
-            </div>
+            <>
+              <div
+                style={{
+                  width: "80%",
+                  marginBottom: "10px",
+                  marginLeft: "10%",
+                }}
+              >
+                <Barcode key={keyForChild} redirect={true} />
+              </div>
+              <p style={{ fontSize: "12px" }}>Having trouble Scaning?</p>
+              <div
+                style={{ width: "80%", marginBottom: "5px", marginTop: "10px" }}
+              >
+                <Button
+                  onClick={handlecontinuemanually}
+                  endDecorator={<KeyboardArrowRight />}
+                  color="success"
+                >
+                  Enter Code Manually
+                </Button>
+              </div>
+            </>
           )}
         </>
       );
@@ -183,17 +380,15 @@ function CheckoutForm() {
     e.preventDefault();
 
     if (user) {
-        
-    }
-    else{
-        toast.error("login to continue");
-        return;
+    } else {
+      toast.error("login to continue");
+      return;
     }
     if (cart.length === 0) {
-        toast.error("Your cart is empty. Please add items before submitting.");
-        return;
+      toast.error("Your cart is empty. Please add items before submitting.");
+      return;
     }
-    
+
     // if (usertablecheck===false) {
     //     toast.error("Please select a table before submitting.");
     //     return;
@@ -203,7 +398,6 @@ function CheckoutForm() {
       name: item.name,
       price: item.price,
       quantity: item.count,
-      
     }));
     const totalPrice = cart.reduce(
       (total, item) => total + item.price * item.count,
@@ -211,11 +405,11 @@ function CheckoutForm() {
     ); // Calculate total price
 
     try {
-      const response = await axios.post("http://localhost:4500/orders", {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/orders`, {
         userId: user.favorites._id, // Assuming user object has an id property
         products,
         totalPrice,
-        tableNo:usertable,
+        tableNo: usertable,
         // Add delivery address here if needed
       });
 
@@ -227,7 +421,7 @@ function CheckoutForm() {
       // Show success toast
       toast.success("Order submitted successfully");
       localStorage.removeItem("user_table");
-    localStorage.removeItem("HTML5_QRCODE_DATA");
+      localStorage.removeItem("HTML5_QRCODE_DATA");
 
       // Navigate to home page
       // history.push('/'); // Redirect to home page
@@ -239,6 +433,24 @@ function CheckoutForm() {
       toast.error("Failed to submit order. Please try again later.");
     }
   };
+
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "50vh", // Adjust this based on your layout
+          marginLeft: "10%", // Center the container horizontally
+        }}
+      >
+        <CircularProgress />
+        <p style={{ marginTop: "10px" }}>Authenticating Code...</p>
+      </div>
+    );
+  }
 
   return (
     <motion.div

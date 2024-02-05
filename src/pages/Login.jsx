@@ -84,7 +84,7 @@ function Login() {
 
         try {
 
-            const { data } = await axios.post(`http://localhost:4500/login`, user, config);
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/login`, user, config);
             localStorage.setItem("auth-token", data.token);
             // localStorage.setItem("favorites", JSON.stringify(data.favorites))
             setSpan("Successfully Logged Up!!");

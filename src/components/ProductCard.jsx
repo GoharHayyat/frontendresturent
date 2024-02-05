@@ -75,7 +75,7 @@ function ProductCard({ product, onCheckboxChange }) {
         "No data available in localStorage or missing required fields."
       );
     } else {
-      const apiUrl = `http://localhost:4500/checkisliked/${loginDataa.favorites._id}/${product._id}`;
+      const apiUrl = `${process.env.REACT_APP_API_URL}/checkisliked/${loginDataa.favorites._id}/${product._id}`;
 
       fetch(apiUrl)
         .then((response) => {
@@ -122,7 +122,7 @@ function ProductCard({ product, onCheckboxChange }) {
         }
 
         const response = await fetch(
-          "http://localhost:4500/ingredients/updatetempstock",
+          `${process.env.REACT_APP_API_URL}/ingredients/updatetempstock`,
           {
             method: "PUT",
             headers: {
@@ -185,7 +185,7 @@ function ProductCard({ product, onCheckboxChange }) {
 
       axios
         .post(
-          `http://localhost:4500/manageFavorite`,
+          `${process.env.REACT_APP_API_URL}/manageFavorite`,
           { userId, favorites },
           config
         )

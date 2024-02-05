@@ -26,7 +26,7 @@ function AllCategory() {
   }, []);
 
 useEffect(() => {
-  fetch("http://localhost:4500/getALLproduct")
+  fetch(`${process.env.REACT_APP_API_URL}/getALLproduct`)
     .then((res) => res.json())
     .then((data) => {
       setcategory(data);
@@ -45,7 +45,7 @@ useEffect(() => {
 const mappedData = category.map((apiItem, index) => ({
     id: apiItem._id,
     name: apiItem.title,
-    img: [`http://localhost:4500/${apiItem.image}`],
+    img: [`${process.env.REACT_APP_API_URL}/${apiItem.image}`],
   }));
 
   
