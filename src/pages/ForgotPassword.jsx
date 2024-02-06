@@ -68,7 +68,7 @@ function ForgotPassword() {
         }
         try {
             
-            await axios.post(`http://localhost:4500/forgotpassword`,user,config);
+            await axios.post(`${process.env.REACT_APP_API_URL}/forgotpassword`,user,config);
             setSpan("Email Sent!!");
             setOpen(false)
             setTimeout(()=>{

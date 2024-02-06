@@ -58,7 +58,7 @@ function ProductsListPage() {
   setInterval(checkForChanges, 1000);
 
   useEffect(() => {
-    fetch(`http://localhost:4500/menuitems/${category}`)
+    fetch(`${process.env.REACT_APP_API_URL}/menuitems/${category}`)
       .then((res) => res.json())
       .then((data) => {
         
@@ -69,7 +69,7 @@ function ProductsListPage() {
           price: item.Price,
           check: item.check,
           stars: 4.0,
-          imageLinks: [`http://localhost:4500/${item.image}`],
+          imageLinks: [`${process.env.REACT_APP_API_URL}/${item.image}`],
           isFavorite: false,
           isAdded: false,
           describtion: item.describtion,

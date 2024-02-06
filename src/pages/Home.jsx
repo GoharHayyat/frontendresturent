@@ -46,7 +46,7 @@ function Home() {
       try {
         // Updated API endpoint without specifying an ID
         const response = await fetch(
-          "http://localhost:4500/menuitemsTrending"
+          `${process.env.REACT_APP_API_URL}/menuitemsTrending`
         );
         if (response.ok) {
           const data = await response.json();
@@ -74,7 +74,7 @@ function Home() {
         price: item.Price, // Define the price as needed
         check: item.check,
         stars: 4.0, // Set the stars or rating based on your system
-        imageLinks: [`http://localhost:4500/${item.image}`],
+        imageLinks: [`${process.env.REACT_APP_API_URL}/${item.image}`],
         isFavorite: false,
         isAdded: false,
         describtion: item.describtion,
@@ -87,7 +87,7 @@ function Home() {
       setTrending(products.slice(0, 5));
     // }
   };
-  // console.log("trending", trending)
+  console.log("api is", process.env.REACT_APP_API_URL)
 
   // useEffect(() => {
   //   if (menuItems.length > 0 && !trending) {
