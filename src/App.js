@@ -17,35 +17,77 @@ import ResetPassword from "./pages/ResetPassword";
 import SuccessPage from "./pages/SuccessPage";
 import Barcode from "./components/Barcode";
 import GetRecommendations from "./components/getrec";
+import Reservation from "./components/Reservation";
+
 function App() {
-  return (
-    <>
-      <Routes>
-      <Route path="/" element={<LayoutWrapper/>} >
-      <Route path="/" element={<Home/>} />
-      <Route path="/:tableToken" element={<HomeToken/>}/>
-      <Route path="login" element={<Login/>}/>
-      <Route path="register" element={<Registeration/>}/>
+    return ( <
+        >
+        <
+        Routes >
+        <
+        Route path = "/"
+        element = { < LayoutWrapper / > } >
+        <
+        Route path = "/"
+        element = { < Home / > }
+        /> <
+        Route path = "/:tableToken"
+        element = { < HomeToken / > }
+        /> <
+        Route path = "login"
+        element = { < Login / > }
+        /> <
+        Route path = "register"
+        element = { < Registeration / > }
+        />
 
 
-      <Route path="menuitems/:category" element={<ProductsListPage/>}/>
-      <Route path="checkout" element={<Checkout/>}/>
-      <Route path="forgotpassword" element={<ForgotPassword/>}/>
-      <Route path="resetpassword/:resetToken" element={<ResetPassword/>}/>
-      <Route path="profile" element={<UserProfile/>}/>
-      <Route path="allcategory" element={<AllCategory/>}/>
-      <Route path="success" element={<SuccessPage/>}/>
-      <Route path="allcategory/menuitems/:category" element={<ProductsListPage/>}/>
-      <Route path="barcode" element={<Barcode/>}/>
-      <Route path="getrec" element={<GetRecommendations/>}/>
-      
-      
-      </Route>
-      </Routes>
-      <CartMenu/>
-      <ToastContainer/>
-    </>
-  );
+        <
+        Route path = "menuitems/:category"
+        element = { < ProductsListPage / > }
+        /> <
+        Route path = "checkout"
+        element = { < Checkout / > }
+        /> <
+        Route path = "forgotpassword"
+        element = { < ForgotPassword / > }
+        /> <
+        Route path = "resetpassword/:resetToken"
+        element = { < ResetPassword / > }
+        /> <
+        Route path = "profile"
+        element = { < UserProfile / > }
+        /> <
+        Route path = "allcategory"
+        element = { < AllCategory / > }
+        /> <
+        Route path = "success"
+        element = { < SuccessPage / > }
+        /> <
+        Route path = "allcategory/menuitems/:category"
+        element = { < ProductsListPage / > }
+        /> <
+        Route path = "barcode"
+        element = { < Barcode / > }
+        /> <
+        Route path = "6"
+        element = { < GetRecommendations / > }
+        /> <
+        Route path = "Reservation"
+        element = { < Reservation / > }
+        />
+
+
+
+        <
+        /Route> <
+        /Routes> <
+        CartMenu / >
+        <
+        ToastContainer / >
+        <
+        />
+    );
 }
 
 export default App;

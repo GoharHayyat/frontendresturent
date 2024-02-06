@@ -50,9 +50,9 @@ function Navbar() {
 
                 <motion.div className={`pt-7 md:pt-0 pb-7 absolute z-50 bg-white shadow ${(menu && !isCartOpen) ? "" : "translate-y-[-200%]"} min-h-[40%] right-0 top-20 w-full md:translate-y-0 md:shadow-none md:z-0 md:flex md:bg-transparent md:pb-0 md:static md:min-h-fit md:w-auto transition-all duration-300 ease-in`}>
                     <ul className="flex flex-col gap-12 md:flex-row items-center md:flex md:gap-6 text-lg font-medium">
-                        <motion.li whileHover={{ scale: 1.1 }} className="hover:text-sky-600"><a href="/#">About Us</a></motion.li>
+                        <motion.li whileHover={{ scale: 1.1 }} className="hover:text-sky-600"><Link to="/getrec">About us</Link></motion.li>
                         <motion.li  id="brands"     whileHover={{ scale: 1.1 }} className="hover:text-sky-600 cursor-pointer">
-                            Reservation
+                            <Link to="/Reservation">Reservation</Link>
                         </motion.li>
                         <motion.li  id="category"  whileHover={{ scale: 1.1 }} className="hover:text-sky-600 cursor-pointer">
                             Category
