@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 function Reservation() {
   const [slot, setSlot] = useState('');
   const [date, setDate] = useState('');
+  const [noOfPersons, setNoOfPersons] = useState('');
   const [availableSlots, setAvailableSlots] = useState([]);
   const [bookingStatus, setBookingStatus] = useState('');
 
@@ -35,12 +36,18 @@ function Reservation() {
     event.preventDefault();
 
     try {
+      // Retrieve user data from localStorage
+      const loginDataString = localStorage.getItem('loginData');
+      const loginData = JSON.parse(loginDataString);
+      const { email, name, phone } = loginData.favorites;
+
+      // Send booking request along with user data and number of persons
       const response = await fetch(`${process.env.REACT_APP_API_URL}/book`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ slot, date })
+        body: JSON.stringify({ slot, date, email, name, phone, noOfPersons }) // Include user data and number of persons
       });
 
       if (!response.ok) {
@@ -54,34 +61,35 @@ function Reservation() {
     }
   };
 
- return (
-  <div className="App">
-    <h1>Restaurant Booking</h1>
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="date">Select a date:</label>
-      <input type="date" id="date" name="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-      <label htmlFor="slot">Select a slot:</label>
-      <select id="slot" name="slot" value={slot} onChange={(e) => setSlot(e.target.value)} required>
-        <option value="">Select a slot</option>
-        {availableSlots.length === 0 ? (
-          <option disabled>No slot available</option>
-        ) : (
-          availableSlots.map(slotId => {
-            const slotInfo = slotTimes.find(slotTime => slotTime.id === slotId);
-            return (
-              <option key={slotId} value={slotId}>
-                {slotInfo ? `From ${slotInfo.startTime} to ${slotInfo.endTime}` : `Slot ${slotId}`}
-              </option>
-            );
-          })
-        )}
-      </select>
-      <button type="submit">Book</button>
-    </form>
-    {bookingStatus && <p>{bookingStatus}</p>}
-  </div>
-);
-
+  return (
+    <div className="App">
+      <h1>Restaurant Booking</h1>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="date">Select a date:</label>
+        <input type="date" id="date" name="date" value={date} onChange={(e) => setDate(e.target.value)} required />
+        <label htmlFor="slot">Select a slot:</label>
+        <select id="slot" name="slot" value={slot} onChange={(e) => setSlot(e.target.value)} required>
+          <option value="">Select a slot</option>
+          {availableSlots.length === 0 ? (
+            <option disabled>No slot available</option>
+          ) : (
+            availableSlots.map(slotId => {
+              const slotInfo = slotTimes.find(slotTime => slotTime.id === slotId);
+              return (
+                <option key={slotId} value={slotId}>
+                  {slotInfo ? `From ${slotInfo.startTime} to ${slotInfo.endTime}` : `Slot ${slotId}`}
+                </option>
+              );
+            })
+          )}
+        </select>
+        <label htmlFor="noOfPersons">Number of persons:</label>
+        <input type="number" id="noOfPersons" name="noOfPersons" value={noOfPersons} onChange={(e) => setNoOfPersons(e.target.value)} required />
+        <button type="submit">Book</button>
+      </form>
+      {bookingStatus && <p>{bookingStatus}</p>}
+    </div>
+  );
 }
 
 export default Reservation;
