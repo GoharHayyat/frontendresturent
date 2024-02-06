@@ -34,6 +34,7 @@ function GetRecommendations() {
       console.error(error);
     }
   };
+  //testing Recommendations
 
   return (
     <div>
