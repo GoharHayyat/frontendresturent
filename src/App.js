@@ -11,7 +11,7 @@ import HomeToken from "./pages/HomeToken";
 import ProductsListPage from "./pages/ProductsListPage";
 import Checkout from "./pages/Checkout";
 import ForgotPassword from "./pages/ForgotPassword";
-import UserProfile from "./pages/UserProfile"
+import UserProfile from "./pages/UserProfile";
 import AllCategory from "./pages/AllCategory";
 import ResetPassword from "./pages/ResetPassword";
 import SuccessPage from "./pages/SuccessPage";
@@ -41,7 +41,6 @@ function App() {
         element = { < Registeration / > }
         />
 
-
         <
         Route path = "menuitems/:category"
         element = { < ProductsListPage / > }
@@ -70,16 +69,12 @@ function App() {
         Route path = "barcode"
         element = { < Barcode / > }
         /> <
-        Route path = "6"
+        Route path = "recommendation"
         element = { < GetRecommendations / > }
         /> <
         Route path = "Reservation"
         element = { < Reservation / > }
-        />
-
-
-
-        <
+        /> <
         /Route> <
         /Routes> <
         CartMenu / >

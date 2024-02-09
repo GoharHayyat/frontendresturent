@@ -41,13 +41,17 @@ function Reservation() {
       const loginData = JSON.parse(loginDataString);
       const { email, name, phone } = loginData.favorites;
 
-      // Send booking request along with user data and number of persons
+      // Find the slot time based on the selected slot id
+      const selectedSlot = slotTimes.find(slotTime => slotTime.id === parseInt(slot));
+      const slotTime = selectedSlot ? `${selectedSlot.startTime} - ${selectedSlot.endTime}` : '';
+
+      // Send booking request along with user data, number of persons, and slot time
       const response = await fetch(`${process.env.REACT_APP_API_URL}/book`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ slot, date, email, name, phone, noOfPersons }) // Include user data and number of persons
+        body: JSON.stringify({ slotTime, date, email, name, phone, noOfPersons }) // Include user data, number of persons, and slot time
       });
 
       if (!response.ok) {
@@ -62,13 +66,13 @@ function Reservation() {
   };
 
   return (
-    <div className="App">
-      <h1>Restaurant Booking</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="date">Select a date:</label>
-        <input type="date" id="date" name="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-        <label htmlFor="slot">Select a slot:</label>
-        <select id="slot" name="slot" value={slot} onChange={(e) => setSlot(e.target.value)} required>
+    <div className="App" style={{ fontFamily: 'Arial, sans-serif', maxWidth: '400px', margin: '0 auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+      <h1 style={{ textAlign: 'center' }}>Restaurant Booking</h1>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
+        <label htmlFor="date" style={{ marginBottom: '8px' }}>Select a date:</label>
+        <input type="date" id="date" name="date" value={date} onChange={(e) => setDate(e.target.value)} required style={{ marginBottom: '16px', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }} />
+        <label htmlFor="slot" style={{ marginBottom: '8px' }}>Select a slot:</label>
+        <select id="slot" name="slot" value={slot} onChange={(e) => setSlot(e.target.value)} required style={{ marginBottom: '16px', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}>
           <option value="">Select a slot</option>
           {availableSlots.length === 0 ? (
             <option disabled>No slot available</option>
@@ -77,15 +81,15 @@ function Reservation() {
               const slotInfo = slotTimes.find(slotTime => slotTime.id === slotId);
               return (
                 <option key={slotId} value={slotId}>
-                  {slotInfo ? `From ${slotInfo.startTime} to ${slotInfo.endTime}` : `Slot ${slotId}`}
+                  {slotInfo ? `${slotInfo.startTime} - ${slotInfo.endTime}` : `Slot ${slotId}`}
                 </option>
               );
             })
           )}
         </select>
-        <label htmlFor="noOfPersons">Number of persons:</label>
-        <input type="number" id="noOfPersons" name="noOfPersons" value={noOfPersons} onChange={(e) => setNoOfPersons(e.target.value)} required />
-        <button type="submit">Book</button>
+        <label htmlFor="noOfPersons" style={{ marginBottom: '8px' }}>Number of persons:</label>
+        <input type="number" id="noOfPersons" name="noOfPersons" value={noOfPersons} onChange={(e) => setNoOfPersons(e.target.value)} required style={{ marginBottom: '16px', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }} />
+        <button type="submit" style={{ backgroundColor: '#007bff', color: '#fff', border: 'none', cursor: 'pointer' }}>Book</button>
       </form>
       {bookingStatus && <p>{bookingStatus}</p>}
     </div>
