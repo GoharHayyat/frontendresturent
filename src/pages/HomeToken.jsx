@@ -28,8 +28,9 @@ function HomeToken() {
             toast("success");
             setTokenData(matchingToken);
             setIstokenavailable(true);
+            // tableId
 
-            const result = { table: matchingToken.table };
+            const result = { table: matchingToken.table, tableId: matchingToken.tableId };
             localStorage.setItem("user_table", JSON.stringify(result));
 
             var pageRedirectValue = localStorage.getItem("page_redirct");

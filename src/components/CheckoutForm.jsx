@@ -65,11 +65,11 @@ function CheckoutForm() {
         const matchingToken = data.find((item) =>
           item.tableId.endsWith(lastFiveDigitsInput)
         );
-
+        console.log("its a",matchingToken.tableId)
         if (matchingToken) {
           // Print all details of the matching token
           // console.log('Matching Token Details:', matchingToken.table);
-          const result = { table: matchingToken.table };
+          const result = { table: matchingToken.table, tableId: matchingToken.tableId };
           localStorage.setItem("user_table", JSON.stringify(result));
           setUserTable(result);
           setmanually(true);
@@ -389,10 +389,10 @@ function CheckoutForm() {
       return;
     }
 
-    // if (usertablecheck===false) {
-    //     toast.error("Please select a table before submitting.");
-    //     return;
-    // }
+    if (usertablecheck===false) {
+        toast.error("Please select a table before submitting.");
+        return;
+    }
 
     const products = cart.map((item) => ({
       name: item.name,
