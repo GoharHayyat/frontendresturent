@@ -55,7 +55,7 @@ function Navbar() {
                             <Link to="/Reservation">Reservation</Link>
                         </motion.li>
                         <motion.li  id="category"  whileHover={{ scale: 1.1 }} className="hover:text-sky-600 cursor-pointer">
-                            Category
+                        <Link to="/allcategory">Category</Link>
                         </motion.li>
                         <motion.li whileHover={{ scale: 1.1 }} className="hover:text-sky-600"><a href="/#">Contact Us</a></motion.li>
 

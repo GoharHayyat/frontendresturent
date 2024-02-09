@@ -142,7 +142,7 @@ function CheckoutForm() {
     if (loginDataString) {
       const loginData = JSON.parse(loginDataString);
       setUser(loginData);
-      console.log("user", user);
+      // console.log("user", user);
     }
   }, []);
 

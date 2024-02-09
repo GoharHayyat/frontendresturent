@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import Button from "@mui/joy/Button";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import { toast } from "react-toastify";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 function Reservation() {
   const [slot, setSlot] = useState("");
   const [date, setDate] = useState("");
   const [noOfPersons, setNoOfPersons] = useState("");
   const [availableSlots, setAvailableSlots] = useState([]);
+  const [user, setUser] = useState();
   // const [bookingStatus, setBookingStatus] = useState("");
 
   const slotTimes = [
@@ -18,6 +20,16 @@ function Reservation() {
     { id: 5, startTime: "9:00 PM", endTime: "10:30 PM" },
     { id: 6, startTime: "10:30 PM", endTime: "11:59 PM" },
   ];
+
+  useEffect(() => {
+    const loginDataString = localStorage.getItem("loginData");
+
+    if (loginDataString) {
+      const loginData = JSON.parse(loginDataString);
+      setUser(loginData);
+      console.log("user", user);
+    }
+  }, []);
 
 
 useEffect(() => {
@@ -80,9 +92,50 @@ useEffect(() => {
       }
 
       toast("Booking successful");
+      setSlot("");
+      setDate("");
+      setNoOfPersons("");
+
     } catch (error) {
       console.error(error.message);
       toast("This slot is not available");
+    }
+  };
+
+
+  const userContactInfo = () => {
+    if (user) {
+      //setValues({...values,existingaddress:user.address})
+      return (
+        <>
+          <div className="flex flex-col my-2 gap-1 justify-center text-base">
+            <p>
+              You are Currently Logged In as{" "}
+              <Link to="/profile" className="font-[500] hover:text-teal-600">
+                {user.favorites.name}
+              </Link>
+            </p>
+            <p>
+              With <span className="font-[500]">"{user.favorites.email}"</span>
+            </p>
+            {/* <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.9}} onClick={handleLogout} className="bg-black/70 text-white text-sm w-16 p-1 rounded hover:bg-black">Logout</motion.button> */}
+          </div>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <div className="my-2 text-base">
+            <p>
+              You are Currently not Logged in. Click to{" "}
+              <Link to="/login" className="font-semibold hover:text-teal-600">
+                Log In
+              </Link>
+            </p>
+          </div>
+         
+        </>
+      );
     }
   };
 
@@ -94,8 +147,12 @@ useEffect(() => {
       <div className="px-4 pt-10 md:px-10 md:w-[55%]">
         <h1 className="text-2xl font-semibold">Reservation</h1>
       </div>
+      <div className="px-4 md:px-10 md:w-[55%]">
+      { userContactInfo()}
+      </div>
       <div className="flex w-full md:flex-row flex-col-reverse">
         {/* <CheckoutForm /> */}
+      
         <div
           className="App"
           style={{
@@ -184,7 +241,7 @@ useEffect(() => {
               }}
             />
 
-            <Button type="submit" endDecorator={<KeyboardArrowRight />} color="success">
+            <Button disabled={!user} type="submit" endDecorator={<KeyboardArrowRight />} color="success">
               MAKE RESERVATION
             </Button>
           </form>
