@@ -8,7 +8,7 @@ function Reservation() {
   const [date, setDate] = useState("");
   const [noOfPersons, setNoOfPersons] = useState("");
   const [availableSlots, setAvailableSlots] = useState([]);
-  const [bookingStatus, setBookingStatus] = useState("");
+  // const [bookingStatus, setBookingStatus] = useState("");
 
   const slotTimes = [
     { id: 1, startTime: "3:00 PM", endTime: "4:30 PM" },
@@ -19,23 +19,28 @@ function Reservation() {
     { id: 6, startTime: "10:30 PM", endTime: "11:59 PM" },
   ];
 
-  useEffect(() => {
-    const fetchAvailableSlots = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/availability?date=${date}`
-        );
-        const data = await response.json();
-        setAvailableSlots(data.availableSlots);
-      } catch (error) {
-        console.error("Error fetching available slots:", error);
-      }
+
+useEffect(() => {
+    const fetchAvailableSlots = async() => {
+        try {
+            const response = await fetch(
+                `${process.env.REACT_APP_API_URL}/availability?date=${date}`
+            );
+            const data = await response.json();
+            console.log('Available slots from API:', data.availableSlots); // Log the available slots from the API
+            setAvailableSlots(data.availableSlots);
+        } catch (error) {
+            console.error("Error fetching available slots:", error);
+        }
     };
 
     if (date) {
-      fetchAvailableSlots();
+        fetchAvailableSlots();
     }
-  }, [date]);
+}, [date]);
+
+
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -47,12 +52,12 @@ function Reservation() {
       const { email, name, phone } = loginData.favorites;
 
       // Find the slot time based on the selected slot id
-      const selectedSlot = slotTimes.find(
-        (slotTime) => slotTime.id === parseInt(slot)
-      );
-      const slotTime = selectedSlot
-        ? `${selectedSlot.startTime} - ${selectedSlot.endTime}`
-        : "";
+      // const selectedSlot = slotTimes.find(
+      //   (slotTime) => slotTime.id === parseInt(slot)
+      // );
+      // const slotTime = selectedSlot
+      //   ? `${selectedSlot.startTime} - ${selectedSlot.endTime}`
+      //   : "";
 
       // Send booking request along with user data, number of persons, and slot time
       const response = await fetch(`${process.env.REACT_APP_API_URL}/book`, {
@@ -61,7 +66,7 @@ function Reservation() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          slotTime,
+          slot,
           date,
           email,
           name,
@@ -80,6 +85,9 @@ function Reservation() {
       toast("This slot is not available");
     }
   };
+
+
+
 
   return (
     <div className="md:h-[100vh]">
@@ -264,3 +272,4 @@ function Reservation() {
 }
 
 export default Reservation;
+
