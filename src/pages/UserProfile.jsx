@@ -26,6 +26,40 @@ function UserProfile() {
   const [isOutOfStock, setIsOutOfStock] = useState(false);
   const [productsLoaded, setProductsLoaded] = useState(false);
 
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    // Fetch orders function
+    const fetchOrders = async () => {
+      try {
+        // Retrieve userId from localStorage
+        // const userId = localStorage.getItem('userId');
+        const loginDataString = localStorage.getItem("loginData");
+      const loginData = JSON.parse(loginDataString);
+      const userId = loginData.favorites._id;
+      console.log("userid",userId)
+
+        // Fetch orders using userId
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/getorder/${userId}`);
+        const data = await response.json();
+
+        // Check if orders were successfully retrieved
+        if (response.ok) {
+          setOrders(data.orders);
+        } else {
+          console.error('Failed to fetch orders:', data.message);
+        }
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    };
+
+    // Call the fetchOrders function to retrieve orders
+    fetchOrders();
+  }, []);
+  console.log("orders",orders)
+
+
   function checkForChanges() {
     const storedString = localStorage.getItem("randomString");
     if (storedString !== currentRandomString) {
@@ -278,14 +312,27 @@ function UserProfile() {
         <div className="h-24 text-lg font-medium flex justify-center items-center">No Items to sell</div>
         <hr />
       </div> */}
+       
         <div className="px-10 bg-slate-100/90 rounded py-3">
-          <h1 className="text-2xl font-semibold">Orders {">"}</h1>
-          <hr />
-          <div className="h-24 text-lg font-medium flex justify-center items-center">
-            No Orders Placed Yet
-          </div>
-          <hr />
+  <h1 className="text-2xl font-semibold">Orders {">"}</h1>
+  <hr />
+  {orders.length > 0 ? (
+    <div>
+      {orders.map(order => (
+        <div key={order._id} className="mb-4">
+          {/* Render order details here */}
+          <p>Order ID: {order._id}</p>
+          {/* Render other order details as needed */}
         </div>
+      ))}
+    </div>
+  ) : (
+    <div className="h-24 text-lg font-medium flex justify-center items-center">
+      No Orders Placed Yet
+    </div>
+  )}
+  <hr />
+</div>
       </div>
     );
   } else {
@@ -402,13 +449,25 @@ function UserProfile() {
         <hr />
       </div> */}
         <div className="px-10 bg-slate-100/90 rounded py-3">
-          <h1 className="text-2xl font-semibold">Orders {">"}</h1>
-          <hr />
-          <div className="h-24 text-lg font-medium flex justify-center items-center">
-            No Orders Placed Yet
-          </div>
-          <hr />
+  <h1 className="text-2xl font-semibold">Orders {">"}</h1>
+  <hr />
+  {orders.length > 0 ? (
+    <div>
+      {orders.map(order => (
+        <div key={order._id} className="mb-4">
+          {/* Render order details here */}
+          <p>Order ID: {order._id}</p>
+          {/* Render other order details as needed */}
         </div>
+      ))}
+    </div>
+  ) : (
+    <div className="h-24 text-lg font-medium flex justify-center items-center">
+      No Orders Placed Yet
+    </div>
+  )}
+  <hr />
+</div>
       </div>
     );
   }
