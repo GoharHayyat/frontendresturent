@@ -6,7 +6,8 @@ import { logout } from "../features/User";
 import { UserIcon } from "@heroicons/react/24/outline";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import axios from "axios";
+import Card from "@mui/joy/Card";
+import Typography from "@mui/joy/Typography";
 
 // import ProductCard from '../components/ProductCard';
 import ProductCard from "../components/ProductCard";
@@ -35,30 +36,31 @@ function UserProfile() {
         // Retrieve userId from localStorage
         // const userId = localStorage.getItem('userId');
         const loginDataString = localStorage.getItem("loginData");
-      const loginData = JSON.parse(loginDataString);
-      const userId = loginData.favorites._id;
-      console.log("userid",userId)
+        const loginData = JSON.parse(loginDataString);
+        const userId = loginData.favorites._id;
+        console.log("userid", userId);
 
         // Fetch orders using userId
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/getorder/${userId}`);
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/getorder/${userId}`
+        );
         const data = await response.json();
 
         // Check if orders were successfully retrieved
         if (response.ok) {
           setOrders(data.orders);
         } else {
-          console.error('Failed to fetch orders:', data.message);
+          console.error("Failed to fetch orders:", data.message);
         }
       } catch (error) {
-        console.error('Error fetching orders:', error);
+        console.error("Error fetching orders:", error);
       }
     };
 
     // Call the fetchOrders function to retrieve orders
     fetchOrders();
   }, []);
-  console.log("orders",orders)
-
+  console.log("orders", orders);
 
   function checkForChanges() {
     const storedString = localStorage.getItem("randomString");
@@ -130,12 +132,12 @@ function UserProfile() {
               Promise.all(fetchPromises)
                 .then((itemDataArray) => {
                   setFavoritesData(itemDataArray);
-                   setProductsLoaded(true);
+                  setProductsLoaded(true);
                 })
                 .catch((err) => {
                   console.error("Error fetching item details:", err);
                 });
-               
+
               setCurrUser(parsedData);
               setIsUserLoggedIn(true);
             })
@@ -153,26 +155,6 @@ function UserProfile() {
       setIsUserLoggedIn(false);
     }
   }, [isOutOfStock]);
-  // console.log("CurrUser",currUser.favorites._id)
-
-  // useEffect(() => {
-  //     if (userId) {
-  //       const fetchOrders = async () => {
-  //         try {
-  //           setLoading(true);
-  //           const response = await axios.get(`/orders/${userId}`);
-  //           setOrders(response.data.orders);
-  //           setLoading(false);
-  //         } catch (error) {
-  //           console.error('Error fetching orders:', error);
-  //           setError('Failed to fetch orders');
-  //           setLoading(false);
-  //         }
-  //       };
-
-  //       fetchOrders();
-  //     }
-  //   }, [userId]);
 
   const productss = favoritesData.map((item) => ({
     _id: item._id, // Assuming a unique ID for each item
@@ -253,27 +235,27 @@ function UserProfile() {
           </h1>
           {productsLoaded ? (
             <>
-            {favoritess &&
-          favoritess.favorites &&
-          favoritess.favorites.length === 0 ? (
-            <div>
-              <hr />
-              <div className="h-24 text-lg font-medium flex justify-center items-center">
-                No items in Favorite
-              </div>
-              <hr />
-            </div>
-          ) : (
-            // <h1>Testing</h1>
-            <div className="grid md:grid-rows-1 grid-rows-3 grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-2 md:px-20">
-              {productss.map((prod) => (
-                <ProductCard
-                  product={prod}
-                  onCheckboxChange={handleCheckboxChange}
-                />
-              ))}
-              {/* onCheckboxChange={handleCheckboxChange} */}
-              {/* { favoritesData.map((item, i) => (
+              {favoritess &&
+              favoritess.favorites &&
+              favoritess.favorites.length === 0 ? (
+                <div>
+                  <hr />
+                  <div className="h-24 text-lg font-medium flex justify-center items-center">
+                    No items in Favorite
+                  </div>
+                  <hr />
+                </div>
+              ) : (
+                // <h1>Testing</h1>
+                <div className="grid md:grid-rows-1 grid-rows-3 grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-2 md:px-20">
+                  {productss.map((prod) => (
+                    <ProductCard
+                      product={prod}
+                      onCheckboxChange={handleCheckboxChange}
+                    />
+                  ))}
+                  {/* onCheckboxChange={handleCheckboxChange} */}
+                  {/* { favoritesData.map((item, i) => (
 
               <motion.div
                 key={`${item._id}`}
@@ -286,8 +268,8 @@ function UserProfile() {
                 <ProductCard product={item} />
               </motion.div>
             ))} */}
-            </div>
-          )}
+                </div>
+              )}
             </>
           ) : (
             <>
@@ -304,7 +286,6 @@ function UserProfile() {
               </Box>
             </>
           )}
-          
         </div>
         {/* <div className="px-10 bg-slate-100/90 rounded py-3">
         <h1 className="text-2xl font-semibold">Your Products {">"}</h1>
@@ -312,7 +293,7 @@ function UserProfile() {
         <div className="h-24 text-lg font-medium flex justify-center items-center">No Items to sell</div>
         <hr />
       </div> */}
-       
+
         {/* <div className="px-10 bg-slate-100/90 rounded py-3">
   <h1 className="text-2xl font-semibold">Orders {">"}</h1>
   <hr />
@@ -333,27 +314,55 @@ function UserProfile() {
   )}
   <hr />
 </div> */}
- <div className="px-10 py-6 bg-gray-200 rounded-lg shadow-md">
-      <h1 className="text-2xl font-semibold mb-4">Orders &gt;</h1>
-      <hr className="mb-4" />
-      {orders.length === 0 ? (
-        <div className="text-lg font-medium text-center">
-          No Orders Placed Yet
+        <div className="px-10 py-6 bg-gray-200 rounded-lg shadow-md">
+          <h1 className="text-2xl font-semibold mb-4">Orders &gt;</h1>
+          <hr className="mb-4" />
+          {orders.length === 0 ? (
+            <div className="text-lg font-medium text-center">
+              No Orders Placed Yet
+            </div>
+          ) : (
+            <>
+            {orders.map((order) => (
+              <div style={{marginTop:"18px"}}>
+              <Card variant="outlined" sx={{ maxWidth: 1200 }} key={order._id}>
+                  <Typography>
+                  {order._id}
+                </Typography>
+                <Typography>
+                  {new Date(order.orderDate).toLocaleString()}
+                </Typography>
+                <Typography>
+                {order.orderstatus}
+                </Typography>
+                <Typography>
+                {order.totalPrice}
+                </Typography>
+                <Typography>
+                {order.onlinePayment ? "Yes" : "No"}
+                </Typography>
+                <Typography>
+                {order.tableNo.table}
+                </Typography>
+                
+              </Card>
+              </div>
+            ))}
+          </>
+          
+            // orders.map((order) => (
+            //   <div key={order._id} className="mb-6">
+            //     <p className="mb-1"><strong>Invoice ID:</strong> {order.invoiceid}</p>
+            //     <p className="mb-1"><strong>Order Date:</strong> {new Date(order.orderDate).toLocaleString()}</p>
+            //     <p className="mb-1"><strong>Order Status:</strong> {order.orderstatus}</p>
+            //     <p className="mb-1"><strong>Total Price:</strong> ${order.totalPrice}</p>
+            //     <p className="mb-1"><strong>Online Payment:</strong> {order.onlinePayment ? "Yes" : "No"}</p>
+            //     <p className="mb-1"><strong>Table Number:</strong> {order.tableNo.table}</p>
+            //     <hr />
+            //   </div>
+            // ))
+          )}
         </div>
-      ) : (
-        orders.map((order) => (
-          <div key={order._id} className="mb-6">
-            <p className="mb-1"><strong>Invoice ID:</strong> {order.invoiceid}</p>
-            <p className="mb-1"><strong>Order Date:</strong> {new Date(order.orderDate).toLocaleString()}</p>
-            <p className="mb-1"><strong>Order Status:</strong> {order.orderstatus}</p>
-            <p className="mb-1"><strong>Total Price:</strong> ${order.totalPrice}</p>
-            <p className="mb-1"><strong>Online Payment:</strong> {order.onlinePayment ? "Yes" : "No"}</p>
-            <p className="mb-1"><strong>Table Number:</strong> {order.tableNo.table}</p>
-            <hr />
-          </div>
-        ))
-      )}
-    </div>
       </div>
     );
   } else {
@@ -392,58 +401,58 @@ function UserProfile() {
 
           {productsLoaded ? (
             <>
-           {favoritess &&
-          favoritess.favorites &&
-          favoritess.favorites.length === 0 ? (
-            <div>
-              <hr />
-              <div className="h-24 text-lg font-medium flex justify-center items-center">
-                No items in Favorite
-              </div>
-              <hr />
-            </div>
-          ) : (
-            // <h1>Testing</h1>
-            <section className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7 p-4 md:py-5 md:px-14 flex-wrap">
-              {productss.map((item, i) => {
-                return (
-                  <motion.div
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.9 }}
-                    initial={{ opacity: 0, x: 50, scaleZ: 0 }}
-                    whileInView={{
-                      opacity: 1,
-                      x: 0,
-                      scaleZ: 1,
-                      transition: {
-                        delay: i * 0.1,
-                        opacity: { duration: 1 },
-                        type: "spring",
-                        bounce: 0.4,
-                        stiffness: 60,
-                      },
-                    }}
-                    viewport={{ once: true }}
-                    key={item.heading}
-                    className={`p-3 md:p-6 w-full h-full flex gap-x-2 md:gap-x-4 items-center cursor-pointer ${item.bg} rounded-lg select-none`}
-                    style={{
-                      minWidth: "280px",
-                      maxWidth: "100%",
-                      backgroundColor: "#fcfcfc",
-                      border: "1px solid #ccc", // Added 1px solid border
-                      borderRadius: "8px",
-                      boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.1)",
-                    }} // Adjust card width
-                  >
-                    <ProductCard
-                      product={item}
-                      onCheckboxChange={handleCheckboxChange}
-                    />
-                  </motion.div>
-                );
-              })}
-            </section>
-          )}
+              {favoritess &&
+              favoritess.favorites &&
+              favoritess.favorites.length === 0 ? (
+                <div>
+                  <hr />
+                  <div className="h-24 text-lg font-medium flex justify-center items-center">
+                    No items in Favorite
+                  </div>
+                  <hr />
+                </div>
+              ) : (
+                // <h1>Testing</h1>
+                <section className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7 p-4 md:py-5 md:px-14 flex-wrap">
+                  {productss.map((item, i) => {
+                    return (
+                      <motion.div
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.9 }}
+                        initial={{ opacity: 0, x: 50, scaleZ: 0 }}
+                        whileInView={{
+                          opacity: 1,
+                          x: 0,
+                          scaleZ: 1,
+                          transition: {
+                            delay: i * 0.1,
+                            opacity: { duration: 1 },
+                            type: "spring",
+                            bounce: 0.4,
+                            stiffness: 60,
+                          },
+                        }}
+                        viewport={{ once: true }}
+                        key={item.heading}
+                        className={`p-3 md:p-6 w-full h-full flex gap-x-2 md:gap-x-4 items-center cursor-pointer ${item.bg} rounded-lg select-none`}
+                        style={{
+                          minWidth: "280px",
+                          maxWidth: "100%",
+                          backgroundColor: "#fcfcfc",
+                          border: "1px solid #ccc", // Added 1px solid border
+                          borderRadius: "8px",
+                          boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.1)",
+                        }} // Adjust card width
+                      >
+                        <ProductCard
+                          product={item}
+                          onCheckboxChange={handleCheckboxChange}
+                        />
+                      </motion.div>
+                    );
+                  })}
+                </section>
+              )}
             </>
           ) : (
             <>
@@ -460,8 +469,6 @@ function UserProfile() {
               </Box>
             </>
           )}
-
-          
         </div>
         {/* <div className="px-10 bg-slate-100/90 rounded py-3">
         <h1 className="text-2xl font-semibold">Your Products {">"}</h1>
@@ -470,30 +477,29 @@ function UserProfile() {
         <hr />
       </div> */}
         <div className="px-10 bg-slate-100/90 rounded py-3">
-  <h1 className="text-2xl font-semibold">Orders {">"}</h1>
-  <hr />
-  {orders.length > 0 ? (
-    <div>
-      {orders.map(order => (
-        <div key={order._id} className="mb-4">
-          {/* Render order details here */}
-          <p>Order ID: {order._id}</p>
-          {/* Render other order details as needed */}
+          <h1 className="text-2xl font-semibold">Orders {">"}</h1>
+          <hr />
+          {orders.length > 0 ? (
+            <div>
+              {orders.map((order) => (
+                <div key={order._id} className="mb-4">
+                  {/* Render order details here */}
+                  <p>Order ID: {order._id}</p>
+                  {/* Render other order details as needed */}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="h-24 text-lg font-medium flex justify-center items-center">
+              No Orders Placed Yet
+            </div>
+          )}
+          <hr />
         </div>
-      ))}
-    </div>
-  ) : (
-    <div className="h-24 text-lg font-medium flex justify-center items-center">
-      No Orders Placed Yet
-    </div>
-  )}
-  <hr />
-</div>
       </div>
     );
   }
 }
-
 
 // {favoritess &&
 //   favoritess.favorites &&
