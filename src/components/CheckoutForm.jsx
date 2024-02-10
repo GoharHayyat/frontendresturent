@@ -41,64 +41,118 @@ function CheckoutForm() {
   const [inputData, setInputData] = useState("");
 
   const handleInputChange = (event) => {
-      setInputData(event.target.value);
-    
+    setInputData(event.target.value);
+  };
+
+  const handleSubmittt = async () => {
+    if (inputData.length >= 5) {
+      setIsLoading(true);
+      setErrormessage(false);
+      try {
+        console.log(process.env.REACT_APP_API_URL);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/qrcodestokens`);
+  
+        if (response.ok) {
+          const data = await response.json();
+          const lastFiveDigitsInput = inputData.slice(-5);
+  
+          const matchingToken = data.find((item) =>
+            item.tableId && item.tableId.endsWith(lastFiveDigitsInput)
+          );
+  
+          if (matchingToken) {
+            const result = {
+              table: matchingToken.table,
+              tableId: matchingToken.tableId,
+            };
+  
+            localStorage.setItem("user_table", JSON.stringify(result));
+            setUserTable(result);
+            setmanually(true);
+            setUserTablecheck(true);
+            setInputData("");
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 3000);
+          } else {
+            setErrormessage(true);
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 3000);
+          }
+        } else {
+          console.error("Failed to fetch API data:", response.statusText);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error("Error fetching API data:", error);
+        toast("Error fetching API data: " + error.message);
+        setIsLoading(false);
+      }
+    } else {
+      toast("Input 5 characters Validation Code");
+    }
   };
   
 
-  const handleSubmittt = async () => {
+  // const handleSubmittt = async () => {
+  //   if (inputData.length >= 5) {
+  //     setIsLoading(true);
+  //     setErrormessage(false);
+  //     try {
+  //       console.log(process.env.REACT_APP_API_URL);
+  //       //  `${process.env.REACT_APP_API_URL}getProductsByIds
+  //       const response = await fetch(
+  //         `${process.env.REACT_APP_API_URL}/qrcodestokens`
+  //       );
 
-    if (inputData.length >= 5) {
-      setIsLoading(true);
-    setErrormessage(false);
-    try {
-     console.log(process.env.REACT_APP_API_URL) ;
-    //  `${process.env.REACT_APP_API_URL}getProductsByIds
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/qrcodestokens`);
+  //       if (response.ok) {
+  //         const data = await response.json();
 
-      if (response.ok) {
-        const data = await response.json();
+  //         // Assuming you have the input data in a state variable named inputData
+  //         const lastFiveDigitsInput = inputData.slice(-5);
 
-        // Assuming you have the input data in a state variable named inputData
-        const lastFiveDigitsInput = inputData.slice(-5);
+  //         const matchingToken = data.find((item) =>
+  //           item.tableId.endsWith(lastFiveDigitsInput)
+  //         );
 
-        const matchingToken = data.find((item) =>
-          item.tableId.endsWith(lastFiveDigitsInput)
-        );
-        console.log("its a",matchingToken.tableId)
-        if (matchingToken) {
-          // Print all details of the matching token
-          // console.log('Matching Token Details:', matchingToken.table);
-          const result = { table: matchingToken.table, tableId: matchingToken.tableId };
-          localStorage.setItem("user_table", JSON.stringify(result));
-          setUserTable(result);
-          setmanually(true);
-          setUserTablecheck(true);
-          setInputData("");
-          setTimeout(() => {
-            setIsLoading(false);
-          }, 3000);
-        } else {
-          setErrormessage(true);
-          setTimeout(() => {
-            setIsLoading(false);
-          }, 3000);
-        }
-      } else {
-        alert("Failed to fetch API data.");
-        setIsLoading(false);
-      }
-    } catch (error) {
-      alert("Error fetching API data:", error);
-      setIsLoading(false);
-    }
-    } else {
+
+  //         console.log("its a", matchingToken.tableId);
+  //         if (matchingToken) {
+  //           // Print all details of the matching token
+  //           // console.log('Matching Token Details:', matchingToken.table);
+  //           const result = {
+  //             table: matchingToken.table,
+  //             tableId: matchingToken.tableId,
+  //           };
+  //           localStorage.setItem("user_table", JSON.stringify(result));
+  //           setUserTable(result);
+  //           setmanually(true);
+  //           setUserTablecheck(true);
+  //           setInputData("");
+  //           setTimeout(() => {
+  //             setIsLoading(false);
+  //           }, 3000);
+  //         } else {
+  //           setErrormessage(true);
+  //           setTimeout(() => {
+  //             setIsLoading(false);
+  //           }, 3000);
+  //         }
+  //       } else {
+  //         // alert("Failed to fetch API data.");
+  //         setIsLoading(false);
+  //       }
+  //     }  catch (error) {
+  //       console.error("Error fetching API data:", error);
+  //       toast("Error fetching API data: " + error.message);
+  //       setIsLoading(false);
+  //     }
       
-      toast('Input 5 characters Validation Code');
-    }
-
-    
-  };
+  //   } else {
+  //     toast("Input 5 characters Validation Code");
+  //   }
+  // };
 
   const handleDelete = () => {
     localStorage.removeItem("user_table");
@@ -165,7 +219,9 @@ function CheckoutForm() {
           </div>
           <div style={{ marginTop: "20px", marginBottom: "8px" }}>
             {errormessage ? (
-              <div style={{ color: "red", fontSize: "16px", marginBottom:"5px" }}>
+              <div
+                style={{ color: "red", fontSize: "16px", marginBottom: "5px" }}
+              >
                 Invalid Code!
               </div>
             ) : (
@@ -275,8 +331,10 @@ function CheckoutForm() {
             </p>
           </div>
           <div style={{ marginTop: "20px", marginBottom: "8px" }}>
-          {errormessage ? (
-              <div style={{ color: "red", fontSize: "16px", marginBottom:"5px" }}>
+            {errormessage ? (
+              <div
+                style={{ color: "red", fontSize: "16px", marginBottom: "5px" }}
+              >
                 Invalid Code!
               </div>
             ) : (
@@ -389,9 +447,9 @@ function CheckoutForm() {
       return;
     }
 
-    if (usertablecheck===false) {
-        toast.error("Please select a table before submitting.");
-        return;
+    if (usertablecheck === false) {
+      toast.error("Please select a table before submitting.");
+      return;
     }
 
     const products = cart.map((item) => ({
@@ -405,13 +463,16 @@ function CheckoutForm() {
     ); // Calculate total price
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/orders`, {
-        userId: user.favorites._id, // Assuming user object has an id property
-        products,
-        totalPrice,
-        tableNo: usertable,
-        // Add delivery address here if needed
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/orders`,
+        {
+          userId: user.favorites._id, // Assuming user object has an id property
+          products,
+          totalPrice,
+          tableNo: usertable,
+          // Add delivery address here if needed
+        }
+      );
 
       console.log(response.data); // Log the response for debugging
       // dispatch(clearCart());
