@@ -313,16 +313,16 @@ function UserProfile() {
         <hr />
       </div> */}
        
-        <div className="px-10 bg-slate-100/90 rounded py-3">
+        {/* <div className="px-10 bg-slate-100/90 rounded py-3">
   <h1 className="text-2xl font-semibold">Orders {">"}</h1>
   <hr />
   {orders.length > 0 ? (
     <div>
       {orders.map(order => (
         <div key={order._id} className="mb-4">
-          {/* Render order details here */}
+         
           <p>Order ID: {order._id}</p>
-          {/* Render other order details as needed */}
+          
         </div>
       ))}
     </div>
@@ -332,7 +332,28 @@ function UserProfile() {
     </div>
   )}
   <hr />
-</div>
+</div> */}
+ <div className="px-10 py-6 bg-gray-200 rounded-lg shadow-md">
+      <h1 className="text-2xl font-semibold mb-4">Orders &gt;</h1>
+      <hr className="mb-4" />
+      {orders.length === 0 ? (
+        <div className="text-lg font-medium text-center">
+          No Orders Placed Yet
+        </div>
+      ) : (
+        orders.map((order) => (
+          <div key={order._id} className="mb-6">
+            <p className="mb-1"><strong>Invoice ID:</strong> {order.invoiceid}</p>
+            <p className="mb-1"><strong>Order Date:</strong> {new Date(order.orderDate).toLocaleString()}</p>
+            <p className="mb-1"><strong>Order Status:</strong> {order.orderstatus}</p>
+            <p className="mb-1"><strong>Total Price:</strong> ${order.totalPrice}</p>
+            <p className="mb-1"><strong>Online Payment:</strong> {order.onlinePayment ? "Yes" : "No"}</p>
+            <p className="mb-1"><strong>Table Number:</strong> {order.tableNo.table}</p>
+            <hr />
+          </div>
+        ))
+      )}
+    </div>
       </div>
     );
   } else {
