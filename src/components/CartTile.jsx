@@ -29,8 +29,9 @@ function CartTile({ item }) {
             var name = key;
             var quantity = productObj[key];
   
-            // Store name and quantity in the array
-            ingredientsToUpdate.push({ name, quantity });
+            if (quantity !== -99) {
+              ingredientsToUpdate.push({ name, quantity });
+            }
           }
         }
   
@@ -97,7 +98,10 @@ function CartTile({ item }) {
             var quantity = productObj[key];
   
             // Store name and quantity in the array
-            ingredientsToUpdate.push({ name, quantity });
+            if (quantity !== -99) {
+              // Store name and quantity in the array
+              ingredientsToUpdate.push({ name, quantity });
+            }
           }
         }
   
@@ -154,8 +158,9 @@ function CartTile({ item }) {
             var name = key;
             var quantity = productObj[key];
   
-            // Store name and quantity in the array
-            ingredientsToUpdate.push({ name, quantity });
+            if (quantity !== -99) {
+              ingredientsToUpdate.push({ name, quantity });
+            }
           }
         }
   

@@ -15,6 +15,8 @@ import TextField from "@mui/material/TextField";
 import Buttonn from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import { removeFromCart } from "../features/Cart";
+import Backdrop from '@mui/material/Backdrop';
+import React from "react";
 
 const variants = {
   initial: { opacity: 0, scaleY: -1 },
@@ -39,18 +41,20 @@ function CheckoutForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [errormessage, setErrormessage] = useState(false);
   const [inputData, setInputData] = useState("");
-  const [coupon, setCoupon] = useState('');
+  const [coupon, setCoupon] = useState("");
+  const [couponn, setCouponn] = useState(false);
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     const getDataFromLocalStorage = () => {
       const storedData = localStorage.getItem("Coupon");
       if (storedData) {
         setCoupon(storedData);
+        setCouponn(true);
       }
     };
     getDataFromLocalStorage();
-  }, []);
-
+  }, [inputData]);
 
   const handleInputChange = (event) => {
     setInputData(event.target.value);
@@ -62,22 +66,24 @@ function CheckoutForm() {
       setErrormessage(false);
       try {
         console.log(process.env.REACT_APP_API_URL);
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/qrcodestokens`);
-  
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/qrcodestokens`
+        );
+
         if (response.ok) {
           const data = await response.json();
           const lastFiveDigitsInput = inputData.slice(-5);
-  
-          const matchingToken = data.find((item) =>
-            item.tableId && item.tableId.endsWith(lastFiveDigitsInput)
+
+          const matchingToken = data.find(
+            (item) => item.tableId && item.tableId.endsWith(lastFiveDigitsInput)
           );
-  
+
           if (matchingToken) {
             const result = {
               table: matchingToken.table,
               tableId: matchingToken.tableId,
             };
-  
+
             localStorage.setItem("user_table", JSON.stringify(result));
             setUserTable(result);
             setmanually(true);
@@ -105,7 +111,6 @@ function CheckoutForm() {
       toast("Input 5 characters Validation Code");
     }
   };
-  
 
   // const handleSubmittt = async () => {
   //   if (inputData.length >= 5) {
@@ -127,7 +132,6 @@ function CheckoutForm() {
   //         const matchingToken = data.find((item) =>
   //           item.tableId.endsWith(lastFiveDigitsInput)
   //         );
-
 
   //         console.log("its a", matchingToken.tableId);
   //         if (matchingToken) {
@@ -160,7 +164,7 @@ function CheckoutForm() {
   //       toast("Error fetching API data: " + error.message);
   //       setIsLoading(false);
   //     }
-      
+
   //   } else {
   //     toast("Input 5 characters Validation Code");
   //   }
@@ -448,6 +452,7 @@ function CheckoutForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
 
     if (user) {
     } else {
@@ -463,87 +468,128 @@ function CheckoutForm() {
       toast.error("Please select a table before submitting.");
       return;
     }
+    setOpen(true)
 
     const products = cart.map((item) => ({
       name: item.name,
       price: item.price,
       quantity: item.count,
     }));
+
+    const updateproducts = cart.map((item) => ({
+      describtion: item.describtion,
+      quantity: item.count,
+    }));
+
+    var ingredientsToUpdate = [];
+
+    updateproducts.forEach((product) => {
+      var productDescription = product.describtion;
+      var productObj = JSON.parse(productDescription);
+
+      for (var key in productObj) {
+        if (productObj.hasOwnProperty(key)) {
+          var name = key;
+          var quantity = productObj[key];
+
+          if (quantity !== -99) {
+            var quantityy = productObj[key] * product.quantity;
+            // Store name and quantity in the array
+            ingredientsToUpdate.push({ name, quantityy });
+          }
+        }
+      }
+    });
+
     const totalPrice = cart.reduce(
       (total, item) => total + item.price * item.count,
       0
-    ); // Calculate total price
+    );
+
+    const purchaseData = cart.map((item) => ({
+      name: item.name,
+      quantity: item.count,
+    }));
 
     try {
-      const response = await axios.post(
+      const orderResponse = await axios.post(
         `${process.env.REACT_APP_API_URL}/orders`,
         {
-          userId: user.favorites._id, // Assuming user object has an id property
+          userId: user.favorites._id,
           products,
           totalPrice,
           tableNo: usertable,
-          // Add delivery address here if needed
         }
       );
 
-      console.log(response.data); // Log the response for debugging
-      // dispatch(clearCart());
-      // dispatch({ type: 'cart/reset' });
-      cart.forEach((item) => dispatch(removeFromCart({ _id: item._id })));
+      if (orderResponse.status >= 200 && orderResponse.status < 300) {
+        if (couponn) {
+          console.log("Inside couponn block");
+          try {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            const couponResponse = await axios.post(
+              `${process.env.REACT_APP_API_URL}/verifycouponupdate`,
+              { coupon }
+            );
 
-      try {
-        // verifycouponupdate
-        console.log("coupcdbhj",coupon)
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_URL}/verifycouponupdate`,
-          { coupon }
-        );
-        if (response.data.success) {
-          // Fetch the coupon details
-          // const couponDetailsResponse = await axios.get(
-          //   `${process.env.REACT_APP_API_URL}/coupon-details?coupon=${coupon}`
-          // );
-          // if (couponDetailsResponse.data.success) {
-          //   const couponDetails = couponDetailsResponse.data.coupon;
-            
-          //     // The coupon is active, apply discount
-          //     const discountPercentage = couponDetails.discountPercentage;
-          //     const discountAmount = totalPriceWithTax * (discountPercentage / 100);
-          //     const discountedPrice = totalPriceWithTax - discountAmount;
-          //     setDiscountedTotalPrice(discountedPrice);
-          //     toast("Discount added");
-          localStorage.removeItem("Coupon");
-              setCoupon('');
-            
-          // }
+            if (couponResponse.status === 200) {
+              setCoupon("");
+              setCouponn(false);
+              localStorage.removeItem("Coupon");
+            } else {
+              // Handle non-successful coupon verification
+              throw new Error("Failed to verify coupon");
+            }
+          } catch (couponError) {
+            console.error("Error verifying coupon:", couponError);
+            // Handle coupon verification error
+            // You might want to provide feedback to the user or take other actions
+          }
         }
-        
-      } catch (error) {
-        // console.error('Error verifying coupon:', error);
-        // toast.error("Invalid coupon");
-        //  if (error.response && error.response.status === 400) {
-        //     // Coupon verification failed due to coupon already used
-        //     toast.error("Token expired");
-        // } else {
-        //     // Other errors, such as network issues or server errors
-        //     toast.error("Invalid coupon");
-        // }
-        setCoupon('');
+
+        const stockUpdateResponse = await fetch(
+          `${process.env.REACT_APP_API_URL}/ingredients/updateorignalstock`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(ingredientsToUpdate),
+          }
+        );
+
+        if (stockUpdateResponse.ok) {
+          try {
+            const purchaseResponse = await axios.post(
+              `${process.env.REACT_APP_API_URL}/updateTotalPurchases`,
+              purchaseData
+            );
+
+            cart.forEach((item) => dispatch(removeFromCart({ _id: item._id })));
+            // Order and stock update were successful
+            // toast.success("Order submitted successfully");
+            localStorage.removeItem("user_table");
+            localStorage.removeItem("HTML5_QRCODE_DATA");
+            setOpen(false);
+            // Redirect to success page or any desired page
+            window.location.href = "/success";
+
+            console.log("Items purchased successfully:", purchaseResponse.data);
+            // Handle success as needed
+          } catch (error) {
+            console.error("There was a problem with the API request:", error);
+            // Handle errors as needed
+          }
+        } else {
+          // Handle non-successful stock update
+          throw new Error("Failed to update stock");
+        }
+      } else {
+        // Handle non-successful order submission
+        throw new Error("Failed to submit order");
       }
-
-      // Show success toast
-      toast.success("Order submitted successfully");
-      localStorage.removeItem("user_table");
-      localStorage.removeItem("HTML5_QRCODE_DATA");
-      localStorage.removeItem("Coupon");
-
-      // Navigate to home page
-      // history.push('/'); // Redirect to home page
-      navigate("/success");
-
-      // Handle successful order submission (e.g., redirect to thank you page)
-    } catch (error) {
-      console.error("Error submitting order:", error);
+    } catch (orderError) {
+      console.error("Error submitting order:", orderError);
       toast.error("Failed to submit order. Please try again later.");
     }
   };
@@ -567,6 +613,15 @@ function CheckoutForm() {
   }
 
   return (
+<>
+    <div>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </div>
     <motion.div
       initial={{ opacity: 0.3, scale: 0.5 }}
       animate={{
@@ -601,7 +656,68 @@ function CheckoutForm() {
         </div>
       </motion.form>
     </motion.div>
+    </>
   );
 }
 
 export default CheckoutForm;
+
+// try {
+//   const response = await axios.post(
+//     `${process.env.REACT_APP_API_URL}/orders`,
+//     {
+//       userId: user.favorites._id,
+//       products,
+//       totalPrice,
+//       tableNo: usertable,
+//       // Add delivery address here if needed
+//     }
+//   );
+
+//   if (response.ok) {
+
+//     if (couponn) {
+//       alert("added");
+
+//       // Uncomment and complete the following code block if needed
+//       // try {
+//       //   const response = await axios.post(
+//       //     `${process.env.REACT_APP_API_URL}/verifycouponupdate`,
+//       //     { coupon }
+//       //   );
+//       //   if (response.data.success) {
+//       //     // Add your code here
+//       //   }
+//       // } catch (error) {
+//       //   // Handle error if necessary
+//       // }
+//     } else {
+//       const response = await fetch(
+//         `${process.env.REACT_APP_API_URL}/ingredients/updateorignalstock`,
+//         {
+//           method: "PUT",
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//           body: JSON.stringify(ingredientsToUpdate),
+//         }
+//       );
+
+//       // Handle the API response
+//       if (response.ok) {
+//         toast.success("Order submitted successfully");
+//         localStorage.removeItem("user_table");
+//         localStorage.removeItem("HTML5_QRCODE_DATA");
+//         localStorage.removeItem("Coupon");
+//         // setCoupon(""); // Uncomment if needed
+
+//         navigate("/success");
+//       }
+//     }
+
+//   }
+
+// } catch (error) {
+//   console.error("Error submitting order:", error);
+//   toast.error("Failed to submit order. Please try again later.");
+// }

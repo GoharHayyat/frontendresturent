@@ -29,7 +29,11 @@ function ProductCard({ product, onCheckboxChange }) {
 
   const [isFavorite, setIsFavorite] = useState(false);
 
-  const truncatedName = product.name.length > 7 ? `${product.name.slice(0, 7)}...` : product.name;
+  const truncatedName = (product && product.name && product.name.length > 7)
+  ? `${product.name.slice(0, 7)}...`
+  : (product && product.name) // Check if product and product.name are defined
+    ? product.name
+    : 'No Name'; // Default value or handle appropriately
 
 
   useEffect(() => {
@@ -57,10 +61,10 @@ function ProductCard({ product, onCheckboxChange }) {
         setIsUserLoggedIn(true);
       } else {
         setIsUserLoggedIn(false);
-        console.log("Invalid stored data structure");
+        // console.log("Invalid stored data structure");
       }
     } else {
-      console.log("No stored data found in local storage.");
+      // console.log("No stored data found in local storage.");
       setIsUserLoggedIn(false);
     }
   }, []);
@@ -69,9 +73,9 @@ function ProductCard({ product, onCheckboxChange }) {
     const loginDataStringg = localStorage.getItem("loginData");
     const loginDataa = JSON.parse(loginDataStringg);
     if (!loginDataa || !loginDataa.favorites || !loginDataa.favorites._id) {
-      console.error(
-        "No data available in localStorage or missing required fields."
-      );
+      // console.error(
+      //   "No data available in localStorage or missing required fields."
+      // );
     } else {
       const apiUrl = `${process.env.REACT_APP_API_URL}/checkisliked/${loginDataa.favorites._id}/${product._id}`;
 
@@ -83,16 +87,16 @@ function ProductCard({ product, onCheckboxChange }) {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           if (data.available === true) {
             setIsFavorite(!isFavorite);
-            console.log("available");
+            // console.log("available");
           } else {
-            console.log("not available");
+            // console.log("not available");
           }
         })
         .catch((error) => {
-          console.error("Error:", error);
+          // console.error("Error:", error);
         });
     }
   }, []);
@@ -115,9 +119,12 @@ function ProductCard({ product, onCheckboxChange }) {
             var quantity = productObj[key];
 
             // Store name and quantity in the array
-            ingredientsToUpdate.push({ name, quantity });
+            if (quantity !== -99) {
+              ingredientsToUpdate.push({ name, quantity });
+            }
           }
         }
+        console.log("view",ingredientsToUpdate);
 
         const response = await fetch(
           `${process.env.REACT_APP_API_URL}/ingredients/updatetempstock`,
@@ -132,7 +139,7 @@ function ProductCard({ product, onCheckboxChange }) {
 
         if (response.ok) {
           const responseData = await response.json();
-          console.log("API call successful:", responseData);
+          // console.log("API call successful:", responseData);
           dispatch(addToCart({ item: { ...product, count: 1 } }));
           setIsAdded(true);
           setTimeout(() => {
@@ -140,7 +147,7 @@ function ProductCard({ product, onCheckboxChange }) {
           }, 2500);
           handleCheckboxChange();
         } else {
-          console.error("API call failed. Status:", response.status);
+          // console.error("API call failed. Status:", response.status);
           setIsAddedd(true);
           setTimeout(() => {
             setIsAddedd(false);
@@ -148,7 +155,7 @@ function ProductCard({ product, onCheckboxChange }) {
           handleCheckboxChange();
         }
       } else {
-        console.error("Product or product description is undefined");
+        // console.error("Product or product description is undefined");
       }
     }
   };
@@ -162,7 +169,7 @@ function ProductCard({ product, onCheckboxChange }) {
 
       const userId = loginData.favorites._id;
 
-      console.log("User ID", userId);
+      // console.log("User ID", userId);
 
       setIsFavorite(!isFavorite);
 
@@ -196,7 +203,7 @@ function ProductCard({ product, onCheckboxChange }) {
           handleCheckboxChange();
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
           setIsFavorite(!isFavorite);
           alert("Favorite not Added");
         });
