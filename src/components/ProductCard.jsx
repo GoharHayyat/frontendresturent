@@ -12,7 +12,6 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { manageFavorite } from "../features/User";
 import axios from "axios";
-// import "./ProductCard.css";
 import ProductCardDetails from "./ProductCardDetails";
 
 import Button from "@mui/joy/Button";
@@ -20,9 +19,8 @@ import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
-// import Chip from '@mui/material/Chip';
 import Chip from "@mui/joy/Chip";
-// import { toast } from "react-toastify";
+
 import { FaTimes } from "react-icons/fa";
 
 function ProductCard({ product, onCheckboxChange }) {
