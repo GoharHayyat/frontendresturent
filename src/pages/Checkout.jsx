@@ -38,6 +38,7 @@ function Checkout() {
 
 const handleCouponVerification = async () => {
   try {
+    // verifycouponupdate
     const response = await axios.post(
       `${process.env.REACT_APP_API_URL}/verifycoupon`,
       { coupon }
@@ -56,6 +57,7 @@ const handleCouponVerification = async () => {
           const discountedPrice = totalPriceWithTax - discountAmount;
           setDiscountedTotalPrice(discountedPrice);
           toast("Discount added");
+          localStorage.setItem("Coupon", coupon );
           setCoupon('');
         
       }
@@ -77,7 +79,7 @@ const handleCouponVerification = async () => {
 
 
   return (
-    <div className="md:h-[100vh]">
+    <div className="md:h-[115vh]">
       <div className='px-4 pt-10 md:px-10 md:w-[55%]'>
 
         <h1 className="text-2xl font-semibold">Checkout Information</h1>
@@ -114,13 +116,15 @@ const handleCouponVerification = async () => {
             ))}
           </div>
           <hr />
-          <div className='p-4 text-lg md:text-xl font-[500] flex flex-col gap-3'>
-            <Box
+          <br/>
+          <div style={{ display:"flex" ,justifyContent:"center" , alignItems:"center" }}>
+          <Box
               sx={{
-                width: 400,
-                maxWidth: "80%",
+                width: 330,
+                marginRight:"28px"
               }}
             >
+            <div>
               <TextField
                 fullWidth
                 label="Discount Coupon"
@@ -128,19 +132,28 @@ const handleCouponVerification = async () => {
                 value={coupon}
                 onChange={(e) => setCoupon(e.target.value)}
               />
+              </div>
+              </Box>
+              <div style={{ display:"flex"}}>
               <Buttonn
                 variant="contained"
                 color="success"
                 onClick={handleCouponVerification}
                 sx={{
-                  width: 400,
+                  width: 50,
                   maxWidth: "80%",
                   justifyContent: 'center'
                 }}
               >
-                Apply Coupon
+                Add
               </Buttonn>
-            </Box>
+              </div>
+           
+          </div>
+          <br/>
+          <hr />
+          <div className='p-4 text-lg md:text-xl font-[500] flex flex-col gap-3'>
+        
             <div className="flex justify-between items-center">
               <h1>Subtotal:</h1>
               <h1>Rs.{totalPrice}</h1>

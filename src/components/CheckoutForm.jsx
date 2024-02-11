@@ -39,6 +39,18 @@ function CheckoutForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [errormessage, setErrormessage] = useState(false);
   const [inputData, setInputData] = useState("");
+  const [coupon, setCoupon] = useState('');
+
+  useEffect(() => {
+    const getDataFromLocalStorage = () => {
+      const storedData = localStorage.getItem("Coupon");
+      if (storedData) {
+        setCoupon(storedData);
+      }
+    };
+    getDataFromLocalStorage();
+  }, []);
+
 
   const handleInputChange = (event) => {
     setInputData(event.target.value);
@@ -479,10 +491,51 @@ function CheckoutForm() {
       // dispatch({ type: 'cart/reset' });
       cart.forEach((item) => dispatch(removeFromCart({ _id: item._id })));
 
+      try {
+        // verifycouponupdate
+        console.log("coupcdbhj",coupon)
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}/verifycouponupdate`,
+          { coupon }
+        );
+        if (response.data.success) {
+          // Fetch the coupon details
+          // const couponDetailsResponse = await axios.get(
+          //   `${process.env.REACT_APP_API_URL}/coupon-details?coupon=${coupon}`
+          // );
+          // if (couponDetailsResponse.data.success) {
+          //   const couponDetails = couponDetailsResponse.data.coupon;
+            
+          //     // The coupon is active, apply discount
+          //     const discountPercentage = couponDetails.discountPercentage;
+          //     const discountAmount = totalPriceWithTax * (discountPercentage / 100);
+          //     const discountedPrice = totalPriceWithTax - discountAmount;
+          //     setDiscountedTotalPrice(discountedPrice);
+          //     toast("Discount added");
+          localStorage.removeItem("Coupon");
+              setCoupon('');
+            
+          // }
+        }
+        
+      } catch (error) {
+        // console.error('Error verifying coupon:', error);
+        // toast.error("Invalid coupon");
+        //  if (error.response && error.response.status === 400) {
+        //     // Coupon verification failed due to coupon already used
+        //     toast.error("Token expired");
+        // } else {
+        //     // Other errors, such as network issues or server errors
+        //     toast.error("Invalid coupon");
+        // }
+        setCoupon('');
+      }
+
       // Show success toast
       toast.success("Order submitted successfully");
       localStorage.removeItem("user_table");
       localStorage.removeItem("HTML5_QRCODE_DATA");
+      localStorage.removeItem("Coupon");
 
       // Navigate to home page
       // history.push('/'); // Redirect to home page
