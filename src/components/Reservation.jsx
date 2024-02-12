@@ -20,6 +20,8 @@ function Reservation() {
     { id: 5, startTime: "9:00 PM", endTime: "10:30 PM" },
     { id: 6, startTime: "10:30 PM", endTime: "11:59 PM" },
   ];
+ 
+
 
   useEffect(() => {
     const loginDataString = localStorage.getItem("loginData");

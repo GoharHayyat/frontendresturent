@@ -106,6 +106,7 @@ function ProductCard({ product, onCheckboxChange }) {
   };
 
   const handleAddToCart = async () => {
+    console.log("Add to cart funtion ")
     if (!isAdded || !isAddedd) {
       if (product && product.describtion) {
         var productDescription = product.describtion;
