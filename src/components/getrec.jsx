@@ -73,22 +73,7 @@ function GetRecommendations() {
   }, []); // Empty dependency array to run effect only once on mount
   console.log("Recommendation",recommendations)
 
-// const products = recommendations.map((item) => ({
-//         _id: item._id, // Assuming a unique ID for each item
-//         name: item.title,
-//         category: item.category, // You can set the category as per your application logic
-//         price: item.Price, // Define the price as needed
-//         check: item.check,
-//         stars: 4.0, // Set the stars or rating based on your system
-//         imageLinks: [`${process.env.REACT_APP_API_URL}/${item.image}`],
-//         isFavorite: false,
-//         isAdded: false,
-//         describtion: item.description,
-//         calories: item.calories,
-//         carbohydrates: item.carbohydrates,
-//         fats: item.fats,
-//         protein: item.protein,
-//       }));
+
  const handleCheckboxChangee = (recommendations) => {
     // if (data.length > 0 && !trending) {
       const products = recommendations.map((item) => ({
@@ -101,19 +86,19 @@ function GetRecommendations() {
         imageLinks: [`${process.env.REACT_APP_API_URL}/${item.image}`],
         isFavorite: false,
         isAdded: false,
-        describtion: item.describtion,
+        describtion: item.description,
         calories: item.calories,
         carbohydrates: item.carbohydrates,
         fats: item.fats,
         protein: item.protein,
       }));
-      console.log("inside handlecheck",products)
+      // console.log("inside handlecheck",products)
 
       setRec(products);
     // }
   };
 
-console.log("recomen.. prouct",rec)
+// console.log("recomen.. prouct",rec)
 
   return (
     <div>

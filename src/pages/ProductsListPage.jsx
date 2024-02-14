@@ -6,6 +6,7 @@ import LoadingScreen from "./LoadingScreen";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Checkbox from "@mui/joy/Checkbox";
+// import GetRecommendations from "../components/getrec";
 
 //Main Page for sending product data
 
@@ -192,6 +193,7 @@ function ProductsListPage() {
               </p>
             </div>
             {productsLoaded ? (
+              <>
               <div className="grid md:grid-rows-1 grid-rows-3 grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-3 md:px-0">
                 {mydatahandle.map((prod) => (
                   <ProductCard
@@ -201,6 +203,8 @@ function ProductsListPage() {
                   />
                 ))}
               </div>
+              
+</>
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-3 w-full items-center justify-center px-3 md:px-0">
                 {Array.from({ length: 5 }, (_, index) => (

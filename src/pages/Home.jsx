@@ -7,15 +7,11 @@ import { useDispatch } from "react-redux";
 import { closeAll } from "../features/Modals";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-// import 'react-toastify/dist/ReactToastify.css';
+import GetRecommendations from "../components/getrec";
 
 function Home() {
-  // const [products,setProducts] = useState(null);
   const [trending, setTrending] = useState(null);
-  // const [featured, setFeatured] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
-
-  // const [trendingSet, setTrendingSet] = useState(false);
   const [productsLoaded, setProductsLoaded] = useState(false);
   const [isOutOfStock, setIsOutOfStock] = useState(false);
 
@@ -24,7 +20,6 @@ function Home() {
     dispatch(closeAll());
   }, []);
 
-  // console.log("fvd", process.env.REACT_APP_API_URL);
   function checkForChanges() {
     const storedString = localStorage.getItem("randomString");
     if (storedString !== currentRandomString) {
@@ -44,7 +39,6 @@ function Home() {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        // Updated API endpoint without specifying an ID
         const response = await fetch(
           `${process.env.REACT_APP_API_URL}/menuitemsTrending`
         );
@@ -63,10 +57,9 @@ function Home() {
 
     fetchMenuItems();
   }, [isOutOfStock]);
-  console.log("setMenuItems", menuItems)
+  // console.log("setMenuItems", menuItems)
 
   const handleCheckboxChangee = (data) => {
-    // if (data.length > 0 && !trending) {
       const products = data.map((item) => ({
         _id: item._id, // Assuming a unique ID for each item
         name: item.title,
@@ -87,31 +80,9 @@ function Home() {
       setTrending(products.slice(0, 5));
     // }
   };
-  console.log("api is", process.env.REACT_APP_API_URL)
+  // console.log("api is", process.env.REACT_APP_API_URL)
 
-  // useEffect(() => {
-  //   if (menuItems.length > 0 && !trending) {
-  //     const products = menuItems.map((item) => ({
-  //       _id: item._id, // Assuming a unique ID for each item
-  //       name: item.title,
-  //       category: item.category, // You can set the category as per your application logic
-  //       price: item.Price, // Define the price as needed
-  //       check: item.check,
-  //       stars: 4.0, // Set the stars or rating based on your system
-  //       imageLinks: [`http://localhost:4500/${item.image}`],
-  //       isFavorite: false,
-  //       isAdded: false,
-  //       describtion: item.describtion,
-  //       calories: item.calories,
-  //       carbohydrates: item.carbohydrates,
-  //       fats: item.fats,
-  //       protein: item.protein,
-  //     }));
-
-  //     setTrending(products.slice(0, 5));
-  //   }
-  // }, [menuItems, trending]);
-  //test
+ 
 
   console.log("trending",trending)
 
@@ -119,15 +90,15 @@ function Home() {
     <div>
       <Slider />
 
-      {/* <ProductList name={"Trending Products"} data={products}></ProductList> */}
       {productsLoaded ? (
         <>
           {trending && (
             <ProductList name={"Trending Products"} data={trending} onCheckboxChange={handleCheckboxChange} />
             
           )}
-          {/* //Categories */}
            <CategoryTiles />
+          <GetRecommendations/>
+
         </>
       ) : (
         <>
@@ -145,7 +116,6 @@ function Home() {
         </>
       )}
 
-      {/* {trending && <ProductCard  data={trending} />} */}
      
       <Services />
      
