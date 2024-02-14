@@ -54,6 +54,9 @@ function CheckoutForm() {
   const [couponn, setCouponn] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('Cash'); // Set 'Mobile' as the default selected value
+  const [status, setStatus] = useState("Not Active");
+
+  // const [statusrev, setStatusrev] = useState("Activated");
 
   const handleChange = (selectedValue) => {
     setValue(selectedValue);
@@ -76,7 +79,9 @@ function CheckoutForm() {
   };
 
   const handleSubmittt = async () => {
+
     if (inputData.length >= 5) {
+      setStatus("Activated");
       setIsLoading(true);
       setErrormessage(false);
       try {
@@ -99,14 +104,47 @@ function CheckoutForm() {
               tableId: matchingToken.tableId,
             };
 
-            localStorage.setItem("user_table", JSON.stringify(result));
-            setUserTable(result);
-            setmanually(true);
-            setUserTablecheck(true);
-            setInputData("");
+            if(matchingToken.status=='Not Active'){
+
+            try {
+              const response = await fetch(`${process.env.REACT_APP_API_URL}/updatestatus`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ table: result.table, status:"Activated" })
+              });
+            
+              if (response.ok) {
+
+                setStatus('Not Active');
+                localStorage.setItem("user_table", JSON.stringify(result));
+                setUserTable(result);
+                setmanually(true);
+                setUserTablecheck(true);
+                setInputData("");
+                setTimeout(() => {
+                  setIsLoading(false);
+                }, 3000);
+           
+              }
+            
+              const data = await response.json();
+              console.log(data.message); // Assuming your server responds with a message
+            } catch (error) {
+              console.error('Error updating status:', error);
+            }
+          }else{
+            
+            setErrormessage(true);
             setTimeout(() => {
+              toast.error("token already in Use")
               setIsLoading(false);
             }, 3000);
+
+          }
+
+           
           } else {
             setErrormessage(true);
             setTimeout(() => {
@@ -127,71 +165,34 @@ function CheckoutForm() {
     }
   };
 
-  // const handleSubmittt = async () => {
-  //   if (inputData.length >= 5) {
-  //     setIsLoading(true);
-  //     setErrormessage(false);
-  //     try {
-  //       console.log(process.env.REACT_APP_API_URL);
-  //       //  `${process.env.REACT_APP_API_URL}getProductsByIds
-  //       const response = await fetch(
-  //         `${process.env.REACT_APP_API_URL}/qrcodestokens`
-  //       );
 
-  //       if (response.ok) {
-  //         const data = await response.json();
+  const handleDelete = async () => {
+    
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/updatestatus`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ table: usertable.table, status })
+      });
+    
+      if (response.ok) {
+        localStorage.removeItem("user_table");
+        localStorage.removeItem("HTML5_QRCODE_DATA");
+        localStorage.removeItem("generatedString");
+        localStorage.removeItem("timeRemaining");
+        setUserTablecheck(false);
+        toast("Table Deleted");
+      }
+    
+      const data = await response.json();
+      console.log(data.message); // Assuming your server responds with a message
+    } catch (error) {
+      console.error('Error updating status:', error);
+    }
 
-  //         // Assuming you have the input data in a state variable named inputData
-  //         const lastFiveDigitsInput = inputData.slice(-5);
-
-  //         const matchingToken = data.find((item) =>
-  //           item.tableId.endsWith(lastFiveDigitsInput)
-  //         );
-
-  //         console.log("its a", matchingToken.tableId);
-  //         if (matchingToken) {
-  //           // Print all details of the matching token
-  //           // console.log('Matching Token Details:', matchingToken.table);
-  //           const result = {
-  //             table: matchingToken.table,
-  //             tableId: matchingToken.tableId,
-  //           };
-  //           localStorage.setItem("user_table", JSON.stringify(result));
-  //           setUserTable(result);
-  //           setmanually(true);
-  //           setUserTablecheck(true);
-  //           setInputData("");
-  //           setTimeout(() => {
-  //             setIsLoading(false);
-  //           }, 3000);
-  //         } else {
-  //           setErrormessage(true);
-  //           setTimeout(() => {
-  //             setIsLoading(false);
-  //           }, 3000);
-  //         }
-  //       } else {
-  //         // alert("Failed to fetch API data.");
-  //         setIsLoading(false);
-  //       }
-  //     }  catch (error) {
-  //       console.error("Error fetching API data:", error);
-  //       toast("Error fetching API data: " + error.message);
-  //       setIsLoading(false);
-  //     }
-
-  //   } else {
-  //     toast("Input 5 characters Validation Code");
-  //   }
-  // };
-
-  const handleDelete = () => {
-    localStorage.removeItem("user_table");
-    localStorage.removeItem("HTML5_QRCODE_DATA");
-    localStorage.removeItem("generatedString");
-    localStorage.removeItem("timeRemaining");
-    setUserTablecheck(false);
-    toast("Table Deleted");
+   
   };
 
   const handlecontinuemanually = () => {

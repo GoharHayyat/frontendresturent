@@ -240,7 +240,7 @@ function SuccessPage() {
             <CheckCircleIcon className="h-44 w-44 text-white" />
           </motion.div>
           <h1 className="text-center mt-8 font-semibold text-2xl">
-            Your have Order Successfully
+          Order placed Successfully
           </h1>
         </motion.div>
         <WaveMotion />
