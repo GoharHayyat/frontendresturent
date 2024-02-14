@@ -84,8 +84,8 @@ function App() {
 
 
         <
-        /Route>{" "} <
-        /Routes>{" "} <
+        /Route>{" "} < /
+        Routes > { " " } <
         CartMenu / >
         <
         ToastContainer / >

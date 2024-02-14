@@ -53,7 +53,7 @@ useEffect(() => {
     }
 }, [date]);
 
-//test
+
 
 
 
@@ -65,16 +65,6 @@ useEffect(() => {
       const loginDataString = localStorage.getItem("loginData");
       const loginData = JSON.parse(loginDataString);
       const { email, name, phone } = loginData.favorites;
-
-      // Find the slot time based on the selected slot id
-      // const selectedSlot = slotTimes.find(
-      //   (slotTime) => slotTime.id === parseInt(slot)
-      // );
-      // const slotTime = selectedSlot
-      //   ? `${selectedSlot.startTime} - ${selectedSlot.endTime}`
-      //   : "";
-
-      // Send booking request along with user data, number of persons, and slot time
       const response = await fetch(`${process.env.REACT_APP_API_URL}/book`, {
         method: "POST",
         headers: {
@@ -293,39 +283,12 @@ useEffect(() => {
                 experience.
               </p>
             </div>
-            {/* <h1 className="text-2xl font-semibold ">Information</h1> */}
+           
             <hr />
           </div>
         </div>
 
-        {/* <div className="w-full md:w-[45%] bg-slate-50/70 md:absolute md:right-0 md:top-[72px] p-4 md:p-10 h-full">
-          <br />
-          <hr />
-          <div
-            style={{ marginTop: "80px", marginBottom: "30px" }}
-            class="booking-cta"
-          >
-            <h1
-              style={{
-                fontSize: "52px",
-                textTransform: "uppercase",
-                fontWeight: 700,
-              }}
-            >
-              Make your reservation
-            </h1>
-            <p style={{ fontSize: "16px" }}>
-              Simply navigate to our website, select your desired dates and
-              preferences , and let us take care of the rest. Our commitment to
-              providing exceptional service means that your reservation is not
-              just a transaction but the beginning of an extraordinary
-              experience.
-            </p>
-          </div>
-
-
-          <hr />
-        </div> */}
+        
       </div>
     </div>
   );

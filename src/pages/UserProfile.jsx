@@ -8,12 +8,30 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import Card from "@mui/joy/Card";
 import Typography from "@mui/joy/Typography";
+import Accordion from "@mui/joy/Accordion";
+import AccordionDetails, {
+  accordionDetailsClasses,
+} from "@mui/joy/AccordionDetails";
+import AccordionSummary, {
+  accordionSummaryClasses,
+} from "@mui/joy/AccordionSummary";
 
 // import ProductCard from '../components/ProductCard';
 import ProductCard from "../components/ProductCard";
 import ProductCardDetails from "../components/ProductCardDetails";
 import { motion } from "framer-motion";
 import { closeAll } from "../features/Modals";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Modal,
+  Backdrop,
+  Fade,
+} from "@mui/material";
 
 function UserProfile() {
   const dispatch = useDispatch();
@@ -29,6 +47,17 @@ function UserProfile() {
   const [productsLoaded, setProductsLoaded] = useState(false);
 
   const [orders, setOrders] = useState([]);
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    console.log("SelectedOrder",selectedOrder)
+
+  const handleOrderClick = (order) => {
+    setSelectedOrder(order);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedOrder(null);
+  };
+
 
   useEffect(() => {
     // Fetch orders function
@@ -274,38 +303,86 @@ function UserProfile() {
             </>
           )}
         </div>
+        
         <div className="px-10 py-6 bg-gray-200 rounded-lg shadow-md">
-          <h1 className="text-2xl font-semibold mb-4">Orders &gt;</h1>
-          <hr className="mb-4" />
-          {orders.length == 0 ? (
-            <div className="text-lg font-medium text-center">
-              No Orders Placed Yet
-            </div>
-          ) : (
-            <>
-              {orders.map((order) => (
-                <div style={{ marginTop: "18px" }}>
-                  <Card
-                    variant="outlined"
-                    sx={{ maxWidth: 1200 }}
-                    key={order._id}
-                  >
-                    <Typography>{order._id}</Typography>
-                    <Typography>
-                      {new Date(order.orderDate).toLocaleString()}
-                    </Typography>
-                    <Typography>{order.orderstatus}</Typography>
-                    <Typography>{order.totalPrice}</Typography>
-                    <Typography>
-                      {order.onlinePayment ? "Yes" : "No"}
-                    </Typography>
-                    <Typography>{order.tableNo.table}</Typography>
-                  </Card>
-                </div>
-              ))}
-            </>
-          )}
-        </div>
+      <h1 className="text-2xl font-semibold mb-4">Orders &gt;</h1>
+      <hr className="mb-4" />
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell style={{backgroundColor:"#0f575c",color:"white"}}>Invoice ID</TableCell>
+              <TableCell style={{backgroundColor:"#0f575c",color:"white"}}>Date</TableCell>
+              <TableCell style={{backgroundColor:"#0f575c",color:"white"}}>Order Status</TableCell>
+              <TableCell style={{backgroundColor:"#0f575c",color:"white"}}>Bill</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {orders.map((order) => (
+              <TableRow
+                key={order._id}
+                onClick={() => handleOrderClick(order)}
+                style={{ cursor: "pointer" }}
+              >
+                <TableCell>
+                  {order.invoiceid}
+                </TableCell>
+                <TableCell>
+                  {new Date(order.orderDate).toLocaleString()}
+                </TableCell>
+                <TableCell>{order.orderstatus}</TableCell>
+                <TableCell>
+                {order.onlinePayment ? "Paid" : "Not Paid"}
+              </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Modal
+  open={!!selectedOrder}
+  onClose={handleCloseModal}
+  closeAfterTransition
+  BackdropComponent={Backdrop}
+  BackdropProps={{
+    timeout: 500,
+  }}
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }}
+>
+  <Fade in={!!selectedOrder}>
+    <div className="modal" style={{ outline: 'none', maxWidth: 600, width: '90%', maxHeight: 600, overflowY: 'auto', borderRadius: 8 }}>
+      <Card variant="outlined" sx={{ maxWidth: 1200 }}>
+  <Typography variant="h6" style={{ fontWeight: 'bold' }}>Total Bill: {selectedOrder?.totalPrice}/-Rs</Typography>
+  <Typography variant="h6" style={{ fontWeight: 'bold' }}>Table No: {selectedOrder?.tableNo?.table}</Typography>
+  {/* <TableCell>
+                {selectedOrder?.onlinePayment ? "Paid" : "Not Paid"}
+              </TableCell>
+  <Typography variant="h6" style={{ fontWeight: 'bold' }}>Table No: {selectedOrder?.tableNo?.table}</Typography> */}
+
+
+  {selectedOrder?.products && (
+    <div>
+      <Typography variant="h6" style={{ fontWeight: 'bold' }}>Order Details:</Typography>
+      {selectedOrder.products.map((product) => (
+        <Accordion key={product._id}>
+          <AccordionSummary>
+            <Typography style={{ fontWeight: 'bold' }}>{product.name} - Requested Quantity: {product.quantity}</Typography>
+          </AccordionSummary>
+        </Accordion>
+      ))}
+    </div>
+  )}
+</Card>
+
+    </div>
+  </Fade>
+</Modal>
+
+    </div>
       </div>
     );
   } else {
@@ -355,7 +432,7 @@ function UserProfile() {
                   <hr />
                 </div>
               ) : (
-                // <h1>Testing</h1>
+               
                 <section className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7 p-4 md:py-5 md:px-14 flex-wrap">
                   {productss.map((item, i) => {
                     return (
@@ -413,32 +490,40 @@ function UserProfile() {
             </>
           )}
         </div>
-        {/* <div className="px-10 bg-slate-100/90 rounded py-3">
-        <h1 className="text-2xl font-semibold">Your Products {">"}</h1>
-        <hr />
-        <div className="h-24 text-lg font-medium flex justify-center items-center">No Items to sell</div>
-        <hr />
-      </div> */}
-        <div className="px-10 bg-slate-100/90 rounded py-3">
-          <h1 className="text-2xl font-semibold">Orders {">"}</h1>
-          <hr />
-          {orders.length > 0 ? (
-            <div>
-              {orders.map((order) => (
-                <div key={order._id} className="mb-4">
-                  {/* Render order details here */}
-                  <p>Order ID: {order._id}</p>
-                  {/* Render other order details as needed */}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="h-24 text-lg font-medium flex justify-center items-center">
-              No Orders Placed Yet
-            </div>
-          )}
-          <hr />
+        
+<Modal
+  open={!!selectedOrder}
+  onClose={handleCloseModal}
+  closeAfterTransition
+  BackdropComponent={Backdrop}
+  BackdropProps={{
+    timeout: 500,
+  }}
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }}
+>
+  <div className="modal-mobile">
+    <div className="bg-white p-4 rounded-lg shadow-md">
+      <h1 className="text-xl font-semibold mb-4">Orders &gt;</h1>
+      <hr className="mb-4" />
+      {orders.map((order) => (
+        <div key={order._id} onClick={() => handleOrderClick(order)} className="mb-4 cursor-pointer">
+          <p className="text-lg font-semibold">Invoice ID: {order.invoiceid}</p>
+          <p className="text-sm">Date: {new Date(order.orderDate).toLocaleString()}</p>
+          <p className="text-sm">Total Bill: {order.totalPrice}</p>
+          <p className="text-sm">Order Status: {order.orderstatus}</p>
         </div>
+      ))}
+    </div>
+  </div>
+</Modal>
+
+
+
+
       </div>
     );
   }
