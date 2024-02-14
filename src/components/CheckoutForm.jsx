@@ -17,6 +17,15 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { removeFromCart } from "../features/Cart";
 import Backdrop from '@mui/material/Backdrop';
 import React from "react";
+import Checkbox from '@mui/joy/Checkbox';
+import List from '@mui/joy/List';
+import ListItem from '@mui/joy/ListItem';
+import ListItemDecorator from '@mui/joy/ListItemDecorator';
+import LaptopIcon from '@mui/icons-material/Laptop';
+import TvIcon from '@mui/icons-material/Tv';
+import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
+import PaymentsIcon from '@mui/icons-material/Payments';
+import CreditScoreIcon from '@mui/icons-material/CreditScore';
 
 const variants = {
   initial: { opacity: 0, scaleY: -1 },
@@ -44,6 +53,12 @@ function CheckoutForm() {
   const [coupon, setCoupon] = useState("");
   const [couponn, setCouponn] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState('Cash'); // Set 'Mobile' as the default selected value
+
+  const handleChange = (selectedValue) => {
+    setValue(selectedValue);
+  };
+  
 
   useEffect(() => {
     const getDataFromLocalStorage = () => {
@@ -221,6 +236,8 @@ function CheckoutForm() {
       //setValues({...values,existingaddress:user.address})
       return (
         <>
+        
+
           <div className="flex flex-col my-2 gap-1 justify-center text-base">
             <p>
               You are Currently Logged In as{" "}
@@ -450,9 +467,8 @@ function CheckoutForm() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
+  // const handleSubmit = async (e) => {
+  const processAnotherAPI = async () => {
 
     if (user) {
     } else {
@@ -517,6 +533,7 @@ function CheckoutForm() {
         {
           userId: user.favorites._id,
           products,
+          onlinePayment: false,
           totalPrice,
           tableNo: usertable,
         }
@@ -572,7 +589,7 @@ function CheckoutForm() {
             localStorage.removeItem("HTML5_QRCODE_DATA");
             setOpen(false);
             // Redirect to success page or any desired page
-            window.location.href = "/success";
+            window.location.href = "/ordersuccess";
 
             console.log("Items purchased successfully:", purchaseResponse.data);
             // Handle success as needed
@@ -593,6 +610,104 @@ function CheckoutForm() {
       toast.error("Failed to submit order. Please try again later.");
     }
   };
+
+
+
+const processStripePayment = async (products, user) => {
+  const config = {
+      headers: {
+          'Content-Type': 'application/json',
+      },
+  };
+
+  try {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/stripe`, { products, user }, config);
+      const { data } = response;
+      console.log("data",data);
+      window.location.href = data.url;
+  } catch (error) {
+      console.error('Error submitting to server:', error);
+
+      if (error.response) {
+          console.error('Server responded with:', error.response.data);
+          toast('Server Error. Please check your input and try again.');
+      } else if (error.request) {
+          console.error('No response received from the server:', error.request);
+          toast('No response from the server. Please try again later.');
+      } else {
+          console.error('Error setting up the request:', error.message);
+          toast('Error setting up the request. Please try again later.');
+      }
+  }
+};
+
+const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const products = [];
+    cart.map((item, i) => products.push({ item: [i, { name: item.name, price: item.price }], quantity: item.count }));
+
+    if (user) {
+    } else {
+      toast.error("login to continue");
+      return;
+    }
+    if (cart.length === 0) {
+      toast.error("Your cart is empty. Please add items before submitting.");
+      return;
+    }
+
+    if (usertablecheck === false) {
+      toast.error("Please select a table before submitting.");
+      return;
+    }
+   
+
+    if(value=="Card")
+    {
+      await processStripePayment(products, user);
+    }
+    else{
+      await processAnotherAPI();
+    }
+
+    // if (!cart || !Array.isArray(cart)) {
+    //     // Handle the case where cart is undefined or not an array
+    //     console.error('Invalid cart:', cart);
+    //     toast('Invalid cart. Please try again.');
+    //     return;
+    // }
+
+    // const config = {
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    // };
+
+    // const products = [];
+    //     cart.map((item,i)=> products.push({item:[i,{name:item.name,price:item.price}],quantity:item.count}));
+    // try {
+    //     const response = await axios.post(`${process.env.REACT_APP_API_URL}/stripe`, { products, user }, config);
+    //     const { data } = response;
+    //     console.log(data);
+    //     window.location.href = data.url;
+    // } catch (error) {
+    //     console.error('Error submitting to server:', error);
+
+    //     if (error.response) {
+    //         console.error('Server responded with:', error.response.data);
+    //         toast('Server Error. Please check your input and try again.');
+    //     } else if (error.request) {
+    //         console.error('No response received from the server:', error.request);
+    //         toast('No response from the server. Please try again later.');
+    //     } else {
+    //         console.error('Error setting up the request:', error.message);
+    //         toast('Error setting up the request. Please try again later.');
+    //     }
+    // }
+};
+
+
 
   if (isLoading) {
     return (
@@ -633,6 +748,59 @@ function CheckoutForm() {
     >
       <h1 className="text-lg font-semibold">Contact Information</h1>
       {userContactInfo()}
+      <hr/>
+      <br/>
+      <br/>
+      <h1 className="text-lg font-semibold">Payment Method</h1>
+       <List
+      variant="outlined"
+      aria-label="Screens"
+      role="group"
+      orientation="horizontal"
+      sx={{
+        maxWidth:"203px",
+        flexGrow: 0,
+        '--List-gap': '8px',
+        '--List-padding': '8px',
+        '--List-radius': '8px',
+      }}
+    >
+      {['Cash', 'Card'].map((item) => (
+        <ListItem key={item}>
+          <ListItemDecorator
+            sx={{
+              zIndex: 2,
+              pointerEvents: 'none',
+              ...(value === item && { color: '#228B22	' }),
+            }}
+          >
+            {
+              {
+                Cash: <PaymentsIcon />,
+                Card: <CreditScoreIcon />,
+              }[item]
+            }
+          </ListItemDecorator>
+          <Checkbox
+            disableIcon
+            overlay
+            label={item}
+            checked={value === item}
+            color="neutral"
+            variant={value === item ? 'outlined' : 'plain'}
+            onChange={() => handleChange(item)}
+            slotProps={{
+              action: ({ checked }) => ({
+                sx: {
+                  bgcolor: checked ? 'background.level1' : 'transparent',
+                  boxShadow: checked ? 'sm' : 'none',
+                },
+              }),
+            }}
+          />
+        </ListItem>
+      ))}
+    </List>
       <motion.form
         layout
         onSubmit={handleSubmit}
