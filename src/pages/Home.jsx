@@ -111,6 +111,7 @@ function Home() {
   //     setTrending(products.slice(0, 5));
   //   }
   // }, [menuItems, trending]);
+  //test
 
   console.log("trending",trending)
 
