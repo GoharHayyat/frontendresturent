@@ -303,43 +303,41 @@ function UserProfile() {
             </>
           )}
         </div>
+        <h1 className="text-2xl font-semibold mb-4">Orders &gt;</h1>
         
-        <div className="px-10 py-6 bg-gray-200 rounded-lg shadow-md">
-      <h1 className="text-2xl font-semibold mb-4">Orders &gt;</h1>
-      <hr className="mb-4" />
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell style={{backgroundColor:"#0f575c",color:"white"}}>Invoice ID</TableCell>
-              <TableCell style={{backgroundColor:"#0f575c",color:"white"}}>Date</TableCell>
-              <TableCell style={{backgroundColor:"#0f575c",color:"white"}}>Order Status</TableCell>
-              <TableCell style={{backgroundColor:"#0f575c",color:"white"}}>Bill</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {orders.map((order) => (
-              <TableRow
-                key={order._id}
-                onClick={() => handleOrderClick(order)}
-                style={{ cursor: "pointer" }}
-              >
-                <TableCell>
-                  {order.invoiceid}
-                </TableCell>
-                <TableCell>
-                  {new Date(order.orderDate).toLocaleString()}
-                </TableCell>
-                <TableCell>{order.orderstatus}</TableCell>
-                <TableCell>
-                {order.onlinePayment ? "Paid" : "Not Paid"}
-              </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Modal
+       
+        {orders.length === 0 ? (
+    <div className="text-xl font-bold text-black text-center">No order placed yet</div>
+) : (
+    <div className="px-10 py-6 bg-gray-200 rounded-lg shadow-md">
+        <hr className="mb-4" />
+        <TableContainer>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell style={{backgroundColor:"#0f575c",color:"white"}}>Invoice ID</TableCell>
+                        <TableCell style={{backgroundColor:"#0f575c",color:"white"}}>Date</TableCell>
+                        <TableCell style={{backgroundColor:"#0f575c",color:"white"}}>Order Status</TableCell>
+                        <TableCell style={{backgroundColor:"#0f575c",color:"white"}}>Bill</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {orders.map((order) => (
+                        <TableRow
+                            key={order._id}
+                            onClick={() => handleOrderClick(order)}
+                            style={{ cursor: "pointer" }}
+                        >
+                            <TableCell>{order.invoiceid}</TableCell>
+                            <TableCell>{new Date(order.orderDate).toLocaleString([], { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false })}</TableCell>
+                            <TableCell>{order.orderstatus}</TableCell>
+                            <TableCell>{order.onlinePayment ? "Paid" : "Not Paid"}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+        <Modal
   open={!!selectedOrder}
   onClose={handleCloseModal}
   closeAfterTransition
@@ -356,8 +354,8 @@ function UserProfile() {
   <Fade in={!!selectedOrder}>
     <div className="modal" style={{ outline: 'none', maxWidth: 600, width: '90%', maxHeight: 600, overflowY: 'auto', borderRadius: 8 }}>
       <Card variant="outlined" sx={{ maxWidth: 1200 }}>
-  <Typography variant="h6" style={{ fontWeight: 'bold' }}>Total Bill: {selectedOrder?.totalPrice}/-Rs</Typography>
-  <Typography variant="h6" style={{ fontWeight: 'bold' }}>Table No: {selectedOrder?.tableNo?.table}</Typography>
+  <Typography variant="h6" className="text-lg font-semibold">Total Bill: {selectedOrder?.totalPrice}/-Rs</Typography>
+  <Typography variant="h6" className="text-lg font-semibold">Table No: {selectedOrder?.tableNo?.table}</Typography>
   {/* <TableCell>
                 {selectedOrder?.onlinePayment ? "Paid" : "Not Paid"}
               </TableCell>
@@ -369,9 +367,9 @@ function UserProfile() {
       <Typography variant="h6" style={{ fontWeight: 'bold' }}>Order Details:</Typography>
       {selectedOrder.products.map((product) => (
         <Accordion key={product._id}>
-          <AccordionSummary>
-            <Typography style={{ fontWeight: 'bold' }}>{product.name} - Requested Quantity: {product.quantity}</Typography>
-          </AccordionSummary>
+            {/* <Typography style={{ fontWeight: 'bold' }}>{product.name} - Requested Quantity: {product.quantity}</Typography> */}
+            <Typography className="text-lg font-semibold">Item Name({product.name}) Quantity of Item ({product.quantity})</Typography>
+
         </Accordion>
       ))}
     </div>
@@ -383,6 +381,9 @@ function UserProfile() {
 </Modal>
 
     </div>
+    
+)}
+
       </div>
     );
   } else {
@@ -490,8 +491,31 @@ function UserProfile() {
             </>
           )}
         </div>
-        
-<Modal
+
+          <div className="bg-white p-4 rounded-lg shadow-md">
+            <div>
+  <h1 className="text-xl font-semibold mb-4">Orders &gt;</h1>
+  <hr className="mb-4" />
+  {orders && orders.length > 0 ? (
+    orders.map((order) => (
+      <div key={order._id} onClick={() => handleOrderClick(order)} className="mb-4 bg-white rounded-lg shadow-md p-4 cursor-pointer" style={{ border: "1px solid black", padding: "10px" }}>
+        <div className="flex justify-between">
+          <div>
+            <p className="text-lg font-semibold">Invoice ID: {order.invoiceid}</p>
+            <p className="text-sm">Date: {new Date(order.orderDate).toLocaleString([], { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false })}</p>
+          </div>
+          <p className="text-sm">{order?.onlinePayment ? "Paid" : "Not Paid"}</p>
+        </div>
+        <p className="text-sm">Total Bill: {order.totalPrice}/-Rs</p>
+        <p className="text-sm mt-2">Order Status: {order.orderstatus}</p>
+      </div>
+    ))
+  ) : (
+    <div className="text-xl font-bold text-black text-center">No order placed yet</div>
+  )}
+</div>
+    
+      <Modal
   open={!!selectedOrder}
   onClose={handleCloseModal}
   closeAfterTransition
@@ -505,24 +529,33 @@ function UserProfile() {
     justifyContent: 'center',
   }}
 >
-  <div className="modal-mobile">
-    <div className="bg-white p-4 rounded-lg shadow-md">
-      <h1 className="text-xl font-semibold mb-4">Orders &gt;</h1>
-      <hr className="mb-4" />
-      {orders.map((order) => (
-        <div key={order._id} onClick={() => handleOrderClick(order)} className="mb-4 cursor-pointer">
-          <p className="text-lg font-semibold">Invoice ID: {order.invoiceid}</p>
-          <p className="text-sm">Date: {new Date(order.orderDate).toLocaleString()}</p>
-          <p className="text-sm">Total Bill: {order.totalPrice}</p>
-          <p className="text-sm">Order Status: {order.orderstatus}</p>
-        </div>
+  <Fade in={!!selectedOrder}>
+    <div className="modal" style={{ outline: 'none', maxWidth: 600, width: '90%', maxHeight: 600, overflowY: 'auto', borderRadius: 8 }}>
+      <Card variant="outlined" sx={{ maxWidth: 1200 }}>
+  {/* <Typography variant="h6" style={{ fontWeight: 'bold' }}>Total Bill: {selectedOrder?.totalPrice}/-Rs</Typography> */}
+  <Typography variant="h6" style={{ fontWeight: 'bold' }}>Table No: {selectedOrder?.tableNo?.table}</Typography>
+  
+  {selectedOrder?.products && (
+    <div>
+      <Typography variant="h6" style={{ fontWeight: 'bold' }}>Order Details:</Typography>
+      {selectedOrder.products.map((product) => (
+        <Accordion key={product._id}>
+          {/* <AccordionSummary> */}
+            {/* <Typography style={{ fontWeight: 'bold' }}>Item Name({product.name}) Quantity of Item ({product.quantity})</Typography> */}
+            <Typography style={{ fontWeight: 'bold' }}>{product.name} Quantity({product.quantity}).</Typography>
+
+          {/* </AccordionSummary> */}
+        </Accordion>
       ))}
     </div>
-  </div>
+  )}
+</Card>
+
+    </div>
+  </Fade>
 </Modal>
 
-
-
+    </div>
 
       </div>
     );
