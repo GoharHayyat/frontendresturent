@@ -173,6 +173,8 @@ function SuccessPage() {
               );
               // Handle success as needed
             } catch (error) {
+
+              window.location.href = "/error";
               
             //   console.error("There was a problem with the API request:", error);
               // Handle errors as needed
@@ -186,7 +188,6 @@ function SuccessPage() {
           throw new Error("Failed to submit order");
         }
       } catch (orderError) {
-        window.location.href = "/error";
         console.error("Error submitting order:", orderError);
         // toast.error("Failed to submit order. Please try again later.");
       }
