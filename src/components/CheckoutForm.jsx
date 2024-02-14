@@ -606,8 +606,10 @@ function CheckoutForm() {
         throw new Error("Failed to submit order");
       }
     } catch (orderError) {
+      setOpen(false);
+      window.location.href = "/error";
       console.error("Error submitting order:", orderError);
-      toast.error("Failed to submit order. Please try again later.");
+      // toast.error("Failed to submit order. Please try again later.");
     }
   };
 

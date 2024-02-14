@@ -9,18 +9,14 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setIsCartOpen } from "../features/Cart";
-import Search from "./Search";
-import { useNavigate } from "react-router-dom";
 import { closeAll, setMenuBar, setSearchModal } from "../features/Modals";
 
 function Navbar() {
   const dispatch = useDispatch();
-  const { search, menu } = useSelector((state) => state.modals);
-  // const isUserLoggedIn = useSelector((state) => state.user.isUserLoggedIn);
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState([]);
+  const {  menu } = useSelector((state) => state.modals);
   const cart = useSelector((state) => state.cart.cart);
   const isCartOpen = useSelector((state) => state.cart.isCartOpen);
-  // const navigate = useNavigate();
+
 
   const checkitt = () => {
     const storedData = localStorage.getItem("loginData");
@@ -138,7 +134,7 @@ function Navbar() {
             whileTap={{ scale: 0.8 }}
             className=" md:hidden"
             onClick={() => {
-              search && dispatch(setSearchModal(false));
+              // search && dispatch(setSearchModal(false));
               dispatch(setMenuBar(!menu));
             }}
           >
@@ -146,9 +142,7 @@ function Navbar() {
           </motion.div>
         </div>
       </motion.nav>
-      {search && !isCartOpen && (
-        <Search onPressCLose={() => dispatch(setSearchModal(false))} />
-      )}
+     
     </>
   );
 }

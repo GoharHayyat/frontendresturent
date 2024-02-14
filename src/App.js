@@ -19,6 +19,7 @@ import Barcode from "./components/Barcode";
 import GetRecommendations from "./components/getrec";
 import Reservation from "./components/Reservation";
 import SuccessPagecash from "./pages/Successcash";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
           <Route path="allcategory" element={<AllCategory />} />{" "}
           <Route path="success" element={<SuccessPage />} />{" "}
           <Route path="ordersuccess" element={<SuccessPagecash />} />{" "}
+          <Route path="error" element={<ErrorPage />} />{" "}
           <Route
             path="allcategory/menuitems/:category"
             element={<ProductsListPage />}
