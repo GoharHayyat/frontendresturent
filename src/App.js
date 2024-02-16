@@ -24,82 +24,38 @@ import ContactUs from "./pages/ContactUs";
 import AboutUs from "./pages/AboutUs";
 
 function App() {
-    return ( <
-        >
-        <
-        Routes >
-        <
-        Route path = "/"
-        element = { < LayoutWrapper / > } >
-        <
-        Route path = "/"
-        element = { < Home / > }
-        /> <
-        Route path = "/:tableToken"
-        element = { < HomeToken / > }
-        /> <
-        Route path = "login"
-        element = { < Login / > }
-        /> <
-        Route path = "register"
-        element = { < Registeration / > }
-        /> <
-        Route path = "menuitems/:category"
-        element = { < ProductsListPage / > }
-        /> <
-        Route path = "checkout"
-        element = { < Checkout / > }
-        /> <
-        Route path = "forgotpassword"
-        element = { < ForgotPassword / > }
-        /> <
-        Route path = "resetpassword/:resetToken"
-        element = { < ResetPassword / > }
-        /> <
-        Route path = "profile"
-        element = { < UserProfile / > }
-        /> <
-        Route path = "allcategory"
-        element = { < AllCategory / > }
-        /> <
-        Route path = "success"
-        element = { < SuccessPage / > }
-        /> <
-        Route path = "ordersuccess"
-        element = { < SuccessPagecash / > }
-        /> <
-        Route path = "error"
-        element = { < ErrorPage / > }
-        /> <
-        Route path = "allcategory/menuitems/:category"
-        element = { < ProductsListPage / > }
-        /> <
-        Route path = "barcode"
-        element = { < Barcode / > }
-        /> <
-        Route path = "recommendation"
-        element = { < GetRecommendations / > }
-        /> <
-        Route path = "Reservation"
-        element = { < Reservation / > }
-        /> <
-        Route path = "contactus"
-        element = { < ContactUs / > }
-        /> <
-        Route path = "aboutus"
-        element = { < AboutUs / > }
-        />
-
-
-        <
-        /Route> <
-        /Routes> <
-        CartMenu / >
-        <
-        ToastContainer / >
-        <
-        />
-    );
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<LayoutWrapper />}>
+          <Route path="/" element={<Home  />} />{" "}
+          <Route path="/:tableToken" element={<HomeToken />} />{" "}
+          <Route path="login" element={<Login />} />{" "}
+          <Route path="register" element={<Registeration />} />{" "}
+          <Route path="menuitems/:category" element={<ProductsListPage />} />{" "}
+          <Route path="checkout" element={<Checkout />} />{" "}
+          <Route path="forgotpassword" element={<ForgotPassword />} />{" "}
+          <Route path="resetpassword/:resetToken" element={<ResetPassword />} />{" "}
+          <Route path="profile" element={<UserProfile />} />{" "}
+          <Route path="allcategory" element={<AllCategory />} />{" "}
+          <Route path="success" element={<SuccessPage />} />{" "}
+          <Route path="ordersuccess" element={<SuccessPagecash />} />{" "}
+          <Route path="error" element={<ErrorPage />} />{" "}
+          <Route
+            path="allcategory/menuitems/:category"
+            element={<ProductsListPage />}
+          />{" "}
+          <Route path="barcode" element={<Barcode />} />{" "}
+          <Route path="recommendation" element={<GetRecommendations />} />{" "}
+          <Route path="Reservation" element={<Reservation />} />{" "}
+          <Route path="contactus" element={<ContactUs />} />{" "}
+          <Route path="aboutus" element={<AboutUs />} />
+        </Route>{" "}
+      </Routes>{" "}
+      <CartMenu />
+      <ToastContainer />
+    </>
+  );
 }
 
 export default App;
