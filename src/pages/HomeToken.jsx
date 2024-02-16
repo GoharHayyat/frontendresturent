@@ -12,6 +12,9 @@ function HomeToken() {
   const keyForChild = generateKey();
   const { tableToken } = useParams();
   const [tokenData, setTokenData] = useState(null);
+  const [status, setStatus] = useState("Activated");
+  
+
   const [istokenavailable, setIstokenavailable] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -25,30 +28,62 @@ function HomeToken() {
           );
 
           if (matchingToken) {
-            toast("success");
-            setTokenData(matchingToken);
+            // toast("success");
+
+            if(matchingToken.status=='Not Active')
+            {
+              setTokenData(matchingToken);
             setIstokenavailable(true);
-            // tableId
-
+            const tt= matchingToken.table;
             const result = { table: matchingToken.table, tableId: matchingToken.tableId };
-            localStorage.setItem("user_table", JSON.stringify(result));
-
-            var pageRedirectValue = localStorage.getItem("page_redirct");
-
-            if (pageRedirectValue !== null && pageRedirectValue === "true") {
-              localStorage.removeItem("HTML5_QRCODE_DATA");
-              localStorage.removeItem("page_redirct");
-              window.location.href = "/checkout";
-            } else if(pageRedirectValue !== null && pageRedirectValue === "redirecthome"){
-              localStorage.removeItem("HTML5_QRCODE_DATA");
-              localStorage.removeItem("page_redirct");
-              window.location.href = "/allcategory";
+            try {
+              const response = await fetch(`${process.env.REACT_APP_API_URL}/updatestatus`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ table: result.table, status })
+              });
+          
+              if (response.ok) {
+                // const result = { table: matchingToken.table, tableId: matchingToken.tableId };
+                localStorage.setItem("user_table", JSON.stringify(result));
+    
+                var pageRedirectValue = localStorage.getItem("page_redirct");
+    
+                if (pageRedirectValue !== null && pageRedirectValue === "true") {
+                  localStorage.removeItem("HTML5_QRCODE_DATA");
+                  localStorage.removeItem("page_redirct");
+                  window.location.href = "/checkout";
+                } else if(pageRedirectValue !== null && pageRedirectValue === "redirecthome"){
+                  localStorage.removeItem("HTML5_QRCODE_DATA");
+                  localStorage.removeItem("page_redirct");
+                  window.location.href = "/allcategory";
+                }
+                else {
+                  localStorage.removeItem("HTML5_QRCODE_DATA");
+                  localStorage.removeItem("page_redirct");
+                  window.location.href = "/";
+                }
+              }
+          
+              const data = await response.json();
+              console.log(data.message); // Assuming your server responds with a message
+            } catch (error) {
+              console.error('Error updating status:', error);
             }
-            else {
-              localStorage.removeItem("HTML5_QRCODE_DATA");
-              localStorage.removeItem("page_redirct");
-              window.location.href = "/";
+
             }
+            else{
+              toast.error("token already in Use")
+              setTokenData(null);
+              setIstokenavailable(false);
+            }
+
+
+            
+
+            
           } else {
             setTokenData(null);
             setIstokenavailable(false);
@@ -118,3 +153,7 @@ function HomeToken() {
 }
 
 export default HomeToken;
+
+
+
+
