@@ -195,10 +195,30 @@ function SuccessPage() {
     processAnotherAPI();
   }, [inputData]);
 
-  // useEffect(()=>{
-  //     dispatch(setCart([]))
-  //     localStorage.removeItem('cart')
-  // })
+  useEffect(()=>{
+    const processAnotherAP = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/updatestatus`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ table: usertable.table, status:"Not Active" })
+      });
+    
+      if (response.ok) {
+   
+      }
+    
+      const data = await response.json();
+      console.log(data.message); // Assuming your server responds with a message
+    } catch (error) {
+      console.error('Error updating status:', error);
+    }
+  }
+  processAnotherAP();
+
+  }, [inputData])
 
   const variant = {
     initial: {

@@ -586,7 +586,7 @@ function CheckoutForm() {
             cart.forEach((item) => dispatch(removeFromCart({ _id: item._id })));
             // Order and stock update were successful
             // toast.success("Order submitted successfully");
-            localStorage.removeItem("user_table");
+            // localStorage.removeItem("user_table");
             localStorage.removeItem("HTML5_QRCODE_DATA");
             setOpen(false);
             // Redirect to success page or any desired page

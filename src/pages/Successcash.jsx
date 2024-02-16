@@ -13,13 +13,53 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 function SuccessPagecash() {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  // const [span, setSpan] = useState("");
+  const [usertable, setUserTable] = useState([null]);
 
-  useEffect(()=>{
-      dispatch(setCart([]))
-      localStorage.removeItem('cart')
-  })
+  const processAnotherAP = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/updatestatus`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ table: usertable.table, status: "Not Active" })
+      });
+
+      if (response.ok) {
+        localStorage.removeItem("user_table");
+      }
+
+      const data = await response.json();
+      console.log(data.message); // Assuming your server responds with a message
+    } catch (error) {
+      console.error('Error updating status:', error);
+    }
+  };
+
+  const getDataFromLocalStoragee = async () => {
+    try {
+      const storedData = localStorage.getItem("user_table");
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        setUserTable(parsedData);
+        await processAnotherAP();
+      }
+    } catch (error) {
+      console.error('Error getting data from local storage:', error);
+    }
+  };
+
+  useEffect(() => {
+    const clearCartAndLocalStorage = () => {
+      dispatch(setCart([]));
+      localStorage.removeItem('cart');
+      localStorage.removeItem("HTML5_QRCODE_DATA");
+    };
+
+    clearCartAndLocalStorage();
+    getDataFromLocalStoragee();
+  }, [dispatch, usertable]);
+
 
   const variant = {
     initial: {
