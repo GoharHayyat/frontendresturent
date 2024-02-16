@@ -20,7 +20,21 @@ function Reservation() {
     { id: 5, startTime: "9:00 PM", endTime: "10:30 PM" },
     { id: 6, startTime: "10:30 PM", endTime: "11:59 PM" },
   ];
- 
+function getDates() {
+  const today = new Date();
+  const endDate = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()); // Set the end date to one year from now
+  const dates = [];
+
+  for (let date = today; date <= endDate; date.setDate(date.getDate() + 1)) {
+    if (date >= today) {
+      const formattedDate = date.toLocaleDateString();
+      dates.push(formattedDate);
+    }
+  }
+
+  return dates;
+}
+
 
 
   useEffect(() => {
@@ -165,10 +179,30 @@ useEffect(() => {
             onSubmit={handleSubmit}
             style={{ display: "flex", flexDirection: "column" }}
           >
-            <label htmlFor="date" style={{ marginBottom: "8px" }}>
+            {/* <label htmlFor="date" style={{ marginBottom: "8px" }}>
               Select a date:
             </label>
-            <input
+             */}
+           <label htmlFor="date" style={{ marginBottom: "8px" }}>
+  Select a date:
+</label>
+<select id="date" name="date" 
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              required
+              style={{
+                marginBottom: "16px",
+                padding: "8px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+              }}>
+  {getDates().map((dateString, index) => (
+    <option key={index} value={dateString}>{dateString}</option>
+  ))}
+</select>
+
+
+            {/* <input
               type="date"
               id="date"
               name="date"
@@ -181,7 +215,7 @@ useEffect(() => {
                 borderRadius: "4px",
                 border: "1px solid #ccc",
               }}
-            />
+            /> */}
             <label htmlFor="slot" style={{ marginBottom: "8px" }}>
               Select a slot:
             </label>

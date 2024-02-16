@@ -73,7 +73,7 @@ function Navbar() {
               whileHover={{ scale: 1.1 }}
               className="hover:text-sky-600"
             >
-              <Link to="/recommendation">About us</Link>
+              <Link to="/aboutus">About us</Link>
             </motion.li>
             <motion.li
               id="brands"
@@ -93,7 +93,8 @@ function Navbar() {
               whileHover={{ scale: 1.1 }}
               className="hover:text-sky-600"
             >
-              <a href="/#">Contact Us</a>
+              <Link to="/contactus">Contact us</Link>
+
             </motion.li>
           </ul>
         </motion.div>
