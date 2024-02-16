@@ -53,7 +53,6 @@ const mappedData = category.map((apiItem, index) => ({
   if (isWindowsSize) {
     return (
       <div className="py-6 px-3 md:px-0">
-        {/* <ToastContainer/> */}
         <div className="flex w-full gap-5 flex-col md:flex-row">
           <div className="flex-[0.15] flex flex-col items-center">
             <button className="bg-black/70 text-white p-2 rounded-lg w-[80%] hover:bg-black ">
