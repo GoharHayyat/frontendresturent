@@ -70,7 +70,7 @@ function ProductsListPage() {
           price: item.Price,
           check: item.check,
           stars: 4.0,
-          imageLinks: [`${process.env.REACT_APP_API_URL}/${item.image}`],
+          imageLinks: [`${item.image}`],
           isFavorite: false,
           isAdded: false,
           describtion: item.describtion,

@@ -192,7 +192,7 @@ function UserProfile() {
     price: item.Price, // Define the price as needed
     check: item.check,
     stars: 4.0, // Set the stars or rating based on your system
-    imageLinks: [`${process.env.REACT_APP_API_URL}/${item.image}`],
+    imageLinks: [`${item.image}`],
     isFavorite: false,
     isAdded: false,
     describtion: item.describtion,

@@ -36,7 +36,7 @@ const mappedData = category.map((apiItem, index) => ({
     
     id: apiItem._id,
     name: index === 5 ? "Other Items" : apiItem.title,
-    img: index === 5 ? a : [`${process.env.REACT_APP_API_URL}/${apiItem.image}`], 
+    img: index === 5 ? a : [`${apiItem.image}`], 
     // gridLoc: dummyGridLoc,
     gridLoc: gridLocations[index % gridLocations.length],
 

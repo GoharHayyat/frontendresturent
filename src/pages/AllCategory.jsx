@@ -45,7 +45,7 @@ useEffect(() => {
 const mappedData = category.map((apiItem, index) => ({
     id: apiItem._id,
     name: apiItem.title,
-    img: [`${process.env.REACT_APP_API_URL}/${apiItem.image}`],
+    img: [`${apiItem.image}`],
   }));
 
   
