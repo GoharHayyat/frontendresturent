@@ -191,7 +191,7 @@ function UserProfile() {
     category: item.category, // You can set the category as per your application logic
     price: item.Price, // Define the price as needed
     check: item.check,
-    stars: 4.0, // Set the stars or rating based on your system
+    stars: 4.0, 
     imageLinks: [`${item.image}`],
     isFavorite: false,
     isAdded: false,
